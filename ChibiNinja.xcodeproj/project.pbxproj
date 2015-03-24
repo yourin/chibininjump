@@ -1,0 +1,428 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		DBDA2A561AC19328003DED4C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDA2A551AC19328003DED4C /* AppDelegate.swift */; };
+		DBDA2A581AC19328003DED4C /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = DBDA2A571AC19328003DED4C /* GameScene.sks */; };
+		DBDA2A5A1AC19328003DED4C /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDA2A591AC19328003DED4C /* GameScene.swift */; };
+		DBDA2A5C1AC19328003DED4C /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDA2A5B1AC19328003DED4C /* GameViewController.swift */; };
+		DBDA2A5F1AC19328003DED4C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DBDA2A5D1AC19328003DED4C /* Main.storyboard */; };
+		DBDA2A611AC19328003DED4C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DBDA2A601AC19328003DED4C /* Images.xcassets */; };
+		DBDA2A641AC19328003DED4C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = DBDA2A621AC19328003DED4C /* LaunchScreen.xib */; };
+		DBDA2A701AC19328003DED4C /* ChibiNinjaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDA2A6F1AC19328003DED4C /* ChibiNinjaTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		DBDA2A6A1AC19328003DED4C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DBDA2A481AC19328003DED4C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DBDA2A4F1AC19328003DED4C;
+			remoteInfo = ChibiNinja;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		DBDA2A501AC19328003DED4C /* ChibiNinja.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChibiNinja.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DBDA2A541AC19328003DED4C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DBDA2A551AC19328003DED4C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		DBDA2A571AC19328003DED4C /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
+		DBDA2A591AC19328003DED4C /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		DBDA2A5B1AC19328003DED4C /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
+		DBDA2A5E1AC19328003DED4C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		DBDA2A601AC19328003DED4C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		DBDA2A631AC19328003DED4C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		DBDA2A691AC19328003DED4C /* ChibiNinjaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChibiNinjaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DBDA2A6E1AC19328003DED4C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DBDA2A6F1AC19328003DED4C /* ChibiNinjaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChibiNinjaTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		DBDA2A4D1AC19328003DED4C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DBDA2A661AC19328003DED4C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		DBDA2A471AC19328003DED4C = {
+			isa = PBXGroup;
+			children = (
+				DBDA2A521AC19328003DED4C /* ChibiNinja */,
+				DBDA2A6C1AC19328003DED4C /* ChibiNinjaTests */,
+				DBDA2A511AC19328003DED4C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		DBDA2A511AC19328003DED4C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DBDA2A501AC19328003DED4C /* ChibiNinja.app */,
+				DBDA2A691AC19328003DED4C /* ChibiNinjaTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		DBDA2A521AC19328003DED4C /* ChibiNinja */ = {
+			isa = PBXGroup;
+			children = (
+				DBDA2A551AC19328003DED4C /* AppDelegate.swift */,
+				DBDA2A571AC19328003DED4C /* GameScene.sks */,
+				DBDA2A591AC19328003DED4C /* GameScene.swift */,
+				DBDA2A5B1AC19328003DED4C /* GameViewController.swift */,
+				DBDA2A5D1AC19328003DED4C /* Main.storyboard */,
+				DBDA2A601AC19328003DED4C /* Images.xcassets */,
+				DBDA2A621AC19328003DED4C /* LaunchScreen.xib */,
+				DBDA2A531AC19328003DED4C /* Supporting Files */,
+			);
+			path = ChibiNinja;
+			sourceTree = "<group>";
+		};
+		DBDA2A531AC19328003DED4C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				DBDA2A541AC19328003DED4C /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		DBDA2A6C1AC19328003DED4C /* ChibiNinjaTests */ = {
+			isa = PBXGroup;
+			children = (
+				DBDA2A6F1AC19328003DED4C /* ChibiNinjaTests.swift */,
+				DBDA2A6D1AC19328003DED4C /* Supporting Files */,
+			);
+			path = ChibiNinjaTests;
+			sourceTree = "<group>";
+		};
+		DBDA2A6D1AC19328003DED4C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				DBDA2A6E1AC19328003DED4C /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		DBDA2A4F1AC19328003DED4C /* ChibiNinja */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DBDA2A731AC19328003DED4C /* Build configuration list for PBXNativeTarget "ChibiNinja" */;
+			buildPhases = (
+				DBDA2A4C1AC19328003DED4C /* Sources */,
+				DBDA2A4D1AC19328003DED4C /* Frameworks */,
+				DBDA2A4E1AC19328003DED4C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ChibiNinja;
+			productName = ChibiNinja;
+			productReference = DBDA2A501AC19328003DED4C /* ChibiNinja.app */;
+			productType = "com.apple.product-type.application";
+		};
+		DBDA2A681AC19328003DED4C /* ChibiNinjaTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DBDA2A761AC19328003DED4C /* Build configuration list for PBXNativeTarget "ChibiNinjaTests" */;
+			buildPhases = (
+				DBDA2A651AC19328003DED4C /* Sources */,
+				DBDA2A661AC19328003DED4C /* Frameworks */,
+				DBDA2A671AC19328003DED4C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DBDA2A6B1AC19328003DED4C /* PBXTargetDependency */,
+			);
+			name = ChibiNinjaTests;
+			productName = ChibiNinjaTests;
+			productReference = DBDA2A691AC19328003DED4C /* ChibiNinjaTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		DBDA2A481AC19328003DED4C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0620;
+				ORGANIZATIONNAME = tone.youring;
+				TargetAttributes = {
+					DBDA2A4F1AC19328003DED4C = {
+						CreatedOnToolsVersion = 6.2;
+					};
+					DBDA2A681AC19328003DED4C = {
+						CreatedOnToolsVersion = 6.2;
+						TestTargetID = DBDA2A4F1AC19328003DED4C;
+					};
+				};
+			};
+			buildConfigurationList = DBDA2A4B1AC19328003DED4C /* Build configuration list for PBXProject "ChibiNinja" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = DBDA2A471AC19328003DED4C;
+			productRefGroup = DBDA2A511AC19328003DED4C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				DBDA2A4F1AC19328003DED4C /* ChibiNinja */,
+				DBDA2A681AC19328003DED4C /* ChibiNinjaTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		DBDA2A4E1AC19328003DED4C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DBDA2A641AC19328003DED4C /* LaunchScreen.xib in Resources */,
+				DBDA2A611AC19328003DED4C /* Images.xcassets in Resources */,
+				DBDA2A581AC19328003DED4C /* GameScene.sks in Resources */,
+				DBDA2A5F1AC19328003DED4C /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DBDA2A671AC19328003DED4C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		DBDA2A4C1AC19328003DED4C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DBDA2A5A1AC19328003DED4C /* GameScene.swift in Sources */,
+				DBDA2A5C1AC19328003DED4C /* GameViewController.swift in Sources */,
+				DBDA2A561AC19328003DED4C /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DBDA2A651AC19328003DED4C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DBDA2A701AC19328003DED4C /* ChibiNinjaTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DBDA2A6B1AC19328003DED4C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DBDA2A4F1AC19328003DED4C /* ChibiNinja */;
+			targetProxy = DBDA2A6A1AC19328003DED4C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		DBDA2A5D1AC19328003DED4C /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DBDA2A5E1AC19328003DED4C /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		DBDA2A621AC19328003DED4C /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DBDA2A631AC19328003DED4C /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		DBDA2A711AC19328003DED4C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		DBDA2A721AC19328003DED4C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		DBDA2A741AC19328003DED4C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = ChibiNinja/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		DBDA2A751AC19328003DED4C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = ChibiNinja/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		DBDA2A771AC19328003DED4C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = ChibiNinjaTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ChibiNinja.app/ChibiNinja";
+			};
+			name = Debug;
+		};
+		DBDA2A781AC19328003DED4C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = ChibiNinjaTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ChibiNinja.app/ChibiNinja";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		DBDA2A4B1AC19328003DED4C /* Build configuration list for PBXProject "ChibiNinja" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DBDA2A711AC19328003DED4C /* Debug */,
+				DBDA2A721AC19328003DED4C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DBDA2A731AC19328003DED4C /* Build configuration list for PBXNativeTarget "ChibiNinja" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DBDA2A741AC19328003DED4C /* Debug */,
+				DBDA2A751AC19328003DED4C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		DBDA2A761AC19328003DED4C /* Build configuration list for PBXNativeTarget "ChibiNinjaTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DBDA2A771AC19328003DED4C /* Debug */,
+				DBDA2A781AC19328003DED4C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = DBDA2A481AC19328003DED4C /* Project object */;
+}
