@@ -37,7 +37,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     
     var wallBGScreenCenterY:CGFloat!
     
-    var beganPoint:CGPoint!
+
     
     var powerLevel = [SKSpriteNode]()
     
@@ -47,6 +47,8 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     var scrollSpeed:CGFloat!
     
     
+    //
+    var beganPoint:CGPoint!
     enum TouchState {
         case Release
         case UP
@@ -282,13 +284,12 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         ninja.physicsBody?.restitution = 0.0
         ninja.physicsBody?.allowsRotation = false
         ninja.physicsBody?.usesPreciseCollisionDetection = true
-         ninja.physicsBody?.mass = 0.2
+        ninja.physicsBody?.mass = 0.2
         
         ninja.physicsBody?.categoryBitMask      = ninjaCategory
         ninja.physicsBody?.contactTestBitMask   = wallCategory | groundCategory | gameoverLineCategory
         ninja.physicsBody?.collisionBitMask     = wallCategory | groundCategory | gameoverLineCategory
 
-        
     }
     
     func ninjaAction() {
@@ -311,7 +312,11 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                     break
                     
                 }
-            }else
+                
+                return
+            }
+            
+            else
                 //　停止中
                 if ninjaState == .stop || ninjaState == .walkLeft || ninjaState == .walkRight {
                     switch touchState {
@@ -324,30 +329,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                         break
                         
                     }
-                    
-                    
-                    
-//                    switch ninjaState {
-//                    case .walkLeft:
-//                        ninja.position = CGPoint(x: ninja.position.x - 2, y: ninja.position.y)
-//                    case .walkRight:
-//                        ninja.position = CGPoint(x: ninja.position.x + 2, y: ninja.position.y)
-//                    case .stop:
-//                        ninja.texture = SKTexture(imageNamed: "ninja_front1.png")
-//                    case .climbMoveUp:
-//                        ninja.position = CGPoint(x: ninja.position.x, y: ninja.position.y + 2)
-//                        var climbTex = [SKTexture]()
-//                        let tex1 = SKTexture(imageNamed: "walk_L2.png")
-//                        climbTex.append(tex1)
-//                        
-//                        let action = SKAction.animateWithTextures(climbTex, timePerFrame: 0.1)
-//                        
-//                    case .climbMoveDown:
-//                        ninja.position = CGPoint(x: ninja.position.x, y: ninja.position.y - 2)
-//                    default:
-//                        break
-//                    }
-                    
+                   
             }
             
         }
@@ -465,7 +447,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             self.paused = true
         }
         
-        if _isTouchON {
+//        if _isTouchON {
             if bodyA.node?.name == "wallLeft" || bodyB.node?.name == "wallLeft"{
                 println("左の壁")
                // ninja.physicsBody?.dynamic = false
@@ -485,7 +467,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 ninjaState = .stop
             }
             
-        }
+//        }
         if _isJump {
             _isJump = false
             
@@ -505,31 +487,45 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         let climingHeight = Int(ninja.position.y / ninja.size.height)
         myLabel.text = "\(climingHeight) m"
         
-        
         // 画面タッチ中　ーーーーーーーーーーーーーーーーーーーーーーーーー
         if _isTouchON {
             //ジャンプするパワー(タッチ中のアップデート回数）
             updateCount++
             
-            
-            // 15回数　以　下
-            if updateCount < 15 {
+            switch updateCount {
+            case 0...14:
                 power = updateCount
-                
-            }else if updateCount <= 15 || updateCount >= 20{
+            case 15...20:
                 power = 15
-            }else{
+            default:
                 power = 10
             }
-          //  println("power = \(power)")
+            
+            //            // 15回数　以　下
+            //            if updateCount < 15 {
+            //                power = updateCount
+            //
+            //            }else
+            //                // 15 以上　20 未満
+            //                if updateCount == 15 || updateCount >= 20{
+            //                power = 15
+            //            }else{
+            //                power = 10
+            //            }
+            //  println("power = \(power)")
             
             //　ジャンプパワーレベルを表示する
             for i in 0..<power {
-             powerLevel[i].hidden = false
+                //if powerLevel.count <= power {
+                    powerLevel[i].hidden = false
+//                }else{
+//                    powerLevel[i].hidden = true
+//                }
+                
+                
             }
             
         }else{
-            
             updateCount = 0
             power = 0
         }
@@ -541,7 +537,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             }
         }
         
-    // 画面半分を超えたらスクロールを開始する　-------
+// 画面半分を超えたらスクロールを開始する　-------
         if ninja.position.y > scrollPoint{
             
 //            println("画面半分より上")
@@ -555,7 +551,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         }else if ninja.position.y < scrollPoint{
  //           println("画面半分より下")
         }
-    // -----------------------------------------
+// -----------------------------------------
 
 //        println("ninja.posY = \(ninja.position.y) scrollPoint = \(scrollPoint)")
 
