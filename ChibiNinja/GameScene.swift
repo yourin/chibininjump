@@ -369,6 +369,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                             removeNinjaAction()
                             
                             ninja.texture = SKTexture(imageNamed:"ninja_front1.png")
+                            ninjaState_OLD = ninjaState
                         }
                     default:
                         println("")
@@ -695,7 +696,10 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
-        disp_climingHeigth()
+        
+        ninjaAction()
+        
+        disp_climingHeigth() //登った高さの表示
         
         // 画面タッチ中　ーーーーーーーーーーーーーーーーーーーーーーーーー
         if _isTouchON {
