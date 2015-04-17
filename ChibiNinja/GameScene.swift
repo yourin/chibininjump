@@ -337,20 +337,14 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     
     //MARK:タッチ　開始
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
-        
+        //            println(__FUNCTION__)
+        _isTouchON = true
+        println("タッチ中")
+
             for touch in (touches as! Set<UITouch>) {
                 let location = touch.locationInNode(self)
-
             
-            beganPoint = location
-//            println(__FUNCTION__)
-            /* Called when a touch begins */
-            _isTouchON = true
-            println("タッチ中")
-//            if _isJump == false{
-//                println("NinjaPos = y:\(ninja.position.y)")
-//                
-//            }
+                beganPoint = location
         }
     }
     
@@ -478,52 +472,46 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         //ninja.physicsBody?.dynamic = false
     }
     
-    override func update(currentTime: CFTimeInterval) {
-        /* Called before each frame is rendered */
-        //println("jump = \(_isJump)")
+    func jumpPowerFromUpdatecount(){
+        switch updateCount {
+        case 0...14:
+            power = updateCount
+        case 15...20:
+            power = 15
+        default:
+            power = 10
+        }
+        disp_jumpPowerLevel()
+    }
+    
+    //　ジャンプパワーレベルを表示する
+    func disp_jumpPowerLevel(){
         
-//    println(touchState.hashValue)
-        
+        for i in 0..<power {
+            //if powerLevel.count <= power {
+            powerLevel[i].hidden = false
+        }
+    }
+    
+    func disp_climingHeigth(){
         let climingHeight = Int(ninja.position.y / ninja.size.height)
         myLabel.text = "\(climingHeight) m"
+        
+    }
+    
+    override func update(currentTime: CFTimeInterval) {
+        /* Called before each frame is rendered */
+        disp_climingHeigth()
         
         // 画面タッチ中　ーーーーーーーーーーーーーーーーーーーーーーーーー
         if _isTouchON {
             //ジャンプするパワー(タッチ中のアップデート回数）
             updateCount++
             
-            switch updateCount {
-            case 0...14:
-                power = updateCount
-            case 15...20:
-                power = 15
-            default:
-                power = 10
+            if ninjaState == .stop || ninjaState == .climbStop {
+            jumpPowerFromUpdatecount()
             }
             
-            //            // 15回数　以　下
-            //            if updateCount < 15 {
-            //                power = updateCount
-            //
-            //            }else
-            //                // 15 以上　20 未満
-            //                if updateCount == 15 || updateCount >= 20{
-            //                power = 15
-            //            }else{
-            //                power = 10
-            //            }
-            //  println("power = \(power)")
-            
-            //　ジャンプパワーレベルを表示する
-            for i in 0..<power {
-                //if powerLevel.count <= power {
-                    powerLevel[i].hidden = false
-//                }else{
-//                    powerLevel[i].hidden = true
-//                }
-                
-                
-            }
             
         }else{
             updateCount = 0
@@ -540,22 +528,16 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
 // 画面半分を超えたらスクロールを開始する　-------
         if ninja.position.y > scrollPoint{
             
-//            println("画面半分より上")
-            
             let moveY = ninja.position.y - scrollPoint
-//            println("moveY = \(moveY)")
             
             wallBG.position = CGPoint(x: wallBG.position.x, y: wallBG.position.y - moveY)
             scrollPoint = scrollPoint + moveY
             
-        }else if ninja.position.y < scrollPoint{
- //           println("画面半分より下")
         }
+//        else if ninja.position.y < scrollPoint{
+//            
+//        }
 // -----------------------------------------
-
-//        println("ninja.posY = \(ninja.position.y) scrollPoint = \(scrollPoint)")
-
-        
         
     }
 }
