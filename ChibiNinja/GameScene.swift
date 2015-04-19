@@ -65,6 +65,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     var touchState_OLD:TouchState = .Release
     
     enum State {
+        
         case jump
         case fall
         
@@ -78,8 +79,8 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         case climbDown  //降りる
     }
     
-    var ninjaState:State? = nil
-    var ninjaState_OLD:State? = nil
+    var ninjaState:State? = .fall
+    var ninjaState_OLD:State? = .fall
     
     let ninjaCategory:UInt32        = 0x1 << 1      //0001
     let wallCategory:UInt32         = 0x1 << 2      //0010
@@ -317,24 +318,28 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
 
     }
     
+    //MARK:忍者アクション
     func ninjaAction() {
         
     //    println(__FUNCTION__)
         
         
-            //平らな地面
-            if ninjaState != nil{
+            //ジャンプ中以外
+            if ninjaState != .jump{
+                
                 switch ninjaState! {
+                
                     
                 case .stop,.walkLeft,.walkRight:
                     
                     switch touchState {
                     case .LEFT:
-                        //    ninjaState = .walkLeft
+                        
+                            ninjaState = .walkLeft
                         
                         if ninjaState_OLD != ninjaState {
                             removeNinjaAction()
-                            println("左へ移動")
+                            println("LEFT")
                             let move = SKAction.moveBy(CGVector(dx: -10, dy: 0), duration: 0.4)
                             let animation = SKAction.animateWithTextures(ninjaTex_Walk_L, timePerFrame: 0.1)
                             let action = SKAction.group([move,animation])
@@ -344,12 +349,14 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                         }
                         
                     case .RIGHT:
+                        
                         ninjaState = .walkRight
                         if ninjaState_OLD != ninjaState {
                             //他のアクションがあれば削除
                             removeNinjaAction()
                             
-                            println("右へ移動")
+                            println("RIGHT")
+                            
                             let move = SKAction.moveBy(CGVector(dx: 10, dy: 0), duration: 0.4)
                             let animation = SKAction.animateWithTextures(ninjaTex_Walk_R, timePerFrame: 0.1)
                             
@@ -360,18 +367,20 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                             ninjaState_OLD = ninjaState
                         }
                     case .Release:
-                        ninjaState = .stop
-                        if ninjaState_OLD != ninjaState {
+                        
+                          ninjaState = .stop
+                        if ninjaState_OLD != .stop {
                             
-                            println("ストップ")
+                            println("Release")
                             
-                            //removeNinjaAction()
+                            removeNinjaAction()
                             
                             ninja.texture = SKTexture(imageNamed:"ninja_front1.png")
+  
                             ninjaState_OLD = ninjaState
                         }
                     default:
-                        println("")
+                        println("なにもしない")
                     }
                     
                 //壁を登っている
@@ -523,41 +532,36 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         }
         
     }
-    //MARK:忍者のアクションを削除
+    
+//MARK:忍者のアクションを削除
     func removeNinjaAction(){
         println(__FUNCTION__)
+        println(ninja.hasActions())
         if ninja.hasActions() == true{
             ninja.removeAllActions()
         }
     }
     
-    //MARK:タッチ　開始
+//MARK:タッチ　開始
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         //            println(__FUNCTION__)
         _isTouchON = true
+    
         println("タッチ開始")
             for touch in (touches as! Set<UITouch>) {
                 let location = touch.locationInNode(self)
                 beganPoint = location
             }
     }
-    
+//MARK:タッチ　移動
     override func touchesMoved(touches: Set<NSObject>, withEvent event: UIEvent) {
         
         for touch in (touches as! Set<UITouch>) {
             let location = touch.locationInNode(self)
             
-            let add:CGFloat = 5.0 //誤差
-//            if          beganPoint.y - add < location.y {
-//                touchState = TouchState.UP
-//                println("UP")
-//                
-//            }else if    beganPoint.y - add > location.y{
-//                touchState = TouchState.DOWN
-//                println("DOWN")
-//            }
+            let add:CGFloat = 3.0 //誤差
             
-            //Y判定
+        //Y判定
             if          beganPoint.y + add < location.y {
                 touchState = TouchState.UP
                 
@@ -566,7 +570,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 }
                 println("UP")
                 myLabel.text = "↑"
-                touchState_OLD = touchState
+ //               touchState_OLD = touchState
                 
                 
             }else if    beganPoint.y - add > location.y{
@@ -576,9 +580,9 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 }
                 println("DOWN")
                 myLabel.text = "↓"
-                touchState_OLD = touchState
+  //              touchState_OLD = touchState
             }
-            //X判定
+        //X判定
             if          beganPoint.x - add > location.x {
                 touchState = TouchState.LEFT
                 if touchState_OLD == touchState{
@@ -587,8 +591,9 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 println("LEFT")
                 myLabel.text = "←"
                 
-                touchState_OLD = touchState
+ //               touchState_OLD = touchState
             }else if    beganPoint.x + add < location.x{
+                
                 touchState = TouchState.RIGHT
                 if touchState_OLD == touchState{
                     return
@@ -596,20 +601,12 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 println("RIGHT")
                 myLabel.text = "→"
                 
-                touchState_OLD = touchState
+ //               touchState_OLD = touchState
             }
 
             
-//            if          beganPoint.x - add < location.x {
-//                touchState = TouchState.LEFT
-//                println("LEFT")
-//            }else if    beganPoint.x - add > location.x{
-//                touchState = TouchState.RIGHT
-//                println("RIGHT")
-//            }
-//            beganPoint = location
-            
         }
+                touchState_OLD = touchState
     }
     
     //MARK:タッチ　終了
@@ -618,56 +615,19 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         
         beganPoint = nil
         touchState = .Release
+        myLabel.text = "Release"
+        
         _isTouchON = false
         println("タッチ解除")
         updateCount = 0
         power = 0
         
         
-        //ジャンプ中ではない
-        if _isJump == false && ninjaState != .jump{
+        //ジャンプ中ではない 落下中ではない　ジャンプする
+        if _isJump == false && ninjaState != .jump && ninjaState != .fall{
             println("Jumping!")
             
             ninjaState = .jump
-            
-//        if wallLeft.position.x  + wallLeft.size.width  / 2 + 5 <= ninja.position.x ||
-//               wallRight.position.x - wallRight.size.width / 2 - 5 >= ninja.position.x
-//            {
-//                let dxPower = 5 * CGFloat(power)
-//                let dyPower = 5 * CGFloat(power)
-//                
-//                // 忍者のX位置から、ジャンプ方向を決める
-//                if ninja.position.x >= self.size.width / 2{
-//
-//                // Left jump
-//                    ninja.physicsBody?.applyImpulse(CGVector(dx:-dxPower , dy: dyPower))
-//                    ninja.texture = SKTexture(imageNamed: "jump_L.png")
-//                    
-//                    if power == 15 {
-//                        let action = SKAction.rotateByAngle(CGFloat(-M_PI * 2), duration:0.8)
-//                        ninja.runAction(action)
-//                        _isJump = true
-//                        ninjaState = .jump
-//                        println("\(power)　でジャンプした！")
-//
-//                    }
-//                    
-//                }else{
-//                    
-//                // Right jump
-//                    ninja.physicsBody?.applyImpulse(CGVector(dx:dxPower , dy: dyPower))
-//                    ninja.texture = SKTexture(imageNamed: "jump_R.png")
-//                    if power == 15 {
-//                    let action = SKAction.rotateByAngle(CGFloat(M_PI * 2), duration:0.8)
-//                    ninja.runAction(action)
-//                        _isJump = true
-//                        ninjaState = .jump
-//                        println("\(power)　でジャンプした！")
-//                    }
-//                }
-//            
-//            }
-            
         }
         
  
@@ -757,17 +717,19 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         
         ninjaAction()
         
-        disp_climingHeigth() //登った高さの表示
+  //      disp_climingHeigth() //登った高さの表示
         
-        // 画面タッチ中　ーーーーーーーーーーーーーーーーーーーーーーーーー
+// 画面タッチ中　ーーーーーーーーーーーーーーーーーーーーーーーーー
         if _isTouchON {
-            //ジャンプするパワー(タッチ中のアップデート回数）
-            updateCount++
             
-            if ninjaState == .stop || ninjaState == .climbStop {
-            jumpPowerFromUpdatecount()
+            if ninjaState == .stop && ninjaState == .climbStop{
+                //ジャンプするパワー(タッチ中のアップデート回数）
+                updateCount++
+                
+               // if ninjaState == .stop || ninjaState == .climbStop {
+                    jumpPowerFromUpdatecount()
+               // }
             }
-            
             
         }else{
             updateCount = 0
@@ -790,9 +752,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             scrollPoint = scrollPoint + moveY
             
         }
-//        else if ninja.position.y < scrollPoint{
-//            
-//        }
+
 // -----------------------------------------
         
     }
