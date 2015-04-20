@@ -285,7 +285,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         sprite.physicsBody = SKPhysicsBody(edgeLoopFromRect: sprite.frame)
         //sprite.physicsBody?.linearDamping = 0.0
         sprite.physicsBody?.friction = 1.0
-        sprite.physicsBody?.restitution = 0.0
+      sprite.physicsBody?.restitution = 0.0
         sprite.physicsBody?.usesPreciseCollisionDetection = true
         
         sprite.physicsBody?.categoryBitMask = wallCategory
@@ -306,10 +306,11 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         
         ninja.physicsBody = SKPhysicsBody(circleOfRadius: ninja.size.width/2)
         ninja.physicsBody?.friction = 1.0
+
         ninja.physicsBody?.restitution = 0.0
         ninja.physicsBody?.allowsRotation = false
         ninja.physicsBody?.usesPreciseCollisionDetection = true
-        ninja.physicsBody?.mass = 0.2
+        ninja.physicsBody?.mass = 0.1
         
         ninja.physicsBody?.categoryBitMask      = ninjaCategory
         ninja.physicsBody?.contactTestBitMask   = wallCategory | groundCategory | gameoverLineCategory
@@ -437,7 +438,8 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                     if ninjaState_OLD != ninjaState {
                        // removeNinjaAction()
                         
-                        println("ジャンプ中")
+                        //println("ジャンプ中")
+                        
                         if wallLeft.position.x  + wallLeft.size.width  / 2 + 5 <= ninja.position.x ||
                             wallRight.position.x - wallRight.size.width / 2 - 5 >= ninja.position.x
                         {
@@ -448,16 +450,25 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                             if ninja.position.x >= self.size.width / 2{
                                 
                                 // Left jump
+                                
                                 ninja.texture = SKTexture(imageNamed: "jump_L.png")
                                 
-                                ninja.physicsBody?.applyImpulse(CGVector(dx:-dxPower , dy: dyPower))
-                               
-//                                let action = SKAction.moveBy(CGVector(dx:-dxPower , dy: dyPower), duration: 1)
-//                                println(action)
-//                                ninja.runAction(action)
+                                //回転ジャンプ
                                 
                                 if power == 15 {
-                                    let action = SKAction.rotateByAngle(CGFloat(-M_PI * 2), duration:0.8)
+                                    let action = SKAction.group([
+                                        SKAction.rotateByAngle(CGFloat(-M_PI * 2), duration:0.8),
+                                        SKAction.moveBy(CGVector(dx:-dxPower , dy: dyPower), duration: 1)
+                                        ])
+
+                                    ninja.runAction(action)
+                                    _isJump = true
+                                    ninjaState = .jump
+                                    println("\(power)　でジャンプした！")
+                                    
+                                }else{
+                                    //通常のジャンプ
+                                    let action = SKAction.moveBy(CGVector(dx:-dxPower , dy: dyPower), duration: 1)
                                     ninja.runAction(action)
                                     _isJump = true
                                     ninjaState = .jump
@@ -468,18 +479,15 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                             }else{
                                 
                                 // Right jump
-                                ninja.physicsBody?.applyImpulse(CGVector(dx:dxPower , dy: dyPower))
-                                ninja.texture = SKTexture(imageNamed: "jump_R.png")
-                                if power == 15 {
-                                    let action = SKAction.rotateByAngle(CGFloat(M_PI * 2), duration:0.8)
-                                    ninja.runAction(action)
-                                    _isJump = true
-                                    ninjaState = .jump
-                                    println("\(power)　でジャンプした！")
-                                }
+                                ninjaAction_JumpRight()
+                                
+                                
+                            
+                                
                             }
                         }
                         ninjaState_OLD = ninjaState
+                        power = 0
                     }
                 case .fall:
         //        default:
@@ -529,6 +537,49 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         if ninja.hasActions() == true{
             ninja.removeAllActions()
         }
+    }
+    
+    
+    func ninjaAction_JumpRight(){
+        
+        let dxPower = 5 * CGFloat(power)
+        let dyPower = 5 * CGFloat(power)
+        
+        ninja.texture = SKTexture(imageNamed: "jump_R.png")
+        if power == 15 {
+            
+            let action = SKAction.group([
+                SKAction.rotateByAngle(CGFloat(M_PI * 2), duration:0.8),
+                SKAction.moveBy(CGVector(dx:dxPower , dy: dyPower), duration: 1)
+                ])
+            
+            ninja.runAction(action)
+            _isJump = true
+            ninjaState = .jump
+            println("\(power)　でジャンプした！")
+            
+        }else{
+            //通常のジャンプ
+            ninja.physicsBody?.applyImpulse(CGVector(dx:dxPower , dy: dyPower))
+//            let action = SKAction.moveBy(CGVector(dx:dxPower , dy: dyPower), duration: 1)
+//            ninja.runAction(action)
+            _isJump = true
+            ninjaState = .jump
+            println("\(power)　でジャンプした！")
+        }
+        
+        power = 0
+        
+        //        ninja.physicsBody?.applyImpulse(CGVector(dx:dxPower , dy: dyPower))
+        //
+        //        if power == 15 {
+        //            let action = SKAction.rotateByAngle(CGFloat(M_PI * 2), duration:0.8)
+        //            ninja.runAction(action)
+        //            _isJump = true
+        //            ninjaState = .jump
+        //            println("\(power)　でジャンプした！")
+        //        }
+        
     }
     
     //MARK:タッチ　開始
@@ -621,7 +672,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         _isTouchON = false
         println("タッチ解除")
         updateCount = 0
-        power = 0
+//        power = 0
         
         
         //ジャンプ中ではない
@@ -673,11 +724,6 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
  
     }
     
-    func gameover(){
-        self.physicsWorld.speed = 0;
-        
-    }
-    
    //MARK:衝突処理
     func didBeginContact(contact: SKPhysicsContact) {
         println(__FUNCTION__)
@@ -724,8 +770,9 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         
         //ninja.physicsBody?.dynamic = false
     }
-    
+    //
     func jumpPowerFromUpdatecount(){
+      
         switch updateCount {
         case 0...14:
             power = updateCount
@@ -734,6 +781,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         default:
             power = 10
         }
+        println("power = \(power)")
         disp_jumpPowerLevel()
     }
     
@@ -768,10 +816,6 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             jumpPowerFromUpdatecount()
             }
             
-            
-        }else{
-            updateCount = 0
-            power = 0
         }
         
         //　ジャンプパワーレベルを削除する
@@ -785,8 +829,8 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         if ninja.position.y > scrollPoint{
             
             let moveY = ninja.position.y - scrollPoint
-            
-            wallBG.position = CGPoint(x: wallBG.position.x, y: wallBG.position.y - moveY)
+        
+        wallBG.position = CGPoint(x: wallBG.position.x, y: wallBG.position.y - moveY)
             scrollPoint = scrollPoint + moveY
             
         }
@@ -796,4 +840,10 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
 // -----------------------------------------
         
     }
+    
+    func gameover(){
+        self.physicsWorld.speed = 0;
+        
+    }
+
 }
