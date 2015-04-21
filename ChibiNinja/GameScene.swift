@@ -68,6 +68,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     enum State {
         
         case jump
+        case jumping
         case fall
         
         case stop
@@ -336,7 +337,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             ninjaState = .climbUp_Left
             if ninjaState_OLD != ninjaState {
                 //他のアクションがあれば削除
-                // removeNinjaAction()
+                removeNinjaAction()
                 
                 println("登る")
                 let move = SKAction.moveBy(CGVector(dx: 0, dy: 5), duration: 0.4)
@@ -370,9 +371,20 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             if ninjaState_OLD != ninjaState {
                 removeNinjaAction()
                 
+                ninja.physicsBody?.dynamic = false
                 println("耐える")
                 
             }
+        case .Release:
+            ninjaState = .climbStop_Left
+            if ninjaState_OLD != ninjaState {
+                removeNinjaAction()
+                
+                ninja.physicsBody?.dynamic = true
+                println("耐える")
+                
+            }
+            
             
             
         default:
@@ -427,8 +439,19 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 removeNinjaAction()
                 
                 println("耐える")
-                
+                 ninja.physicsBody?.dynamic = false
             }
+            
+        case .Release:
+            ninjaState = .climbStop_Left
+            if ninjaState_OLD != ninjaState {
+                removeNinjaAction()
+                
+                ninja.physicsBody?.dynamic = true
+                println("耐える")
+            }
+
+            
         default:
             println("")
         }
@@ -443,7 +466,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             if ninjaState_OLD != ninjaState {
                 removeNinjaAction()
                 println("touch LEFT")
-                let move = SKAction.moveBy(CGVector(dx: -10, dy: 0), duration: 0.4)
+                let move = SKAction.moveBy(CGVector(dx: -15, dy: 0), duration: 0.4)
                 let animation = SKAction.animateWithTextures(ninjaTex_Walk_L, timePerFrame: 0.1)
                 let action = SKAction.group([move,animation])
                 ninja.runAction(SKAction.repeatActionForever(action))
@@ -461,7 +484,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 
                 println("touch RIGHT")
                 
-                let move = SKAction.moveBy(CGVector(dx: 10, dy: 0), duration: 0.4)
+                let move = SKAction.moveBy(CGVector(dx: 15, dy: 0), duration: 0.4)
                 let animation = SKAction.animateWithTextures(ninjaTex_Walk_R, timePerFrame: 0.1)
                 
                 let action = SKAction.group([move,animation])
@@ -504,87 +527,28 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         }
     }
     
-    func jumpAction(){
-        if ninjaState_OLD != ninjaState {
-            // removeNinjaAction()
-            
-            //println("ジャンプ中")
-            
-            if wallLeft.position.x  + wallLeft.size.width  / 2 + 5 <= ninja.position.x ||
-                wallRight.position.x - wallRight.size.width / 2 - 5 >= ninja.position.x
-            {
-                let dxPower = 5 * CGFloat(power)
-                let dyPower = 5 * CGFloat(power)
-                
-                // 忍者のX位置から、ジャンプ方向を決める
-                if ninja.position.x >= self.size.width / 2{
-                    
-                    // Left jump
-                    
-                    ninja.texture = SKTexture(imageNamed: "jump_L.png")
-                    
-                    //回転ジャンプ
-                    
-                    if power == 15 {
-                        let action = SKAction.group([
-                            SKAction.rotateByAngle(CGFloat(-M_PI * 2), duration:0.8),
-                            SKAction.moveBy(CGVector(dx:-dxPower , dy: dyPower), duration: 1)
-                            ])
-                        
-                        ninja.runAction(action)
-                        _isJump = true
-                        ninjaState = .jump
-                        println("\(power)　でジャンプした！")
-                        
-                    }else{
-                        //通常のジャンプ
-                        let action = SKAction.moveBy(CGVector(dx:-dxPower , dy: dyPower), duration: 1)
-                        ninja.runAction(action)
-                        _isJump = true
-                        ninjaState = .jump
-                        println("\(power)　でジャンプした！")
-                        
-                    }
-                    
-                }else{
-                    
-                    // Right jump
-                    ninjaAction_JumpRight()
-                    
-                }
-            }
-            ninjaState_OLD = ninjaState
-            power = 0
-        }
-
-    }
-    
     //MARK:忍者アクション
     func ninjaAction() {
         
-    //    println(__FUNCTION__)
-            //ジャンプ中以外
-            if ninjaState != .jump{
-                switch ninjaState! {
-                case .stop,.walkLeft,.walkRight:
-                    walkAction()
-                    
-                //左の壁を登っている
-                case .climbStop_Left, .climbUp_Left, .climbDown_Left:
-                    climbAction_LeftWall()
-                    
-                //右の壁を登っている
-                case .climbStop_Right, .climbUp_Right, .climbDown_Right:
-                    climbAction_RightWall()
-             
-                case .jump:
-                    jumpAction()
-                case .fall:
-                    println("落下中")
-                default:
-                    println("default")
-                    
-            }
+        switch ninjaState! {
+        case .stop,.walkLeft,.walkRight:
+            walkAction()
+            
+            //左の壁を登っている
+        case .climbStop_Left, .climbUp_Left, .climbDown_Left:
+            climbAction_LeftWall()
+            
+            //右の壁を登っている
+        case .climbStop_Right, .climbUp_Right, .climbDown_Right:
+            climbAction_RightWall()
+            
+        case .jump:
+            jumpAction()
+        case .fall:
+            println("落下中")
+        default:
+            println("default")
+            
         }
         
     }
@@ -598,38 +562,84 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         }
     }
     
-//MARK:タッチ　開始
-    
-    func ninjaAction_JumpRight(){
+    func jumpAction(){
         
-        let dxPower = 5 * CGFloat(power)
-        let dyPower = 5 * CGFloat(power)
-        
-        ninja.texture = SKTexture(imageNamed: "jump_R.png")
-        if power == 15 {
+        if ninjaState != .jumping {
             
-            let action = SKAction.group([
-                SKAction.rotateByAngle(CGFloat(M_PI * 2), duration:0.8),
-                SKAction.moveBy(CGVector(dx:dxPower , dy: dyPower), duration: 1)
-                ])
-            
-            ninja.runAction(action)
-            _isJump = true
-            ninjaState = .jump
-            println("\(power)　でジャンプした！")
-            
-        }else{
-            //通常のジャンプ
-            ninja.physicsBody?.applyImpulse(CGVector(dx:dxPower , dy: dyPower))
-            _isJump = true
-            ninjaState = .jump
-            println("\(power)　でジャンプした！")
+            if wallLeft.position.x  + wallLeft.size.width  / 2 + 5 <= ninja.position.x ||
+                wallRight.position.x - wallRight.size.width / 2 - 5 >= ninja.position.x
+            {
+                
+                let dxPower = 10 * CGFloat(power)
+                let dyPower = 10 * CGFloat(power)
+                // 忍者のX位置から、ジャンプ方向を決める
+                if ninja.position.x >= self.size.width / 2{
+                    
+                // Left jump
+                    ninjaAction_JumpLeft(dxPower: dxPower, dyPower: dyPower)
+                    
+                }else{
+                    
+                // Right jump
+                    ninjaAction_JumpRight(dxPower: dxPower, dyPower: dyPower)
+                }
+            }
+
         }
         
+    }
+    
+    //MARK:左ジャンプ
+    func ninjaAction_JumpLeft(#dxPower:CGFloat,dyPower:CGFloat){
+        
+        ninja.texture = SKTexture(imageNamed: "jump_L.png")
+//        if power == 15 {
+//            let action = SKAction.group([
+//                SKAction.rotateByAngle(CGFloat(M_PI * 2), duration:0.8),
+//                SKAction.moveBy(CGVector(dx:-dxPower , dy: dyPower), duration: 1)])
+//            ninja.runAction(action)
+//        }else{
+            //通常のジャンプ
+            //ninja.physicsBody?.applyImpulse(CGVector(dx:-dxPower , dy: dyPower))
+            let action = SKAction.moveBy(CGVector(dx:-dxPower , dy: dyPower), duration: 1)
+            ninja.runAction(action)
+            
+//        }
+        println("\(power)　でジャンプした！")
+        _isJump = true
+        ninjaState = .jumping
+        power = 0
+        
+    }
+
+
+    //MARK:右ジャンプ
+    func ninjaAction_JumpRight(#dxPower:CGFloat,dyPower:CGFloat){
+
+        ninja.texture = SKTexture(imageNamed: "jump_R.png")
+//        if power == 15 {
+//            
+//            let action = SKAction.group([
+//                SKAction.rotateByAngle(CGFloat(M_PI * 2), duration:0.8),
+//                SKAction.moveBy(CGVector(dx:dxPower , dy: dyPower), duration: 1)
+//                ])
+//            
+//            ninja.runAction(action)
+//        }else{
+            //通常のジャンプ
+           // ninja.physicsBody?.applyImpulse(CGVector(dx:dxPower , dy: dyPower))
+            let action = SKAction.moveBy(CGVector(dx:dxPower , dy: dyPower), duration: 1)
+            ninja.runAction(action)
+//        }
+        _isJump = true
+        ninjaState = .jumping
+        println("\(power)　でジャンプした！")
         power = 0
         
     }
     
+
+
     //MARK:タッチ　開始
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         //            println(__FUNCTION__)
@@ -765,23 +775,26 @@ if touchState_OLD == touchState{
     override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
         println(__FUNCTION__)
         
-        beganPoint = nil
-        touchState = .Release
-        myLabel.text = "Release"
-        _isTouchON = false
+        if ninjaState_OLD != nil{
+            switch ninjaState_OLD! {
+            case .stop:
+                ninjaState = .jump
+            case .climbStop_Left:
+                ninjaState = .jump
+            case .climbStop_Right:
+                ninjaState = .jump
+            default:
+                println("なにもしない")
+                
+            }
+        }
         println("タッチ解除")
+        beganPoint = nil
+        _isTouchON = false
         updateCount = 0
 //        power = 0
-        
-        
-        //ジャンプ中ではない 落下中ではない　ジャンプする
-//        if _isJump == false && ninjaState != .jump && ninjaState != .fall{
-//            println("Jumping!")
-//            
-//            ninjaState = .jump
-//        }
-        
- 
+        touchState = .Release
+        myLabel.text = "Release"
     }
     
    //MARK:衝突処理
@@ -870,18 +883,19 @@ if touchState_OLD == touchState{
 // 画面タッチ中　ーーーーーーーーーーーーーーーーーーーーーーーーー
         if _isTouchON {
             
-            if ninjaState_OLD == .stop || ninjaState_OLD == .climbStop_Left || ninjaState_OLD == .climbStop_Right{
+            if ninjaState_OLD == .stop ||
+                ninjaState_OLD == .climbStop_Left || ninjaState_OLD == .climbStop_Right ||
+                ninjaState_OLD == .jump
+            {
                 //ジャンプするパワー(タッチ中のアップデート回数）
                 updateCount++
-                
-               // if ninjaState == .stop || ninjaState == .climbStop {
-                    jumpPowerFromUpdatecount()
-               // }
+                jumpPowerFromUpdatecount()
             }
-            
-        }else{
-            updateCount = 0
-            power = 0
+        }
+// 画面タッチしてない　ーーーーーーーーーーーーーーーーーーーーーーーーー
+        else{
+//            updateCount = 0
+//            power = 0
         }
         
         //　ジャンプパワーレベルを削除する
