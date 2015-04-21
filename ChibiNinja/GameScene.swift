@@ -60,6 +60,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         case DOWN
         case LEFT
         case RIGHT
+        case Neutral //中立
     }
     var touchState:TouchState = .Release
     var touchState_OLD:TouchState = .Release
@@ -74,9 +75,13 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         case walkRight
         
         
-        case climbStop      //停止
-        case climbUp    //登る
-        case climbDown  //降りる
+        case climbStop_Left      //停止
+        case climbUp_Left    //登る
+        case climbDown_Left  //降りる
+        case climbStop_Right//停止
+        case climbUp_Right    //登る
+        case climbDown_Right  //降りる
+
     }
     
     var ninjaState:State? = .fall
@@ -221,7 +226,11 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             SKTexture(imageNamed: "climb_L2.png")
             
         ]
-
+        ninjaTex_Climb_R = [
+            SKTexture(imageNamed: "climb_R1.png"),
+            SKTexture(imageNamed: "climb_R2.png")
+            
+        ]
     //Power Level
         make_powerLevel()
         
@@ -319,28 +328,26 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
 
     }
     
+    
+    
+    
+    
     //MARK:忍者アクション
     func ninjaAction() {
         
     //    println(__FUNCTION__)
-        
-        
             //ジャンプ中以外
             if ninjaState != .jump{
-                
                 switch ninjaState! {
-                
-                    
                 case .stop,.walkLeft,.walkRight:
                     
                     switch touchState {
                     case .LEFT:
-                        
                             ninjaState = .walkLeft
                         
                         if ninjaState_OLD != ninjaState {
                             removeNinjaAction()
-                            println("LEFT")
+                            println("touch LEFT")
                             let move = SKAction.moveBy(CGVector(dx: -10, dy: 0), duration: 0.4)
                             let animation = SKAction.animateWithTextures(ninjaTex_Walk_L, timePerFrame: 0.1)
                             let action = SKAction.group([move,animation])
@@ -356,7 +363,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                             //他のアクションがあれば削除
                             removeNinjaAction()
                             
-                            println("RIGHT")
+                            println("touch RIGHT")
                             
                             let move = SKAction.moveBy(CGVector(dx: 10, dy: 0), duration: 0.4)
                             let animation = SKAction.animateWithTextures(ninjaTex_Walk_R, timePerFrame: 0.1)
@@ -367,12 +374,27 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                             
                             ninjaState_OLD = ninjaState
                         }
+                        
+                    case .Neutral:
+                        println("touch Neutral")
+                        ninjaState = .stop
+                        if ninjaState_OLD != .stop {
+                            
+                            println("touch Release")
+                            
+                            removeNinjaAction()
+                            
+                            ninja.texture = SKTexture(imageNamed:"ninja_front1.png")
+                            
+                            ninjaState_OLD = ninjaState
+                        }
+                        
                     case .Release:
                         
                           ninjaState = .stop
                         if ninjaState_OLD != .stop {
                             
-                            println("Release")
+                            println("touch Release")
                             
                             removeNinjaAction()
                             
@@ -384,15 +406,66 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                         println("なにもしない")
                     }
                     
-                //壁を登っている
-                case .climbStop, .climbUp, .climbDown:
+                //左の壁を登っている
+                case .climbStop_Left, .climbUp_Left, .climbDown_Left:
                     switch touchState{
                         
                     case .UP:
-                        ninjaState = .climbUp
+                        ninjaState = .climbUp_Left
                         if ninjaState_OLD != ninjaState {
                             //他のアクションがあれば削除
                            // removeNinjaAction()
+                            
+                            println("登る")
+                            let move = SKAction.moveBy(CGVector(dx: 0, dy: 5), duration: 0.4)
+                            let animation = SKAction.animateWithTextures(ninjaTex_Climb_L, timePerFrame: 0.2)
+                            let action = SKAction.group([move,animation])
+                            ninja.runAction(SKAction.repeatActionForever(action))
+                            
+                            ninjaState_OLD = ninjaState
+                        }
+                        
+                        
+                    case .DOWN:
+                        ninjaState = .climbDown_Left
+                        if ninjaState_OLD != ninjaState {
+                            //他のアクションがあれば削除
+                        removeNinjaAction()
+                            
+                            println("降りる")
+                            let move = SKAction.moveBy(CGVector(dx: 0, dy: -5), duration: 0.4)
+                            let animation = SKAction.animateWithTextures(ninjaTex_Climb_L, timePerFrame: 0.2)
+                            
+                            let action = SKAction.group([move,animation])
+                            
+                            ninja.runAction(SKAction.repeatActionForever(action))
+                            
+                            ninjaState_OLD = ninjaState
+                        }
+                        
+                    case .Neutral:
+                        ninjaState = .climbStop_Left
+                        if ninjaState_OLD != ninjaState {
+                            removeNinjaAction()
+                            
+                            println("耐える")
+                            
+                        }
+                        
+                    
+                    default:
+                        println("")
+                        
+                    }
+                    //右の壁を登っている
+                case .climbStop_Right, .climbUp_Right, .climbDown_Right:
+                    switch touchState{
+                        
+                    case .UP:
+                        ninjaState = .climbUp_Right
+                        if ninjaState_OLD != ninjaState {
+                            //他のアクションがあれば削除
+                             removeNinjaAction()
                             
                             println("登る")
                             
@@ -409,10 +482,10 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                         
                         
                     case .DOWN:
-                        ninjaState = .climbDown
+                        ninjaState = .climbDown_Right
                         if ninjaState_OLD != ninjaState {
                             //他のアクションがあれば削除
-                      //  removeNinjaAction()
+                            removeNinjaAction()
                             
                             println("降りる")
                             let move = SKAction.moveBy(CGVector(dx: 0, dy: -5), duration: 0.4)
@@ -425,23 +498,25 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                             ninjaState_OLD = ninjaState
                         }
                         
-                    case .Release:
-                        ninjaState = .stop
+                    case .Neutral:
+                        ninjaState = .climbStop_Left
                         if ninjaState_OLD != ninjaState {
+                            removeNinjaAction()
                             
-                            println("ストップ")
-                          //  removeNinjaAction()
-                          //  ninja.texture = SKTexture(imageNamed: "climb_L_stop.png")
-                        ninjaState_OLD = ninjaState
+                            println("耐える")
+                            
                         }
-                        
-                        //落下中　.fall
-                        
-                        println("落下中")
                     default:
                         println("")
-                        
                     }
+                
+
+                
+                //落下中　.fall
+                case .fall:
+                    println("落下中")
+                    
+                    
                 case .jump:
                     
                     if ninjaState_OLD != ninjaState {
@@ -502,40 +577,6 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         //        default:
                     println("落下中")
                     
-               // }
-//            }
-//            //壁登り
-//            if ninjaState == .climbStop || ninjaState == .climbUp || ninjaState == .climbDown   {
-//                switch touchState {
-//                case .UP:
-//                    ninja.position = CGPoint(x: ninja.position.x, y: ninja.position.y + 2)
-//                    let ary = [SKTexture(imageNamed: "climb_L1.png"),SKTexture(imageNamed: "climb_L2.png")]
-//                    let action = SKAction.animateWithTextures(ary, timePerFrame: 0.2)
-//                    ninja.runAction(action)
-//                case .DOWN:
-//                    ninja.position = CGPoint(x: ninja.position.x, y: ninja.position.y - 2)
-//                default:
-//                    break
-//                    
-//                }
-//                
-//                return
-//                
-//            }else
-//                //　停止中
-//                if ninjaState == .stop || ninjaState == .walkLeft || ninjaState == .walkRight {
-//                    switch touchState {
-//                    case .LEFT:
-//                        ninja.position = CGPoint(x: ninja.position.x - 2, y: ninja.position.y)
-//                        
-//                    case .RIGHT:
-//                        ninja.position = CGPoint(x: ninja.position.x + 2, y: ninja.position.y)
-//                    default:
-//                        break
-//                        
-//                    }
-//                return
-//            }
             }
         }
         
@@ -550,6 +591,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         }
     }
     
+//MARK:タッチ　開始
     
     func ninjaAction_JumpRight(){
         
@@ -572,8 +614,6 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         }else{
             //通常のジャンプ
             ninja.physicsBody?.applyImpulse(CGVector(dx:dxPower , dy: dyPower))
-//            let action = SKAction.moveBy(CGVector(dx:dxPower , dy: dyPower), duration: 1)
-//            ninja.runAction(action)
             _isJump = true
             ninjaState = .jump
             println("\(power)　でジャンプした！")
@@ -581,22 +621,14 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         
         power = 0
         
-        //        ninja.physicsBody?.applyImpulse(CGVector(dx:dxPower , dy: dyPower))
-        //
-        //        if power == 15 {
-        //            let action = SKAction.rotateByAngle(CGFloat(M_PI * 2), duration:0.8)
-        //            ninja.runAction(action)
-        //            _isJump = true
-        //            ninjaState = .jump
-        //            println("\(power)　でジャンプした！")
-        //        }
-        
     }
     
     //MARK:タッチ　開始
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         //            println(__FUNCTION__)
         _isTouchON = true
+        
+//        touchState = TouchState.Neutral
     
         println("タッチ開始")
             for touch in (touches as! Set<UITouch>) {
@@ -611,6 +643,16 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             let location = touch.locationInNode(self)
             
             let add:CGFloat = 3.0 //誤差
+            let limit:CGFloat = add - 1.0
+            
+            if  beganPoint.y + limit < location.y || beganPoint.y - limit > location.y ||
+                beganPoint.x - limit > location.x || beganPoint.x + limit < location.x
+            {
+                touchState = TouchState.Neutral
+                println("ニュートラル")
+                
+            }
+            
             
         //Y判定
             if          beganPoint.y + add < location.y {
@@ -621,7 +663,6 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 }
                 println("UP")
                 myLabel.text = "↑"
- //               touchState_OLD = touchState
                 
                 
             }else if    beganPoint.y - add > location.y{
@@ -631,8 +672,9 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 }
                 println("DOWN")
                 myLabel.text = "↓"
-  //              touchState_OLD = touchState
             }
+                
+            
         //X判定
             if          beganPoint.x - add > location.x {
                 touchState = TouchState.LEFT
@@ -642,7 +684,6 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 println("LEFT")
                 myLabel.text = "←"
                 
- //               touchState_OLD = touchState
             }else if    beganPoint.x + add < location.x{
                 
                 touchState = TouchState.RIGHT
@@ -652,7 +693,6 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 println("RIGHT")
                 myLabel.text = "→"
                 
- //               touchState_OLD = touchState
             }
 
             
@@ -676,7 +716,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         
         //ジャンプ中ではない 落下中ではない　ジャンプする
         if _isJump == false && ninjaState != .jump && ninjaState != .fall{
-            println("Jumping!")
+//            println("Jumping!")
             
             ninjaState = .jump
         }
@@ -701,7 +741,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 println("左の壁")
                // ninja.physicsBody?.dynamic = false
                 ninja.texture = SKTexture(imageNamed: "climb_L1a.png")
-                ninjaState = .climbStop
+                ninjaState = .climbStop_Left
                 println("忍者スタータス　climbStop　左側")
                 
         }
@@ -710,7 +750,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 println("右の壁")
                // ninja.physicsBody?.dynamic = false
                 ninja.texture = SKTexture(imageNamed: "climb_R1a.png")
-                ninjaState = .climbStop
+                ninjaState = .climbStop_Right
         println("忍者スタータス　climbStop　右側")
         }
             if bodyA.node?.name == "ground"  || bodyB.node?.name == "ground"{
@@ -763,14 +803,14 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
         
-        ninjaAction()
+//        ninjaAction()
         
   //      disp_climingHeigth() //登った高さの表示
         
 // 画面タッチ中　ーーーーーーーーーーーーーーーーーーーーーーーーー
         if _isTouchON {
             
-            if ninjaState == .stop && ninjaState == .climbStop{
+            if ninjaState_OLD == .stop || ninjaState_OLD == .climbStop_Left || ninjaState_OLD == .climbStop_Right{
                 //ジャンプするパワー(タッチ中のアップデート回数）
                 updateCount++
                 
@@ -779,6 +819,9 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                // }
             }
             
+        }else{
+            updateCount = 0
+            power = 0
         }
         
         //　ジャンプパワーレベルを削除する
@@ -799,7 +842,13 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         }
 
 // -----------------------------------------
-        
+        if ninja.hasActions(){
+//println("忍者アクション実行中")
+
+}else{
+//println("忍者はアクションしていない")
+}
+
     }
     
     func gameover(){
