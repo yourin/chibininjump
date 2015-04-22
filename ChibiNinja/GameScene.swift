@@ -503,9 +503,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             println("touch Neutral")
             ninjaState = .stop
             if ninjaState_OLD != .stop {
-                
 
-                
                 removeNinjaAction()
                 
                 ninja.texture = SKTexture(imageNamed:"ninja_front1.png")
@@ -640,7 +638,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     //MARK:タッチ　開始
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         //            println(__FUNCTION__)
-        _isTouchON = true
+        _isTouchON = true; myLabel.text = "タッチ開始"
         
 //        touchState = TouchState.Neutral
     
@@ -771,7 +769,7 @@ if touchState_OLD == touchState{
     //MARK:タッチ　終了
     override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
         println(__FUNCTION__)
-        _isTouchON = false
+        _isTouchON = false; myLabel.text = "タッチ解除"
         if ninjaState_OLD != nil && ninjaState_OLD != .jumping{
             switch ninjaState_OLD! {
             case .stop:
@@ -882,7 +880,7 @@ if touchState_OLD == touchState{
             
             if ninjaState_OLD == .stop ||
                 ninjaState_OLD == .climbStop_Left || ninjaState_OLD == .climbStop_Right ||
-                ninjaState_OLD == .jump
+                ninjaState_OLD == .jumping
             {
                 //ジャンプするパワー(タッチ中のアップデート回数）
                 updateCount++
@@ -891,8 +889,11 @@ if touchState_OLD == touchState{
         }
 // 画面タッチしてない　ーーーーーーーーーーーーーーーーーーーーーーーーー
         else{
-//            updateCount = 0
-//            power = 0
+            updateCount = 0
+            if power != 0{
+                power--
+            }
+            jumpPowerFromUpdatecount()
         }
         
         //　ジャンプパワーレベルを削除する
