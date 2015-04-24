@@ -343,7 +343,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
 
     }
     
-    
+    //MARK:左の壁を登る
     func climbAction_LeftWall(){
         switch touchState{
             
@@ -404,7 +404,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             
         }
     }
-    
+        //MARK:右の壁を登る
     func climbAction_RightWall(){
         switch touchState{
             
@@ -725,7 +725,10 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     //MARK:タッチ　終了
     override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
         println(__FUNCTION__)
-        _isTouchON = false; myLabel.text = "タッチ解除"
+        println("タッチ解除")
+        _isTouchON = false
+        touchState = .Release; myLabel.text = "Release"
+        
         if ninjaState_OLD != nil && ninjaState_OLD != .jumping{
             switch ninjaState_OLD! {
             case .stop:
@@ -759,6 +762,14 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             println("game over")
             self.paused = true
         }
+        //地面
+        if bodyA.node?.name == "ground"  || bodyB.node?.name == "ground"{
+            println("地面")
+            ninja.texture = SKTexture(imageNamed: "ninja_front1.png")
+            ninjaState = .stop
+            println("忍者スタータス　stop")
+        }
+
         //左の壁
             if bodyA.node?.name == "wallLeft" || bodyB.node?.name == "wallLeft"{
                 println("左の壁")
@@ -774,14 +785,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 ninjaState = .climbStop_Right
                 println("忍者スタータス　climbStop　右側")
         }
-        //地面
-            if bodyA.node?.name == "ground"  || bodyB.node?.name == "ground"{
-                println("地面")
-                ninja.texture = SKTexture(imageNamed: "ninja_front1.png")
-                ninjaState = .stop
-                println("忍者スタータス　stop")
-            }
-            
+        
 //        }
 //        if _isJump {
 //            _isJump = false
@@ -797,8 +801,10 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     func jumpPowerFromUpdatecount(){
       
         switch updateCount {
-        case 0...5:
-            power = 1
+        case 0:
+            return
+        case 1...5:
+            power = updateCount
         case 6...14:
             power = powerMin
         case 15...20:
@@ -836,33 +842,34 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
   //      disp_climingHeigth() //登った高さの表示
         
 // 画面タッチ中　ーーーーーーーーーーーーーーーーーーーーーーーーー
-        if _isTouchON {
+        if _isTouchON && updateCount < powerMax{
             
-            //停止中、左壁登り停止、右壁登り停止、ジャンプ中
-            if ninjaState_OLD == .stop ||
-                ninjaState_OLD == .climbStop_Left || ninjaState_OLD == .climbStop_Right ||
-                ninjaState_OLD == .jumping
-            {
+//            //停止中、左壁登り停止、右壁登り停止、ジャンプ中
+//            if ninjaState_OLD == .stop ||
+//                ninjaState_OLD == .climbStop_Left || ninjaState_OLD == .climbStop_Right ||
+//                ninjaState_OLD == .jumping
+//            {
+            
                 //ジャンプするパワー(タッチ中のアップデート回数）
                 updateCount++
-                jumpPowerFromUpdatecount()
-            }
+//                jumpPowerFromUpdatecount()
+            //}
         }
 // 画面タッチしてない　ーーーーーーーーーーーーーーーーーーーーーーーーー
         else{
-            updateCount = 0
-            if power != 0{
-                power--
+            //　ジャンプパワーレベルを削除する
+            if power == 0 {
+                for sprite in powerLevel {
+                    sprite.hidden = true
+                }
             }
-            jumpPowerFromUpdatecount()
+            
+//            if updateCount > 0 {
+//                power--
+//            }
         }
+        jumpPowerFromUpdatecount()
         
-        //　ジャンプパワーレベルを削除する
-        if power == 0 {
-            for sprite in powerLevel {
-                sprite.hidden = true
-            }
-        }
         
 // 画面半分を超えたらスクロールを開始する　-------
         if ninja.position.y > scrollPoint{
