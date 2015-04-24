@@ -37,7 +37,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     let powerMin = 5//最小値
     let powerMid = 10
     let powerMax = 15 //最大値
-    let addPower:CGFloat = 4.0 //　power * addPower
+    let addPower:CGFloat = 3.0 //　power * addPower
     
     var wallBGScreenCenterY:CGFloat!
     
@@ -66,8 +66,8 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         case RIGHT
         case Neutral //タッチしているが、beganPoint
     }
-    var touchState:TouchState = .Release
-    var touchState_OLD:TouchState = .Release
+    var touchState:TouchState? = .Release
+    var touchState_OLD:TouchState? = .Release
     
     enum State {
         
@@ -90,7 +90,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     }
     
     var ninjaState:State? = .fall
-    var ninjaState_OLD:State? = .fall
+    var ninjaState_OLD:State! = .fall
     
     let ninjaCategory:UInt32        = 0x1 << 1      //0001
     let wallCategory:UInt32         = 0x1 << 2      //0010
@@ -345,7 +345,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     
     
     func climbAction_LeftWall(){
-        switch touchState{
+        switch touchState!{
             
         case .UP:
             ninjaState = .climbUp_Left
@@ -406,7 +406,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     }
     
     func climbAction_RightWall(){
-        switch touchState{
+        switch touchState!{
             
         case .UP:
             ninjaState = .climbUp_Right
@@ -471,7 +471,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     
     //MARK:歩く
     func walkAction(){
-        switch touchState {
+        switch touchState! {
         case .LEFT:
             ninjaState = .walkLeft
             
@@ -489,7 +489,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             
         case .RIGHT:
             
-            ninjaState = .walkRight
+            ninjaState! = .walkRight
             if ninjaState_OLD != ninjaState {
                 //他のアクションがあれば削除
                 removeNinjaAction()
@@ -725,9 +725,8 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     //MARK:タッチ　終了
     override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
         println(__FUNCTION__)
-        println("タッチ解除")
-        _isTouchON = false
-        touchState = .Release; myLabel.text = "Release"
+        _isTouchON = false;     println("タッチ解除")
+        touchState = .Release;  myLabel.text = "Release"
         
         if ninjaState_OLD != nil && ninjaState_OLD != .jumping{
             switch ninjaState_OLD! {
@@ -762,29 +761,30 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             println("game over")
             self.paused = true
         }
+        //地面
+        if bodyA.node?.name == "ground"  || bodyB.node?.name == "ground"{
+            //                println("地面")
+            ninja.texture = SKTexture(imageNamed: "ninja_front1.png")
+            ninjaState = .stop; println("ninjaState = stop")
+            println("忍者スタータス　stop")
+        }
+
         //左の壁
             if bodyA.node?.name == "wallLeft" || bodyB.node?.name == "wallLeft"{
-                println("左の壁")
+//                println("左の壁")
                 ninja.texture = SKTexture(imageNamed: "climb_L1a.png")
-                ninjaState = .climbStop_Left
+                ninjaState = .climbStop_Left; println("ninjaState = climbStop Left")
                 println("忍者スタータス　climbStop　左側")
                 
         }
-            //右の壁
+        //右の壁
             if bodyA.node?.name == "wallRight"  || bodyB.node?.name == "wallRight"{
-                println("右の壁")
+//                println("右の壁")
                 ninja.texture = SKTexture(imageNamed: "climb_R1a.png")
-                ninjaState = .climbStop_Right
+                ninjaState = .climbStop_Right; println("ninjaState = climbStop Right")
                 println("忍者スタータス　climbStop　右側")
         }
-        //地面
-            if bodyA.node?.name == "ground"  || bodyB.node?.name == "ground"{
-                println("地面")
-                ninja.texture = SKTexture(imageNamed: "ninja_front1.png")
-                ninjaState = .stop
-                println("忍者スタータス　stop")
-            }
-            
+        
 //        }
 //        if _isJump {
 //            _isJump = false
@@ -842,17 +842,24 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         if _isTouchON {
             
             //停止中、左壁登り停止、右壁登り停止、ジャンプ中
-            if ninjaState_OLD == .stop ||
-                ninjaState_OLD == .climbStop_Left || ninjaState_OLD == .climbStop_Right ||
-                ninjaState_OLD == .jumping
-            {
+//            if ninjaState_OLD == .stop ||
+//                ninjaState_OLD == .climbStop_Left || ninjaState_OLD == .climbStop_Right ||
+//                ninjaState_OLD == .jumping
+//            {
                 //ジャンプするパワー(タッチ中のアップデート回数）
                 updateCount++
                 jumpPowerFromUpdatecount()
+//            }else
+            if
+                ninjaState_OLD == .walkLeft || ninjaState_OLD == .walkRight{
+                updateCount = 0
+                jumpPowerFromUpdatecount()
+                
             }
         }
 // 画面タッチしてない　ーーーーーーーーーーーーーーーーーーーーーーーーー
-        else{
+        else if _isTouchON == false
+        {
             
             if power > 0 {
                 power--
