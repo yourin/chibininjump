@@ -37,7 +37,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     let powerMin = 5//最小値
     let powerMid = 10
     let powerMax = 15 //最大値
-    let addPower:CGFloat = 4.0 //　power * addPower
+    let addPower:CGFloat = 3.0 //　power * addPower
     
     var wallBGScreenCenterY:CGFloat!
     
@@ -229,7 +229,6 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         ninjaTex_Climb_L = [
             SKTexture(imageNamed: "climb_L1.png"),
             SKTexture(imageNamed: "climb_L2.png")
-            
         ]
         ninjaTex_Climb_R = [
             SKTexture(imageNamed: "climb_R1.png"),
@@ -318,7 +317,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         sprite.physicsBody?.collisionBitMask = 2
         return sprite
     }
-    
+    //MARK:プレイヤー作成
     func make_Ninja(){
         
         ninja = SKSpriteNode(texture: SKTexture(imageNamed: "ninja_front1.png"))
@@ -343,7 +342,45 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
 
     }
     
-    //MARK:左の壁を登る
+//＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+//MARK:忍者アクション分岐
+    func ninjaAction() {
+        
+        switch ninjaState! {
+        case .stop,.walkLeft,.walkRight:
+            walkAction()
+            
+            //左の壁を登っている
+        case .climbStop_Left, .climbUp_Left, .climbDown_Left:
+            climbAction_LeftWall()
+            
+            //右の壁を登っている
+        case .climbStop_Right, .climbUp_Right, .climbDown_Right:
+            climbAction_RightWall()
+            
+        case .jump:
+            jumpAction()
+        case .fall:
+            println("落下中")
+        default:
+            println("\(__FUNCTION__) default")
+            
+        }
+        
+    }
+    
+    //MARK:忍者のアクションを削除
+    func removeNinjaAction(){
+
+//        println(ninja.hasActions())
+        if ninja.hasActions() == true{
+            ninja.removeAllActions()
+            println("忍者アクション削除\(__FUNCTION__)")
+        }
+    }
+
+    
+    //MARK:左の壁
     func climbAction_LeftWall(){
         switch touchState{
             
@@ -370,9 +407,9 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 removeNinjaAction()
                 
                 println("左壁、降りる")
+                
                 let move = SKAction.moveBy(CGVector(dx: 0, dy: -5), duration: 0.4)
                 let animation = SKAction.animateWithTextures(ninjaTex_Climb_L, timePerFrame: 0.2)
-                
                 let action = SKAction.group([move,animation])
                 
                 ninja.runAction(SKAction.repeatActionForever(action))
@@ -387,6 +424,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 
                 ninja.physicsBody?.dynamic = false
                 println("左壁に停止")
+                ninjaState_OLD = ninjaState
                 
             }
         case .Release:
@@ -396,6 +434,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 
                 ninja.physicsBody?.dynamic = true
                 println("左壁から落下")
+                ninjaState_OLD = .fall; println("ninjaState fall")
                 
             }
             
@@ -404,7 +443,9 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             
         }
     }
-        //MARK:右の壁を登る
+    
+    
+//MARK:右の壁
     func climbAction_RightWall(){
         switch touchState{
             
@@ -418,7 +459,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 
                 //                    println("右へ移動")
                 let move = SKAction.moveBy(CGVector(dx: 0, dy: 5), duration: 0.4)
-                let animation = SKAction.animateWithTextures(ninjaTex_Climb_L, timePerFrame: 0.2)
+                let animation = SKAction.animateWithTextures(ninjaTex_Climb_R, timePerFrame: 0.2)
                 
                 let action = SKAction.group([move,animation])
                 
@@ -436,7 +477,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 
                 println("右壁、降りる")
                 let move = SKAction.moveBy(CGVector(dx: 0, dy: -5), duration: 0.4)
-                let animation = SKAction.animateWithTextures(ninjaTex_Climb_L, timePerFrame: 0.2)
+                let animation = SKAction.animateWithTextures(ninjaTex_Climb_R, timePerFrame: 0.2)
                 
                 let action = SKAction.group([move,animation])
                 
@@ -452,6 +493,8 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 
                 println("右壁に停止")
                  ninja.physicsBody?.dynamic = false
+                ninjaState_OLD = ninjaState
+                
             }
             
         case .Release:
@@ -460,7 +503,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 removeNinjaAction()
                 ninja.physicsBody?.dynamic = true
                 println("右壁から落下する")
-                //ninjaState_OLD = .fall; println("ninjaState fall")
+                ninjaState_OLD = .fall; println("ninjaState fall")
             }
             
         default:
@@ -469,7 +512,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
 
     }
     
-    //MARK:歩く
+//MARK:歩く（地面）
     func walkAction(){
         switch touchState {
         case .LEFT:
@@ -537,40 +580,6 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         }
     }
     
-    //MARK:忍者アクション分岐
-    func ninjaAction() {
-        
-        switch ninjaState! {
-        case .stop,.walkLeft,.walkRight:
-            walkAction()
-            
-            //左の壁を登っている
-        case .climbStop_Left, .climbUp_Left, .climbDown_Left:
-            climbAction_LeftWall()
-            
-            //右の壁を登っている
-        case .climbStop_Right, .climbUp_Right, .climbDown_Right:
-            climbAction_RightWall()
-            
-        case .jump:
-            jumpAction()
-        case .fall:
-            println("落下中")
-        default:
-            println("\(__FUNCTION__) default")
-            
-        }
-        
-    }
-    
-//MARK:忍者のアクションを削除
-    func removeNinjaAction(){
-        println(__FUNCTION__)
-        println(ninja.hasActions())
-        if ninja.hasActions() == true{
-            ninja.removeAllActions()
-        }
-    }
     
 //== jump methed start ================
 //MARK:ジャンプ
@@ -599,7 +608,10 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     }
     
     func jump(cgVector:CGVector){
+        ninja.physicsBody?.dynamic = true
         ninja.physicsBody?.applyImpulse(cgVector)
+        println("dy = \(cgVector.dy)")
+        power = 0
     }
     
     //MARK:左ジャンプ
@@ -608,15 +620,15 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         ninja.texture = SKTexture(imageNamed: "jump_L.png")
             //通常のジャンプ
         let action = SKAction.runBlock({
-            ninja.physicsBody?.applyImpulse(CGVector(dx:-dxPower , dy: dyPower))
-            
+            self.jump(CGVector(dx:-dxPower , dy: dyPower))
         })
+
         ninja.runAction(action)
             
         println("\(power)　でジャンプした！\(__FUNCTION__)")
         _isJump = true
         ninjaState_OLD = .jumping
-        power = 0
+//        power = 0
         
     }
 
@@ -630,11 +642,11 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         })
         ninja.runAction(action)
 
-        _isJump = true
-        ninjaState_OLD = .jumping
+//        _isJump = true
+
         println("\(power)　でジャンプした！\(__FUNCTION__)")
-        power = 0
-        
+        //power = 0
+        ninjaState_OLD = .jumping
     }
     
 //== jump methed end ================
@@ -751,7 +763,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
  //======
     
     
-   //MARK:衝突処理
+//MARK:衝突処理
     func didBeginContact(contact: SKPhysicsContact) {
         println(__FUNCTION__)
         let bodyA = contact.bodyA
@@ -764,42 +776,72 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         }
         //地面
         if bodyA.node?.name == "ground"  || bodyB.node?.name == "ground"{
-            println("地面")
+//            println("地面")
             ninja.texture = SKTexture(imageNamed: "ninja_front1.png")
-            ninjaState = .stop
-            println("忍者スタータス　stop")
+            ninjaState = .stop;     println("忍者スタータス　stop")
         }
 
         //左の壁
             if bodyA.node?.name == "wallLeft" || bodyB.node?.name == "wallLeft"{
-                println("左の壁")
+//                println("左の壁")
                 ninja.texture = SKTexture(imageNamed: "climb_L1a.png")
-                ninjaState = .climbStop_Left
-                println("忍者スタータス　climbStop　左側")
+                ninjaState = .climbStop_Left;println("忍者スタータス　climbStop　左側")
                 
         }
             //右の壁
             if bodyA.node?.name == "wallRight"  || bodyB.node?.name == "wallRight"{
-                println("右の壁")
+ //               println("右の壁")
                 ninja.texture = SKTexture(imageNamed: "climb_R1a.png")
-                ninjaState = .climbStop_Right
-                println("忍者スタータス　climbStop　右側")
+                ninjaState = .climbStop_Right;println("忍者スタータス　climbStop　右側")
         }
+     }
+    
+    
+    override func update(currentTime: CFTimeInterval) {
+        /* Called before each frame is rendered */
         
-//        }
-//        if _isJump {
-//            _isJump = false
-//            
-//            println("ジャンプ終わり")
-//        }
-//        println("ninjaPosY = \(ninja.position.y)")
-//        
-        //ninja.physicsBody?.dynamic = false
+        ninjaAction()
+        
+  //      disp_climingHeigth() //登った高さの表示
+        
+// 画面タッチ中　ーーーーーーーーーーーーーーーーーーーーーーーーー
+        if _isTouchON && updateCount < powerMax{
+                //ジャンプするパワー(タッチ中のアップデート回数）
+                updateCount++
+
+        }
+            // 画面タッチしてない　ーーーーーーーーーーーーーーーーーーーーーーーーー
+        else{
+            //　ジャンプパワーレベルを削除する
+            if power == 0 {
+                for sprite in powerLevel {
+                    sprite.hidden = true
+                }
+            }
+            
+            //            if updateCount > 0 {
+            //                power--
+            //            }
+        }
+        jumpPowerFromUpdatecount()
+        
+        
+// 画面半分を超えたらスクロールを開始する　-------
+        if ninja.position.y > scrollPoint{
+            
+            let moveY = ninja.position.y - scrollPoint
+        
+        wallBG.position = CGPoint(x: wallBG.position.x, y: wallBG.position.y - moveY)
+            scrollPoint = scrollPoint + moveY
+            
+        }
+
+
     }
     
 //MARK:アップデート回数からパワーに変換
     func jumpPowerFromUpdatecount(){
-      
+        
         switch updateCount {
         case 0:
             return
@@ -813,6 +855,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             power = powerMid
         }
         println("power = \(power)")
+        
         
         disp_jumpPowerLevel()
     }
@@ -828,69 +871,14 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         }
     }
     
+//MARK:高さの表示
     func disp_climingHeigth(){
         let climingHeight = Int(ninja.position.y / ninja.size.height)
         myLabel.text = "\(climingHeight) m"
         
     }
     
-    override func update(currentTime: CFTimeInterval) {
-        /* Called before each frame is rendered */
-        
-        ninjaAction()
-        
-  //      disp_climingHeigth() //登った高さの表示
-        
-// 画面タッチ中　ーーーーーーーーーーーーーーーーーーーーーーーーー
-        if _isTouchON && updateCount < powerMax{
-            
-//            //停止中、左壁登り停止、右壁登り停止、ジャンプ中
-//            if ninjaState_OLD == .stop ||
-//                ninjaState_OLD == .climbStop_Left || ninjaState_OLD == .climbStop_Right ||
-//                ninjaState_OLD == .jumping
-//            {
-            
-                //ジャンプするパワー(タッチ中のアップデート回数）
-                updateCount++
-//                jumpPowerFromUpdatecount()
-            //}
-        }
-// 画面タッチしてない　ーーーーーーーーーーーーーーーーーーーーーーーーー
-        else{
-            //　ジャンプパワーレベルを削除する
-            if power == 0 {
-                for sprite in powerLevel {
-                    sprite.hidden = true
-                }
-            }
-            
-//            if updateCount > 0 {
-//                power--
-//            }
-        }
-        jumpPowerFromUpdatecount()
-        
-        
-// 画面半分を超えたらスクロールを開始する　-------
-        if ninja.position.y > scrollPoint{
-            
-            let moveY = ninja.position.y - scrollPoint
-        
-        wallBG.position = CGPoint(x: wallBG.position.x, y: wallBG.position.y - moveY)
-            scrollPoint = scrollPoint + moveY
-            
-        }
-
-// -----------------------------------------
-//        if ninja.hasActions(){
-//            //println("忍者アクション実行中")
-//            
-//        }else{
-//            //println("忍者はアクションしていない")
-//        }
-        
-    }
-    //MARK:GameOver
+//MARK:GameOver
     func gameover(){
         self.physicsWorld.speed = 0;
         
