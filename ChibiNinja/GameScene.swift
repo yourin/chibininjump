@@ -17,6 +17,8 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     var wallLeft:SKSpriteNode!
     var wallRight:SKSpriteNode!
     
+    var climbWallHeight:CGFloat? = nil //登っている壁の高さ
+    
     var ninja:SKSpriteNode!
     
     var scoreBG = SKNode()//スコア用Node
@@ -412,13 +414,13 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             ninjaState = .climbUp_Right
             if ninjaState_OLD != ninjaState {
                 //他のアクションがあれば削除
-                removeNinjaAction()
+             //   removeNinjaAction()
                 
                 println("右壁、登る")
                 
                 //                    println("右へ移動")
                 let move = SKAction.moveBy(CGVector(dx: 0, dy: 5), duration: 0.4)
-                let animation = SKAction.animateWithTextures(ninjaTex_Climb_L, timePerFrame: 0.2)
+                let animation = SKAction.animateWithTextures(ninjaTex_Climb_R, timePerFrame: 0.2)
                 
                 let action = SKAction.group([move,animation])
                 
@@ -432,11 +434,11 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             ninjaState = .climbDown_Right
             if ninjaState_OLD != ninjaState {
                 //他のアクションがあれば削除
-                removeNinjaAction()
+             //   removeNinjaAction()
                 
                 println("右壁、降りる")
                 let move = SKAction.moveBy(CGVector(dx: 0, dy: -5), duration: 0.4)
-                let animation = SKAction.animateWithTextures(ninjaTex_Climb_L, timePerFrame: 0.2)
+                let animation = SKAction.animateWithTextures(ninjaTex_Climb_R, timePerFrame: 0.2)
                 
                 let action = SKAction.group([move,animation])
                 
@@ -772,6 +774,8 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         //左の壁
             if bodyA.node?.name == "wallLeft" || bodyB.node?.name == "wallLeft"{
 //                println("左の壁")
+                println("bodyA = \(bodyA.node?.frame)")
+                println("bodyB = \(bodyB.node?.frame)")
                 ninja.texture = SKTexture(imageNamed: "climb_L1a.png")
                 ninjaState = .climbStop_Left; println("ninjaState = climbStop Left")
                 println("忍者スタータス　climbStop　左側")
