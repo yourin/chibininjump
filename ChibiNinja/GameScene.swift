@@ -70,34 +70,34 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     //
     var beganPoint:CGPoint!
     
-    enum TouchState {
-        case Release
-        case UP
-        case DOWN
-        case LEFT
-        case RIGHT
-        case Neutral //タッチしているが、beganPoint
+    enum TouchState:String {
+        case Release = "リリース"
+        case UP = "UP"
+        case DOWN = "DOWN"
+        case LEFT = "LEFT"
+        case RIGHT = "RIGHT"
+        case Neutral = "Neutral" //タッチしているが、beganPoint
     }
     var touchState:TouchState? = .Release
     var touchState_OLD:TouchState? = .Release
     
-    enum State {
+    enum State:String {
         
-        case jump
-        case jumping
-        case fall
+        case jump = "Jump"
+        case jumping = "Jumping"
+        case fall = "fall"
         
-        case stop
-        case walkLeft
-        case walkRight
+        case stop = "Stop"
+        case walkLeft = "walkLeft"
+        case walkRight = "walkRight"
         
         
-        case climbStop_Left      //停止
-        case climbUp_Left    //登る
-        case climbDown_Left  //降りる
-        case climbStop_Right//停止
-        case climbUp_Right    //登る
-        case climbDown_Right  //降りる
+        case climbStop_Left = "ClimbStop Left"      //停止
+        case climbUp_Left = "ClimbUP Left"    //登る
+        case climbDown_Left = "ClimbDown Left"  //降りる
+        case climbStop_Right = "ClimbStop Right"//停止
+        case climbUp_Right = "ClimbUP Right"    //登る
+        case climbDown_Right = "ClimbDown Right"  //降りる
 
     }
     
@@ -123,7 +123,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         
         self.initSetting()
         
-       // make_box()
+      
         
         self.backgroundColor = SKColor.grayColor()
         //self.anchorPoint = CGPoint(x: 0.5, y: 0.5)
@@ -181,6 +181,22 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         myLabel.position = CGPoint(x:250, y:10)
         myLabel.zPosition = 2
         scoreBG.addChild(myLabel)
+        
+        touchStateLabel = SKLabelNode(fontNamed:"Chalkduster")
+        touchStateLabel.text = "touchstate";
+        touchStateLabel.fontSize = 25;
+        touchStateLabel.fontColor = SKColor.blackColor()
+        touchStateLabel.position = CGPoint(x:100, y:400)
+        touchStateLabel.zPosition = 2
+        scoreBG.addChild(touchStateLabel)
+        
+        ninjaStateLabel = SKLabelNode(fontNamed:"Chalkduster")
+        ninjaStateLabel.text = "ninjastate";
+        ninjaStateLabel.fontSize = 25;
+        ninjaStateLabel.fontColor = SKColor.blackColor()
+        ninjaStateLabel.position = CGPoint(x:100, y:450)
+        ninjaStateLabel.zPosition = 2
+        scoreBG.addChild(ninjaStateLabel)
         
     //地面の作成
         let ground = make_Wall(CGSize(width: self.size.width, height: 20))
@@ -859,6 +875,9 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
+
+        ninjaStateLabel.text = "\(ninjaState_OLD!.rawValue)"
+        touchStateLabel.text = "\(touchState.rawValue)"
         
         ninjaAction()
         
