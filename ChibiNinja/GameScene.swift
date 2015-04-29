@@ -71,7 +71,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         case Neutral = "Neutral" //タッチしているが、beganPoint
     }
     var touchState:TouchState = .Release
-    var touchState_OLD:TouchState = .Release
+    var touchState_OLD:TouchState! = .Release
     
     enum State:String {
         
@@ -94,7 +94,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     }
     
     var ninjaState:State? = .fall
-    var ninjaState_OLD:State? = .fall
+    var ninjaState_OLD:State! = .fall
     
     let ninjaCategory:UInt32        = 0x1 << 1      //0001
     let wallCategory:UInt32         = 0x1 << 2      //0010
@@ -381,7 +381,10 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         case .jump:
             jumpAction()
         case .fall:
+            if ninjaState_OLD != .fall {
             println("落下中")
+            ninjaState_OLD = .fall
+            }
         default:
             println("\(__FUNCTION__) default")
             
