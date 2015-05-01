@@ -552,16 +552,16 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             if ClimbingWall.DOWN != nil &&
                 ClimbingWall.DOWN < ninja.position.y{
                     
-            if ninjaState_OLD != .climbDown_Right{
-                //他のアクションがあれば削除
-                removeNinjaAction()
-               
-                let move = SKAction.moveBy(CGVector(dx: 0, dy: -5), duration: 0.4)
-                let animation = SKAction.animateWithTextures(ninjaTex_Climb_R, timePerFrame: 0.2)
-                let action = SKAction.group([move,animation])
-                ninja.runAction(SKAction.repeatActionForever(action))
-                
-                ninjaState_OLD = .climbDown_Right;println("右壁、降りる")
+                    if ninjaState_OLD != .climbDown_Right{
+                        //他のアクションがあれば削除
+                        removeNinjaAction()
+                        
+                        let move = SKAction.moveBy(CGVector(dx: 0, dy: -5), duration: 0.4)
+                        let animation = SKAction.animateWithTextures(ninjaTex_Climb_R, timePerFrame: 0.2)
+                        let action = SKAction.group([move,animation])
+                        ninja.runAction(SKAction.repeatActionForever(action))
+                        
+                        ninjaState_OLD = .climbDown_Right;println("右壁、降りる")
                     }
             }else{
                 println("これ以上降りることができません。")
@@ -595,41 +595,64 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
 
     }
     
+    func walk_Left(){
+        
+        println("左へ歩く")
+        let move = SKAction.moveBy(CGVector(dx: -30, dy: 0), duration: 0.4)
+        let animation = SKAction.animateWithTextures(ninjaTex_Walk_L, timePerFrame: 0.1)
+        let action = SKAction.group([move,animation])
+        ninja.runAction(SKAction.repeatActionForever(action))
+    }
+    
+    func walk_Right(){
+        println("右へ歩く")
+        let move = SKAction.moveBy(CGVector(dx: 30, dy: 0), duration: 0.4)
+        let animation = SKAction.animateWithTextures(ninjaTex_Walk_R, timePerFrame: 0.1)
+        let action = SKAction.group([move,animation])
+        ninja.runAction(SKAction.repeatActionForever(action))
+    }
+    
+    
 //MARK:歩く（地面）
     func walkAction(){
         switch touchState! {
         case .LEFT:
-            
-            if WalkingWallLimit.LEFT == nil || WalkingWallLimit.LEFT < ninja.position.x {
-                if ninjaState_OLD != .walkLeft {
-                    //他のアクションがあれば削除
-                    removeNinjaAction()
-                    println("touch LEFT")
-                    let move = SKAction.moveBy(CGVector(dx: -30, dy: 0), duration: 0.4)
-                    let animation = SKAction.animateWithTextures(ninjaTex_Walk_L, timePerFrame: 0.1)
-                    let action = SKAction.group([move,animation])
-                    ninja.runAction(SKAction.repeatActionForever(action))
-                    
-                    ninjaState_OLD = .walkLeft
-                    println("左へ歩く")
-                }
+//            if WalkingWallLimit.LEFT == nil {
+
+//
+//             walk_Left()
+//            }
+//            if  WalkingWallLimit.LEFT < ninja.position.x {
+//                println("limigLeft = \(WalkingWallLimit.LEFT) ninjaposX = \(ninja.position.x)")
+//            }
+//            
+//            
+            if ninjaState_OLD != .walkLeft {
+                //他のアクションがあれば削除
+                removeNinjaAction()
+                walk_Left()
+                println("touch LEFT")
+                ninjaState_OLD = .walkLeft
+                
             }
+
+        
+            
+            
+    
             
         case .RIGHT:
-            if WalkingWallLimit.RIGHT == nil || WalkingWallLimit.RIGHT > ninja.position.x {
+//            println("limigRight = \(WalkingWallLimit.RIGHT) ninjaposX = \(ninja.position.x)")
+//            if WalkingWallLimit.RIGHT == nil && WalkingWallLimit.RIGHT > ninja.position.x {
+            
                 if ninjaState_OLD != .walkRight {
                     //他のアクションがあれば削除
                     removeNinjaAction()
-                    
+                    walk_Right()
                     println("touch RIGHT")
-                    let move = SKAction.moveBy(CGVector(dx: 30, dy: 0), duration: 0.4)
-                    let animation = SKAction.animateWithTextures(ninjaTex_Walk_R, timePerFrame: 0.1)
-                    let action = SKAction.group([move,animation])
-                    ninja.runAction(SKAction.repeatActionForever(action))
-                    
-                    ninjaState_OLD = .walkRight;println("右へ歩く")
+                    ninjaState_OLD = .walkRight
                 }
-            }
+//            }
             
         case .Neutral:
             println("touch Neutral")
@@ -860,6 +883,8 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             // println("bodyB = \(bodyB.node?.frame.height)")
             
         }
+        
+        //
 
         func delete_ClimbHeightLimit(){
             println("壁の上限値、下限値　削除")
@@ -869,6 +894,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             WalkingWallLimit.LEFT = nil
         }
         
+    //壁のどの面に当たったか？
         func wallHitCheck() -> WallSide{
             
             var wallSide:WallSide!
@@ -973,22 +999,16 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 //ジャンプするパワー(タッチ中のアップデート回数）
                 updateCount++
 
-        }else{
+        }else if !_isTouchON ||
+            ninjaState_OLD != State.stop ||
+            ninjaState_OLD != State.climbStop_Left || ninjaState_OLD != State.climbStop_Right{
         // 画面タッチしてない　ーーーーーーーーーーーーーーーーーーーーーーーーー
         
             //　ジャンプパワーレベルを削除する
-//            if power == 0 {
                 delete_jumpPowerLevel()
                 
-//                for sprite in powerLevel {
-//                    sprite.hidden = true
-//                }
-//            }
-            
-            //            if updateCount > 0 {
-            //                power--
-            //            }
         }
+        
         jumpPowerFromUpdatecount()
         
         
@@ -999,10 +1019,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         
         wallBG.position = CGPoint(x: wallBG.position.x, y: wallBG.position.y - moveY)
             scrollPoint = scrollPoint + moveY
-            
         }
-
-
     }
     
 //MARK:アップデート回数からパワーに変換
