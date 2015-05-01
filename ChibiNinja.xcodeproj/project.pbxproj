@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DB2DF5C81AF32D6B002CB009 /* Smoke.sks in Resources */ = {isa = PBXBuildFile; fileRef = DB2DF5C61AF32D6B002CB009 /* Smoke.sks */; };
+		DB2DF5C91AF32D6B002CB009 /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = DB2DF5C71AF32D6B002CB009 /* spark.png */; };
+		DB2DF5CC1AF32F71002CB009 /* MyParticle2.sks in Resources */ = {isa = PBXBuildFile; fileRef = DB2DF5CA1AF32F71002CB009 /* MyParticle2.sks */; };
+		DB2DF5CD1AF32F71002CB009 /* bokeh.png in Resources */ = {isa = PBXBuildFile; fileRef = DB2DF5CB1AF32F71002CB009 /* bokeh.png */; };
+		DB2DF5CF1AF32F93002CB009 /* MyParticle3.sks in Resources */ = {isa = PBXBuildFile; fileRef = DB2DF5CE1AF32F93002CB009 /* MyParticle3.sks */; };
+		DB2DF5D11AF32FAA002CB009 /* MyParticle4.sks in Resources */ = {isa = PBXBuildFile; fileRef = DB2DF5D01AF32FAA002CB009 /* MyParticle4.sks */; };
+		DB2DF5D31AF33039002CB009 /* MyParticle5.sks in Resources */ = {isa = PBXBuildFile; fileRef = DB2DF5D21AF33039002CB009 /* MyParticle5.sks */; };
 		DB7593351AE0B938008A36D2 /* Wall.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB7593341AE0B938008A36D2 /* Wall.swift */; };
 		DBDA2A561AC19328003DED4C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDA2A551AC19328003DED4C /* AppDelegate.swift */; };
 		DBDA2A581AC19328003DED4C /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = DBDA2A571AC19328003DED4C /* GameScene.sks */; };
@@ -29,6 +36,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		DB2DF5C61AF32D6B002CB009 /* Smoke.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Smoke.sks; sourceTree = "<group>"; };
+		DB2DF5C71AF32D6B002CB009 /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
+		DB2DF5CA1AF32F71002CB009 /* MyParticle2.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MyParticle2.sks; sourceTree = "<group>"; };
+		DB2DF5CB1AF32F71002CB009 /* bokeh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bokeh.png; sourceTree = "<group>"; };
+		DB2DF5CE1AF32F93002CB009 /* MyParticle3.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MyParticle3.sks; sourceTree = "<group>"; };
+		DB2DF5D01AF32FAA002CB009 /* MyParticle4.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MyParticle4.sks; sourceTree = "<group>"; };
+		DB2DF5D21AF33039002CB009 /* MyParticle5.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MyParticle5.sks; sourceTree = "<group>"; };
 		DB7593341AE0B938008A36D2 /* Wall.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Wall.swift; sourceTree = "<group>"; };
 		DBDA2A501AC19328003DED4C /* ChibiNinja.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChibiNinja.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBDA2A541AC19328003DED4C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -89,6 +103,13 @@
 				DBDA2A5B1AC19328003DED4C /* GameViewController.swift */,
 				DBDA2A5D1AC19328003DED4C /* Main.storyboard */,
 				DBDA2A601AC19328003DED4C /* Images.xcassets */,
+				DB2DF5C61AF32D6B002CB009 /* Smoke.sks */,
+				DB2DF5D21AF33039002CB009 /* MyParticle5.sks */,
+				DB2DF5CE1AF32F93002CB009 /* MyParticle3.sks */,
+				DB2DF5D01AF32FAA002CB009 /* MyParticle4.sks */,
+				DB2DF5CA1AF32F71002CB009 /* MyParticle2.sks */,
+				DB2DF5CB1AF32F71002CB009 /* bokeh.png */,
+				DB2DF5C71AF32D6B002CB009 /* spark.png */,
 				DBDA2A621AC19328003DED4C /* LaunchScreen.xib */,
 				DBDA2A531AC19328003DED4C /* Supporting Files */,
 				DB7593341AE0B938008A36D2 /* Wall.swift */,
@@ -203,8 +224,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				DBDA2A641AC19328003DED4C /* LaunchScreen.xib in Resources */,
+				DB2DF5C91AF32D6B002CB009 /* spark.png in Resources */,
+				DB2DF5D11AF32FAA002CB009 /* MyParticle4.sks in Resources */,
+				DB2DF5D31AF33039002CB009 /* MyParticle5.sks in Resources */,
 				DBDA2A611AC19328003DED4C /* Images.xcassets in Resources */,
 				DBDA2A581AC19328003DED4C /* GameScene.sks in Resources */,
+				DB2DF5C81AF32D6B002CB009 /* Smoke.sks in Resources */,
+				DB2DF5CD1AF32F71002CB009 /* bokeh.png in Resources */,
+				DB2DF5CC1AF32F71002CB009 /* MyParticle2.sks in Resources */,
+				DB2DF5CF1AF32F93002CB009 /* MyParticle3.sks in Resources */,
 				DBDA2A5F1AC19328003DED4C /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
