@@ -18,6 +18,8 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     
     var _gameoverFlg = false
     
+    var _isJumpTimingON = false//ジャンプの最適なタイミングの計測開始
+    var jumpTimingCount = 0
     
     
     var gameoverLine:SKSpriteNode!
@@ -50,7 +52,16 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         static var LEFT:CGFloat!//登れる高さ
         static var RIGHT:CGFloat!//降りることのできる高さ
     }
-
+    
+    enum JumpTiming:UInt {
+        case VeryFast = 1
+        case Fast
+        case Best
+        case Slow
+        case VerySlow
+    }
+    
+    var jumpTiming:JumpTiming? = nil
 
     var power = 0
     let powerMin = 5//最小値
@@ -748,13 +759,41 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
 
     func jump(cgVector:CGVector){
         ninja.physicsBody?.dynamic = true
+        
+        
+        if jumpTiming != nil {
+            switch jumpTiming! {
+            case .VeryFast:
+                println("\(jumpTiming?.rawValue)")
+//                ninja.physicsBody?.applyImpulse(CGVector(dx: 10, dy: 10))
+            case .Fast:
+                println("\(jumpTiming?.rawValue)")
+
+            case .Best:
+                println("\(jumpTiming?.rawValue)")
+
+            case .Slow:
+                println("\(jumpTiming?.rawValue)")
+
+            case .VerySlow:
+                println("\(jumpTiming?.rawValue)")
+
+            default:
+                println("\(jumpTiming?.rawValue)")
+
+                
+            }
+        }
+        
+        
 //        ninja.physicsBody?.applyImpulse(cgVector)
         ninja.physicsBody?.applyImpulse(CGVector(dx: cgVector.dx, dy: 10))
 //        ninja.physicsBody?.applyImpulse(CGVector(dx: 10, dy: 10))
         
         println("dy = \(cgVector.dy)")
         power = 0
-    }
+        //タイミングの削除
+        jumpTiming = nil; println("ジャンプタイミングチェック　終了")    }
     
     //== jump methed end ================
 
@@ -899,6 +938,8 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         _isTouchON = false;     println("タッチ解除")
         touchState = .Release;  myLabel.text = "Release";println("touch Release")
         
+        check_JumpTiming()
+        
         if ninjaState_OLD != nil && ninjaState_OLD != .jumping{
             switch ninjaState_OLD! {
             case .stop:
@@ -917,6 +958,9 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         beganPoint = nil
         updateCount = 0
         
+//        if jumpTiming == nil {
+//            
+//        }
 
 
     }
@@ -930,7 +974,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         let bodyB = contact.bodyB!
         
         func set_ClimbHeightLimit(){
-            //登れる高さのリミットを設定
+//登れる高さのリミットを設定
 //            println("bodyA  Height = \(bodyA.node!.frame.height)")
 //            println("bodyA = posy \(bodyA.node!.position.y)")
 //            println("ninja.posY = \(ninja.position.y)")
@@ -939,12 +983,11 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             ClimbingWall.DOWN = bodyA.node!.position.y + ninja.size.height / 2
             ClimbingWall.UP = bodyA.node!.frame.height + ClimbingWall.DOWN  - ninja.size.height / 2
             println("壁の上限 \(ClimbingWall.UP)、下限を設定\(ClimbingWall.DOWN)、忍者の位置\(ninja.position.y)")
-           // println("bodyB = \(bodyB.node?.frame.height)")
             
         }
         
+        //壁の左右のリミットを設定
         func set_ClimbWalkLimit(){
-            //壁の左右のリミットを設定
             WalkingWallLimit.LEFT = bodyA.node!.position.x - bodyA.node!.frame.size.width / 2
              WalkingWallLimit.RIGHT = bodyA.node!.position.x + bodyA.node!.frame.size.width / 2
 
@@ -979,6 +1022,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 wallSide = .UNDER
             }else{
                 wallSide = .SIDE
+                _isJumpTimingON = true;println("ジャンプタイミングチェック　開始")
             }
             
             return wallSide
@@ -1071,6 +1115,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         }
     }
     
+    //MARK:アップデート
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
 
@@ -1083,20 +1128,30 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         
 // 画面タッチ中　ーーーーーーーーーーーーーーーーーーーーーーーーー
         if _isTouchON && updateCount < powerMax{
-                //ジャンプするパワー(タッチ中のアップデート回数）
-                updateCount++
+            if ninjaState_OLD == State.stop ||
+               ninjaState_OLD == State.climbStop_Left ||
+               ninjaState_OLD == State.climbStop_Right
+            {
+            //ジャンプするパワー(タッチ中のアップデート回数）
+            updateCount++
+            jumpPowerFromUpdatecount()
 
-        }else if !_isTouchON ||
-            ninjaState_OLD != State.stop ||
-            ninjaState_OLD != State.climbStop_Left || ninjaState_OLD != State.climbStop_Right{
-        // 画面タッチしてない　ーーーーーーーーーーーーーーーーーーーーーーーーー
-        
-            //　ジャンプパワーレベルを削除する
-                delete_jumpPowerLevel()
-                
+            }
         }
         
-        jumpPowerFromUpdatecount()
+// 画面タッチしてない　ーーーーーーーーーーーーーーーーーーーーーーーーー
+        else{
+                //　ジャンプパワーレベルを削除する
+                delete_jumpPowerLevel()
+        }
+        
+        if _isJumpTimingON && jumpTimingCount < 30 {
+            println(jumpTimingCount++)
+        }else {
+            jumpTimingCount = 0
+            _isJumpTimingON = false;println("ジャンプタイミングチェック　終了")
+        }
+        
         
         
 // 画面半分を超えたらスクロールを開始する　-------
@@ -1130,11 +1185,12 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     
 //MARK:ジャンプパワーレベルを表示する
     func disp_jumpPowerLevel(){
-        
-        if updateCount <= powerMax{
-            for i in 0..<updateCount {
-                //if powerLevel.count <= power {
-                powerLevel[i].hidden = false
+        if power > 0 {
+            if updateCount <= powerMax{
+                for i in 0..<updateCount {
+                    //if powerLevel.count <= power {
+                    powerLevel[i].hidden = false
+                }
             }
         }
     }
@@ -1143,7 +1199,31 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         for AnyObject in powerLevel {
             AnyObject.hidden = true
         }
+        power = 0
     }
+    
+//MARK:ジャンプタイミング
+    func check_JumpTiming(){
+        
+        switch jumpTimingCount{
+        case 0...5:
+            jumpTiming = .VeryFast
+        case 6...10:
+            jumpTiming = .Fast
+        case 11...15:
+            jumpTiming = .Best
+        case 16...20:
+            jumpTiming = .Slow
+        case 21...25:
+            jumpTiming = .VerySlow
+        default:
+            println("")
+            
+            
+        }
+        
+    }
+    
     
 //MARK:高さの表示
     func disp_climingHeigth(){
