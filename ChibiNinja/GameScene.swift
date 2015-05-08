@@ -761,6 +761,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         ninja.physicsBody?.dynamic = true
         
         
+        
         if jumpTiming != nil {
             switch jumpTiming! {
             case .VeryFast:
@@ -780,9 +781,11 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
 
             default:
                 println("\(jumpTiming?.rawValue)")
-
-                
             }
+        }else{
+            ninja.physicsBody?.applyImpulse(CGVector(dx: 15, dy:15))
+
+            
         }
         
         
@@ -938,8 +941,9 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         _isTouchON = false;     println("タッチ解除")
         touchState = .Release;  myLabel.text = "Release";println("touch Release")
         
-        check_JumpTiming()
-        
+        if _isJumpTimingON{
+            check_JumpTiming()
+        }
         if ninjaState_OLD != nil && ninjaState_OLD != .jumping{
             switch ninjaState_OLD! {
             case .stop:
@@ -1145,13 +1149,15 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 delete_jumpPowerLevel()
         }
         
-        if _isJumpTimingON && jumpTimingCount < 30 {
-            println(jumpTimingCount++)
-        }else {
-            jumpTimingCount = 0
-            _isJumpTimingON = false;println("ジャンプタイミングチェック　終了")
+        if jumpTiming == nil{
+            if _isJumpTimingON && jumpTimingCount < 30 {
+                println(jumpTimingCount++)
+            }else if jumpTimingCount == 30{
+                jumpTimingCount = 0
+                _isJumpTimingON = false;println("ジャンプタイミングチェック　終了")
+                jumpTiming = .VerySlow
+            }
         }
-        
         
         
 // 画面半分を超えたらスクロールを開始する　-------
@@ -1205,22 +1211,23 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
 //MARK:ジャンプタイミング
     func check_JumpTiming(){
         
+        println(__FUNCTION__)
         switch jumpTimingCount{
         case 0...5:
             jumpTiming = .VeryFast
+            
         case 6...10:
             jumpTiming = .Fast
-        case 11...15:
+        case 11...20:
             jumpTiming = .Best
-        case 16...20:
+        case 21...30:
             jumpTiming = .Slow
-        case 21...25:
-            jumpTiming = .VerySlow
+//        case 21...25:
+//            jumpTiming = .VerySlow
         default:
             println("")
-            
-            
         }
+        _isJumpTimingON = false
         
     }
     
