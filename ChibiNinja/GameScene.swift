@@ -10,17 +10,20 @@ import SpriteKit
 
 class GameScene: SKScene , SKPhysicsContactDelegate{
     
-    var _isDeBugMode = false
+    let blockSize = CGSize(width: 32.0, height: 32.0)
+    
+    var _isDeBugMode    = false
+    
     //判定
     
-    var _isJump = false
-    var _isTouchON = false
+    var _isJump         = false
+    var _isTouchON      = false
     
-    var _gameoverFlg = false
+    var _gameoverFlg    = false
     
     var _isJumpTimingON = false//ジャンプの最適なタイミングの計測開始
-    var jumpTimingCount = 0
     
+    var jumpTimingCount = 0
     
     var gameoverLine:SKSpriteNode!
     
@@ -36,9 +39,12 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
 
     
     var touchStateLabel:SKLabelNode!
-    var ninjaStateLabel:SKLabelNode!    
-    var tileTex:SKTexture!
+    var ninjaStateLabel:SKLabelNode!
+    
+    //var tileTex:SKTexture!
     var ninja:SKSpriteNode!
+    var aryMapChipTexture:TileMapMaker!
+    
     
     var updateCount = 0
     
@@ -70,9 +76,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     let addPower:CGFloat = 3.0 //　power * addPower
     
     var wallBGScreenCenterY:CGFloat!
-    
 
-    
     var powerLevel = [SKSpriteNode]()
     
     var wallBGPosY:CGFloat!
@@ -90,10 +94,10 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     
     enum TouchState:String {
         case Release = "リリース"
-        case UP = "UP"
-        case DOWN = "DOWN"
-        case LEFT = "LEFT"
-        case RIGHT = "RIGHT"
+        case UP     = "UP"
+        case DOWN   = "DOWN"
+        case LEFT   = "LEFT"
+        case RIGHT  = "RIGHT"
         case Neutral = "Neutral" //タッチしているが、beganPoint
     }
     var touchState:TouchState? = .Release
@@ -101,31 +105,29 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     
     enum State:String {
         
-        case jump = "Jump"
-        case jumping = "Jumping"
-        case fall = "fall"
+        case jump       = "Jump"
+        case jumping    = "Jumping"
+        case fall       = "fall"
         
-        case stop = "Stop"
-        case walkLeft = "walkLeft"
-        case walkRight = "walkRight"
+        case stop       = "Stop"
+        case walkLeft   = "walkLeft"
+        case walkRight  = "walkRight"
         
-        case climbStop_Left = "ClimbStop Left"     //停止
-        case climbUp_Left = "ClimbUP Left"          //登る
-        case climbDown_Left = "ClimbDown Left"      //降りる
-        case climbStop_Right = "ClimbStop Right"    //停止
-        case climbUp_Right = "ClimbUP Right"        //登る
-        case climbDown_Right = "ClimbDown Right"  //降りる
-
+        case climbStop_Left     = "ClimbStop Left"   //停止
+        case climbUp_Left       = "ClimbUP Left"     //登る
+        case climbDown_Left     = "ClimbDown Left"   //降りる
+        case climbStop_Right    = "ClimbStop Right"  //停止
+        case climbUp_Right      = "ClimbUP Right"    //登る
+        case climbDown_Right    = "ClimbDown Right"  //降りる
     }
     
-   var ninjaState:State? = .fall
-    var ninjaState_OLD:State! = .fall
+    var ninjaState:State?       = .fall
+    var ninjaState_OLD:State!   = .fall
     
     enum WallSide:String {
-        case TOP = "TOP"
-        case UNDER = "UNDER"
-        case SIDE = "SIDE"
-    
+        case TOP    = "TOP"
+        case UNDER  = "UNDER"
+        case SIDE   = "SIDE"
     }
     
     let ninjaCategory:UInt32        = 0x1 << 1      //0001
@@ -143,13 +145,9 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     
     override func didMoveToView(view: SKView) {
         
-        
-        
         self.initSetting()
         
-      
-        
-        self.backgroundColor = SKColor.grayColor()
+        self.backgroundColor = UIColor(red: 0.5, green: 0.5, blue: 1.0, alpha: 1.0)
         //self.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         self.physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame)
         
@@ -158,8 +156,8 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         self.physicsBody?.collisionBitMask = 0
         
         //物理シミュレーション設定
-        self.physicsWorld.gravity = CGVector(dx: 0.0, dy: -3.5)
-        self.physicsWorld.speed = 0.3
+        self.physicsWorld.gravity = CGVector(dx: 0.0, dy: -5.0)
+        self.physicsWorld.speed = 0.6
         self.physicsWorld.contactDelegate = self
         
         //中心線
@@ -222,52 +220,87 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         ninjaStateLabel.zPosition = 2
         scoreBG.addChild(ninjaStateLabel)
         
-    //地面の作成
-        let ground = make_Wall(CGSize(width: self.size.width, height: 20))
-        ground.position = CGPoint(x: self.size.width / 2, y: -10)
-        ground.color = SKColor.redColor()
-        ground.name = "ground"
-        ground.zPosition = 0
-        wallBG.addChild(ground)
+        
+        //MARK: - マップチップテクスチャー作成
+        aryMapChipTexture = TileMapMaker(textureFileName: "map", numberOfColumns: 8, numberOfRows: 16)
+        println("mapchip = \(aryMapChipTexture.mapChip.count)")
+        
+        //地面の作成
+        //let ground = SpriteBlock(
+        
+        for i in 0...10{
+            let ground = SpriteBlock(texture:aryMapChipTexture.mapChip[1]
+                , color: SKColor.clearColor(), size:blockSize)
+            ground.position = CGPoint(x:CGFloat(i) * blockSize.width , y: 0)
+            ground.zPosition = 0
+            wallBG.addChild(ground)
+            }
+        
+        let groundPhysics = SKSpriteNode(color: SKColor.clearColor(), size: CGSize(width: self.size.width, height: blockSize.height / 2))
+        groundPhysics.position = CGPoint(x:self.size.width / 4, y:0.0)
+        groundPhysics.name = "ground"
+        
+        groundPhysics.physicsBody = SKPhysicsBody(edgeLoopFromRect: groundPhysics.frame)
+        groundPhysics.physicsBody?.categoryBitMask  = groundCategory
+        groundPhysics.physicsBody?.collisionBitMask = ninjaCategory
+        groundPhysics.physicsBody?.contactTestBitMask = ninjaCategory
+        wallBG.addChild(groundPhysics)
+        
+//        let ground = make_Wall(CGSize(width: self.size.width, height: 20))
+//        ground.color = SKColor.redColor()
+
 //        ground.physicsBody = SKPhysicsBody(edgeLoopFromRect: ground.frame)
 //        ground.physicsBody?.categoryBitMask =
 //        ground.physicsBody?.dynamic = false
         
         
         // 壁の作成 //---------------------
+        let verticalBlocks = arc4random_uniform(4) + 1
+        let horizontalBlocks = arc4random_uniform(5) + 1
         
-        var wallHeight:CGFloat = 0.0
-        
-        for i in 0...10 {
-            
-            //ランダムな壁サイズを作る
-            let wallSize = CGSize(
-                width:random_X_Size(UInt32(self.size.width / 4), maxWidth: UInt32(self.size.width / 2)),
-                height:random_Y_Size(UInt32(self.size.height / 8), maxHeight: UInt32(self.size.height / 4)))
-            
-            
-            wallLeft = make_Wall(wallSize)
-            wallRight = make_Wall(wallSize)
-            
-            wallLeft.position = CGPoint(x:0, y: wallHeight)
-
-            println("\(i) : \(wallLeft.position.x)")
-            
-            //壁と壁の間をランダムで作る
-
-            //Right Wall
-            wallRight.position = CGPoint(x:self.size.width, y:wallHeight)
-            
-            wallLeft.name   = "wallLeft"
-            wallRight.name  = "wallRight"
- 
-            wallBG.addChild(wallLeft)
-            wallBG.addChild(wallRight)
-            
-            wallHeight +=  CGFloat(wallLeft.size.height)
-            
+        for j in 0..<verticalBlocks{
+            for i in 0..<horizontalBlocks{
+                let block:SpriteBlock = SpriteBlock(texture:aryMapChipTexture.mapChip[10]
+                    , color: SKColor.clearColor(), size:blockSize)
+                block.position = CGPoint(x:CGFloat(i) * blockSize.width , y: 0)
+                block.zPosition = 1
+                wallBG.addChild(block)
+            }
         }
         
+//        var wallHeight:CGFloat = 0.0
+//        
+//        for i in 0...10 {
+//            
+//            //ランダムな壁サイズを作る
+//            let wallSize = CGSize(
+//                width:random_X_Size(UInt32(self.size.width / 4), maxWidth: UInt32(self.size.width / 2)),
+//                height:random_Y_Size(UInt32(self.size.height / 8), maxHeight: UInt32(self.size.height / 4)))
+//            
+//            
+//            wallLeft = make_Wall(wallSize)
+//            wallRight = make_Wall(wallSize)
+//            
+//            wallLeft.position = CGPoint(x:0, y: wallHeight)
+//
+//            println("\(i) : \(wallLeft.position.x)")
+//            
+//            //壁と壁の間をランダムで作る
+//
+//            //Right Wall
+//            wallRight.position = CGPoint(x:self.size.width, y:wallHeight)
+//            
+//            wallLeft.name   = "wallLeft"
+//            wallRight.name  = "wallRight"
+// 
+//            wallBG.addChild(wallLeft)
+//            wallBG.addChild(wallRight)
+//            
+//            wallHeight +=  CGFloat(wallLeft.size.height)
+//            
+//        }
+        
+        //MARK:忍者テクスチャー準備
         //------------------------------
         
         ninjaTex_Walk_L = [
@@ -300,8 +333,8 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         make_Ninja()
         
     }
-    //MARK:-
-    //MARK:ジャンプパワー表示
+    
+    //MARK:- ジャンプパワー表示
     func make_powerLevel(){
         
         for i in 0 ..< powerMax{
@@ -324,27 +357,35 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         }
         
     }
-    //MARK:テクスチャータイル作成
-    func make_TextureTile(texName:String,numderVirtical:UInt,numberHorizontal:UInt) ->[SKTexture]{
-        var array = [SKTexture]()
-        let texture = SKTexture(imageNamed: texName)
-        let width = CGFloat(texture.size().width / CGFloat(numderVirtical))
-        let heigt = CGFloat(texture.size().height / CGFloat(numberHorizontal))
-        
-        // Gal textureパターン
-        for j in 0 ..< numderVirtical {
-            for i in  0 ..< numberHorizontal {
-                let tex = SKTexture(rect:CGRect(x:CGFloat(i / numberHorizontal), y:CGFloat(j / numderVirtical), width:width, height:heigt),inTexture: texture)
-                array.append(tex) // addObject(tex)
-            }
-        }
-        return array
-    }
+//    //MARK:テクスチャータイル作成
+//    func make_TextureTile(texName:String,numderVirtical:UInt,numberHorizontal:UInt) ->[SKTexture]{
+//        var array = [SKTexture]()
+//        let texture = SKTexture(imageNamed: texName)
+//        let width = CGFloat(texture.size().width / CGFloat(numderVirtical))
+//        let heigt = CGFloat(texture.size().height / CGFloat(numberHorizontal))
+//        
+//        // Gal textureパターン
+//        for j in 0 ..< numderVirtical {
+//            for i in  0 ..< numberHorizontal {
+//                let tex = SKTexture(rect:CGRect(x:CGFloat(i / numberHorizontal),
+//                    y:CGFloat(j / numderVirtical), width:width, height:heigt),inTexture: texture)
+//                array.append(tex) // addObject(tex)
+//            }
+//        }
+//        return array
+//    }
     
-    //MARK:ランダム値作成
+    //MARK:- ランダム値作成
     func randomXpos(x:UInt32) -> CGFloat{
         return CGFloat(arc4random_uniform(x))
     }
+    
+    func random_number(min:UInt32,max:UInt32) -> UInt32{
+            return arc4random_uniform(max) + min
+    }
+    
+    
+    
     
     func random_X_Size(minWidth:UInt32,maxWidth:UInt32) -> CGFloat{
          let width = arc4random_uniform(maxWidth) + minWidth
@@ -354,6 +395,8 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         let height = arc4random_uniform(maxHeight) + minHeight
         return CGFloat(height)
     }
+    
+    
 
     //MARK:作成　壁
     func make_Wall(size:CGSize) -> SKSpriteNode{
