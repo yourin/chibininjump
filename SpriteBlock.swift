@@ -28,6 +28,7 @@ class SpriteBlock:SKSpriteNode {
         super.init(texture: texture, color: color, size: size)
         
         self.blockPos = .Center
+
     }
     
 

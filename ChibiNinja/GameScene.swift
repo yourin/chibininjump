@@ -143,12 +143,16 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         scrollSpeed = 1.0
     }
     
+    
+    //MARK:-
     override func didMoveToView(view: SKView) {
         
         self.initSetting()
         
+        //背景色
         self.backgroundColor = UIColor(red: 0.5, green: 0.5, blue: 1.0, alpha: 1.0)
         //self.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        
         self.physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame)
         
         self.physicsBody?.categoryBitMask = 0
@@ -228,23 +232,33 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         //地面の作成
         //let ground = SpriteBlock(
         
-        for i in 0...10{
+        //地面のマップチップを並べる
+        for i in 1...12{
             let ground = SpriteBlock(texture:aryMapChipTexture.mapChip[1]
                 , color: SKColor.clearColor(), size:blockSize)
-            ground.position = CGPoint(x:CGFloat(i) * blockSize.width , y: 0)
+//            let ground = SKSpriteNode(color: SKColor.whiteColor(), size:blockSize)
+            ground.name = "ground"
+            ground.position = CGPoint(x:(CGFloat(i) * ground.size.width) - 32 , y: 0)
+            println("blockpos = \(ground.position)")
+            
             ground.zPosition = 0
+            
+            ground.physicsBody = SKPhysicsBody(edgeLoopFromRect: ground.frame)
+            ground.physicsBody?.categoryBitMask  = groundCategory
+            ground.physicsBody?.collisionBitMask = ninjaCategory
+            ground.physicsBody?.contactTestBitMask = ninjaCategory
             wallBG.addChild(ground)
             }
         
-        let groundPhysics = SKSpriteNode(color: SKColor.clearColor(), size: CGSize(width: self.size.width, height: blockSize.height / 2))
-        groundPhysics.position = CGPoint(x:self.size.width / 4, y:0.0)
-        groundPhysics.name = "ground"
-        
-        groundPhysics.physicsBody = SKPhysicsBody(edgeLoopFromRect: groundPhysics.frame)
-        groundPhysics.physicsBody?.categoryBitMask  = groundCategory
-        groundPhysics.physicsBody?.collisionBitMask = ninjaCategory
-        groundPhysics.physicsBody?.contactTestBitMask = ninjaCategory
-        wallBG.addChild(groundPhysics)
+//        let groundPhysics = SKSpriteNode(color: SKColor.clearColor(), size: CGSize(width: self.size.width, height: blockSize.height / 2))
+//        groundPhysics.position = CGPoint(x:self.size.width / 4, y:0.0)
+//        groundPhysics.name = "ground"
+//        
+//        groundPhysics.physicsBody = SKPhysicsBody(edgeLoopFromRect: groundPhysics.frame)
+//        groundPhysics.physicsBody?.categoryBitMask  = groundCategory
+//        groundPhysics.physicsBody?.collisionBitMask = ninjaCategory
+//        groundPhysics.physicsBody?.contactTestBitMask = ninjaCategory
+//        wallBG.addChild(groundPhysics)
         
 //        let ground = make_Wall(CGSize(width: self.size.width, height: 20))
 //        ground.color = SKColor.redColor()
@@ -255,18 +269,18 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         
         
         // 壁の作成 //---------------------
-        let verticalBlocks = arc4random_uniform(4) + 1
-        let horizontalBlocks = arc4random_uniform(5) + 1
-        
-        for j in 0..<verticalBlocks{
-            for i in 0..<horizontalBlocks{
-                let block:SpriteBlock = SpriteBlock(texture:aryMapChipTexture.mapChip[10]
-                    , color: SKColor.clearColor(), size:blockSize)
-                block.position = CGPoint(x:CGFloat(i) * blockSize.width , y: 0)
-                block.zPosition = 1
-                wallBG.addChild(block)
-            }
-        }
+//        let verticalBlocks = arc4random_uniform(4) + 1
+//        let horizontalBlocks = arc4random_uniform(5) + 1
+//        
+//        for j in 0..<verticalBlocks{
+//            for i in 0..<horizontalBlocks{
+//                let block:SpriteBlock = SpriteBlock(texture:aryMapChipTexture.mapChip[10]
+//                    , color: SKColor.clearColor(), size:blockSize)
+//                block.position = CGPoint(x:CGFloat(i) * blockSize.width , y: 0)
+//                block.zPosition = 1
+//                wallBG.addChild(block)
+//            }
+//        }
         
 //        var wallHeight:CGFloat = 0.0
 //        
@@ -326,13 +340,16 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             SKTexture(imageNamed: "climb_R2.png")
             
         ]
-    //Power Level
-        make_powerLevel()
+
         
     //ninja
         make_Ninja()
         
+        //Power Level
+        make_powerLevel()
     }
+    
+    // MARK:-
     
     //MARK:- ジャンプパワー表示
     func make_powerLevel(){
@@ -424,12 +441,13 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         ninja = SKSpriteNode(texture: SKTexture(imageNamed: "ninja_front1.png"))
         
         ninja.setScale(2.0)
-        ninja.position = CGPoint(x: self.size.width / 2, y: 50)
+        ninja.position = CGPoint(x: self.size.width / 2, y: 200)
 
         ninja.name = "ninja"
         wallBG.addChild(ninja)
+        ninja.physicsBody = SKPhysicsBody(rectangleOfSize:ninja.size)
         
-        ninja.physicsBody = SKPhysicsBody(circleOfRadius: ninja.size.width/2)
+//        ninja.physicsBody = SKPhysicsBody(circleOfRadius: ninja.size.width/2)
         ninja.physicsBody?.friction = 1.0
 
         ninja.physicsBody?.restitution = 0.0

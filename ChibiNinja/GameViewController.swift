@@ -33,8 +33,10 @@ class GameViewController: UIViewController {
 //        if let scene = GameScene.unarchiveFromFile("GameScene") as? GameScene {
             // Configure the view.
         
-        let scene = GameScene()
+        let scene = GameScene2()
+        
         let skView = self.view as! SKView
+        
             skView.showsFPS = true
             skView.showsNodeCount = true
             skView.showsPhysics = true
@@ -46,7 +48,8 @@ class GameViewController: UIViewController {
             //scene.scaleMode = .AspectFill
             scene.scaleMode = .AspectFit
         
-        scene.size = CGSize(width: 320, height: 480)
+        
+            scene.size = CGSize(width: self.view.bounds.width, height: self.view.bounds.height)
             //scene.size = skView.frame.size
             skView.presentScene(scene)
 //        }
