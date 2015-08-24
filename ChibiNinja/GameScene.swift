@@ -12,7 +12,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     
     let blockSize = CGSize(width: 32.0, height: 32.0)
     
-    var _isDeBugMode    = false
+    var _isDeBugMode    = true
     
     //判定
     
@@ -146,8 +146,22 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     
     //MARK:-
     override func didMoveToView(view: SKView) {
-        
+        //MARK:初期化処理
         self.initSetting()
+        
+        if _isDeBugMode {
+            //中心線
+            let centerLineX = SKSpriteNode(color: SKColor.whiteColor(), size: CGSize(width: self.size.width, height: 2))
+            centerLineX.position = CGPoint(x:self.size.width / 2, y: self.size.height / 2)
+            self.addChild(centerLineX)
+            centerLineX.zPosition = 100
+            //中央線
+            let centerLineY = SKSpriteNode(color: SKColor.whiteColor(), size: CGSize(width: 1, height: self.size.height))
+            centerLineY.position = CGPoint(x:self.size.width / 2, y: self.size.height / 2)
+            self.addChild(centerLineY)
+            centerLineY.zPosition = 100
+        }
+
         
         //背景色
         self.backgroundColor = UIColor(red: 0.5, green: 0.5, blue: 1.0, alpha: 1.0)
@@ -164,17 +178,6 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         self.physicsWorld.speed = 0.6
         self.physicsWorld.contactDelegate = self
         
-        //中心線
-        
-        let centerLineX = SKSpriteNode(color: SKColor.whiteColor(), size: CGSize(width: self.size.width, height: 2))
-        centerLineX.position = CGPoint(x: 160, y: 240)
-        self.addChild(centerLineX)
-        centerLineX.zPosition = 10
-        //　中央線
-        let centerLineY = SKSpriteNode(color: SKColor.whiteColor(), size: CGSize(width: 1, height: self.size.height))
-        centerLineY.position = CGPoint(x: 160, y: 240)
-        self.addChild(centerLineY)
-        centerLineY.zPosition = 10
         
         
     //壁配置用ノード
@@ -225,30 +228,38 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         scoreBG.addChild(ninjaStateLabel)
         
         
-        //MARK: - マップチップテクスチャー作成
+//MARK:マップチップテクスチャー作成
         aryMapChipTexture = TileMapMaker(textureFileName: "map", numberOfColumns: 8, numberOfRows: 16)
         println("mapchip = \(aryMapChipTexture.mapChip.count)")
         
-        //地面の作成
+//MARK:地面の作成
         //let ground = SpriteBlock(
         
         //地面のマップチップを並べる
-        for i in 1...12{
-            let ground = SpriteBlock(texture:aryMapChipTexture.mapChip[1]
-                , color: SKColor.clearColor(), size:blockSize)
-//            let ground = SKSpriteNode(color: SKColor.whiteColor(), size:blockSize)
-            ground.name = "ground"
-            ground.position = CGPoint(x:(CGFloat(i) * ground.size.width) - 32 , y: 0)
-            println("blockpos = \(ground.position)")
-            
-            ground.zPosition = 0
-            
-            ground.physicsBody = SKPhysicsBody(edgeLoopFromRect: ground.frame)
-            ground.physicsBody?.categoryBitMask  = groundCategory
-            ground.physicsBody?.collisionBitMask = ninjaCategory
-            ground.physicsBody?.contactTestBitMask = ninjaCategory
-            wallBG.addChild(ground)
-            }
+        let ground = aryMapChipTexture.make_MapChipRow_OriginLeft(mapNum: 1, HorizontaCount: 10, physics: true)
+        ground.name = "ground"
+        ground.physicsBody?.categoryBitMask  = groundCategory
+        ground.physicsBody?.collisionBitMask = ninjaCategory
+        ground.physicsBody?.contactTestBitMask = ninjaCategory
+        
+        wallBG.addChild(ground)
+        println(ground)
+        
+//        for i in 1...12{
+//            let ground = SpriteBlock(texture:aryMapChipTexture.mapChip[1]
+//                , color: SKColor.clearColor(), size:blockSize)
+//            ground.name = "ground"
+//            ground.position = CGPoint(x:(CGFloat(i) * ground.size.width) - 32 , y: 0)
+//            println("blockpos = \(ground.position)")
+//            
+//            ground.zPosition = 0
+//            
+//            ground.physicsBody = SKPhysicsBody(edgeLoopFromRect: ground.frame)
+//            ground.physicsBody?.categoryBitMask  = groundCategory
+//            ground.physicsBody?.collisionBitMask = ninjaCategory
+//            ground.physicsBody?.contactTestBitMask = ninjaCategory
+//            wallBG.addChild(ground)
+//            }
         
 //        let groundPhysics = SKSpriteNode(color: SKColor.clearColor(), size: CGSize(width: self.size.width, height: blockSize.height / 2))
 //        groundPhysics.position = CGPoint(x:self.size.width / 4, y:0.0)
@@ -268,8 +279,39 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
 //        ground.physicsBody?.dynamic = false
         
         
-        // 壁の作成 //---------------------
-//        let verticalBlocks = arc4random_uniform(4) + 1
+// MARK:壁の作成
+        
+        var nextYpos:CGFloat = 0.0
+        for i in 1...5 {
+            let randH = arc4random_uniform(4)+1
+            let randV = arc4random_uniform(4)+1
+            let sprite = aryMapChipTexture.make_MapChipBlock_OriginLeft(mapNum: 2, HorizontaCount: randH, VerticalCount: randV, physicsType: .Edge)
+            
+            sprite.position = CGPoint(x:0, y: nextYpos)
+            //        sprite.position = center
+            nextYpos = nextYpos + 32 * CGFloat(randV)
+            println("nextYpos = \(nextYpos)")
+            self.addChild(sprite)
+        }
+        
+        //右の壁
+        nextYpos = 0.0
+        for i in 1...5 {
+            let randH = arc4random_uniform(4)+1
+            let randV = arc4random_uniform(4)+1
+            let sprite = aryMapChipTexture.make_MapChipBlock_OriginRight(mapNum: 2, HorizontaCount: randH, VerticalCount: randV, physicsType: .Edge)
+            
+            println("\(i): \(randH) x \(randV)")
+            
+            sprite.position = CGPoint(x:self.size.width, y: nextYpos)
+            //        sprite.position = center
+            nextYpos = nextYpos + 32 * CGFloat(randV)
+            println("nextYpos = \(nextYpos)")
+            self.addChild(sprite)
+        }
+
+        
+        //        let verticalBlocks = arc4random_uniform(4) + 1
 //        let horizontalBlocks = arc4random_uniform(5) + 1
 //        
 //        for j in 0..<verticalBlocks{

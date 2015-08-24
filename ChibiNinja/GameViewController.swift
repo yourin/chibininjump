@@ -33,7 +33,7 @@ class GameViewController: UIViewController {
 //        if let scene = GameScene.unarchiveFromFile("GameScene") as? GameScene {
             // Configure the view.
         
-        let scene = GameScene2()
+        let scene = GameScene()
         
         let skView = self.view as! SKView
         

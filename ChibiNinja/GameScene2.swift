@@ -63,23 +63,23 @@ class GameScene2: SKScene , SKPhysicsContactDelegate{
          self.set_mapChip()
 //        //左の壁
         var nextYpos:CGFloat = 0.0
-//        for i in 1...5 {
-//            let randH = arc4random_uniform(5)+1
-//            let randV = arc4random_uniform(5)+1
-//            let sprite = aryMapChipTexture.make_MapChipBlock_OriginLeft(mapNum: 2, HorizontaCount: randH, VerticalCount: randV, physicsType: .Edge)
-//            
-//            sprite.position = CGPoint(x:0, y: nextYpos)
-//            //        sprite.position = center
-//            nextYpos = nextYpos + 32 * CGFloat(i)
-//            println("nextYpos = \(nextYpos)")
-//            self.addChild(sprite)
-//        }
+        for i in 1...5 {
+            let randH = arc4random_uniform(4)+1
+            let randV = arc4random_uniform(4)+1
+            let sprite = aryMapChipTexture.make_MapChipBlock_OriginLeft(mapNum: 2, HorizontaCount: randH, VerticalCount: randV, physicsType: .Edge)
+            
+            sprite.position = CGPoint(x:0, y: nextYpos)
+            //        sprite.position = center
+            nextYpos = nextYpos + 32 * CGFloat(randV)
+            println("nextYpos = \(nextYpos)")
+            self.addChild(sprite)
+        }
 
         //右の壁
         nextYpos = 0.0
         for i in 1...5 {
-            let randH = arc4random_uniform(5)+1
-            let randV = arc4random_uniform(5)+1
+            let randH = arc4random_uniform(4)+1
+            let randV = arc4random_uniform(4)+1
         let sprite = aryMapChipTexture.make_MapChipBlock_OriginRight(mapNum: 2, HorizontaCount: randH, VerticalCount: randV, physicsType: .Edge)
             
             println("\(i): \(randH) x \(randV)")
@@ -95,12 +95,33 @@ class GameScene2: SKScene , SKPhysicsContactDelegate{
     
     //MARK:マップチップテクスチャー関連  ///////////////////////////////////////////////////////////////////
     
+    
     var aryMapChipTexture:TileMapMaker!
     func set_mapChip(){
         aryMapChipTexture = TileMapMaker(textureFileName: "map", numberOfColumns: 8, numberOfRows: 16)
 //        println("mapchip = \(aryMapChipTexture.mapChip.count)")
 
     }
+    
+//    func set_Wall(mapNum:Int){
+//        var nextYpos = 0.0
+//        for i in 1...5 {
+//            let randH = arc4random_uniform(5)+1
+//            let randV = arc4random_uniform(5)+1
+//            let sprite = aryMapChipTexture.make_MapChipBlock_OriginRight(mapNum:mapNum, HorizontaCount: randH, VerticalCount: randV, physicsType: .Edge)
+//            
+//            println("\(i): \(randH) x \(randV)")
+//            
+//            sprite.position = CGPoint(x:self.size.width, y: nextYpos)
+//            //        sprite.position = center
+//            nextYpos = nextYpos + 32.0 * CGFloat(randV)
+//            println("nextYpos = \(nextYpos)")
+//            self.addChild(sprite)
+//            
+//            
+//        }
+//    }
+
 /*
     override func didSimulatePhysics() {
     println(__FUNCTION__)
