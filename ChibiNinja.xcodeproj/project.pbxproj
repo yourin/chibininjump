@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		7B714E491B811BD100433557 /* GameScene2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B714E481B811BD100433557 /* GameScene2.swift */; };
+		7BB9AD331B8B547000012108 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BB9AD321B8B547000012108 /* iAd.framework */; };
+		7BC397B01B8FB3AE00E5D14E /* GameScene3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC397AF1B8FB3AE00E5D14E /* GameScene3.swift */; };
+		7BC397B21B95002000E5D14E /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC397B11B95002000E5D14E /* Character.swift */; };
+		7BC397B41B962BDD00E5D14E /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC397B31B962BDC00E5D14E /* Player.swift */; };
+		7BC397B61B963EF800E5D14E /* JumpArrowMark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC397B51B963EF800E5D14E /* JumpArrowMark.swift */; };
 		DB2DF5C81AF32D6B002CB009 /* Smoke.sks in Resources */ = {isa = PBXBuildFile; fileRef = DB2DF5C61AF32D6B002CB009 /* Smoke.sks */; };
 		DB2DF5C91AF32D6B002CB009 /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = DB2DF5C71AF32D6B002CB009 /* spark.png */; };
 		DB2DF5CC1AF32F71002CB009 /* MyParticle2.sks in Resources */ = {isa = PBXBuildFile; fileRef = DB2DF5CA1AF32F71002CB009 /* MyParticle2.sks */; };
@@ -41,6 +46,11 @@
 /* Begin PBXFileReference section */
 		7B714E471B7E897B00433557 /* ChibiNin.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChibiNin.pch; sourceTree = "<group>"; };
 		7B714E481B811BD100433557 /* GameScene2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene2.swift; sourceTree = "<group>"; };
+		7BB9AD321B8B547000012108 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
+		7BC397AF1B8FB3AE00E5D14E /* GameScene3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene3.swift; sourceTree = "<group>"; };
+		7BC397B11B95002000E5D14E /* Character.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Character.swift; path = ../Character.swift; sourceTree = "<group>"; };
+		7BC397B31B962BDC00E5D14E /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		7BC397B51B963EF800E5D14E /* JumpArrowMark.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JumpArrowMark.swift; sourceTree = "<group>"; };
 		DB2DF5C61AF32D6B002CB009 /* Smoke.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Smoke.sks; sourceTree = "<group>"; };
 		DB2DF5C71AF32D6B002CB009 /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
 		DB2DF5CA1AF32F71002CB009 /* MyParticle2.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MyParticle2.sks; sourceTree = "<group>"; };
@@ -70,6 +80,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7BB9AD331B8B547000012108 /* iAd.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,6 +97,7 @@
 		DBDA2A471AC19328003DED4C = {
 			isa = PBXGroup;
 			children = (
+				7BB9AD321B8B547000012108 /* iAd.framework */,
 				DBDA2A521AC19328003DED4C /* ChibiNinja */,
 				DBDA2A6C1AC19328003DED4C /* ChibiNinjaTests */,
 				DBDA2A511AC19328003DED4C /* Products */,
@@ -108,18 +120,10 @@
 				DBDA2A571AC19328003DED4C /* GameScene.sks */,
 				DBDA2A5B1AC19328003DED4C /* GameViewController.swift */,
 				DBDA2A591AC19328003DED4C /* GameScene.swift */,
-				DB683ED41B0A0FC000975909 /* SpriteBlock.swift */,
 				7B714E481B811BD100433557 /* GameScene2.swift */,
-				DB683ED61B0A313400975909 /* TileMapMaker.swift */,
+				7BC397AF1B8FB3AE00E5D14E /* GameScene3.swift */,
 				DBDA2A5D1AC19328003DED4C /* Main.storyboard */,
 				DBDA2A601AC19328003DED4C /* Images.xcassets */,
-				DB2DF5C61AF32D6B002CB009 /* Smoke.sks */,
-				DB2DF5D21AF33039002CB009 /* MyParticle5.sks */,
-				DB2DF5CE1AF32F93002CB009 /* MyParticle3.sks */,
-				DB2DF5D01AF32FAA002CB009 /* MyParticle4.sks */,
-				DB2DF5CA1AF32F71002CB009 /* MyParticle2.sks */,
-				DB2DF5CB1AF32F71002CB009 /* bokeh.png */,
-				DB2DF5C71AF32D6B002CB009 /* spark.png */,
 				DBDA2A621AC19328003DED4C /* LaunchScreen.xib */,
 				DBDA2A531AC19328003DED4C /* Supporting Files */,
 				DB7593341AE0B938008A36D2 /* Wall.swift */,
@@ -130,6 +134,18 @@
 		DBDA2A531AC19328003DED4C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				7BC397B11B95002000E5D14E /* Character.swift */,
+				7BC397B31B962BDC00E5D14E /* Player.swift */,
+				DB683ED41B0A0FC000975909 /* SpriteBlock.swift */,
+				DB683ED61B0A313400975909 /* TileMapMaker.swift */,
+				7BC397B51B963EF800E5D14E /* JumpArrowMark.swift */,
+				DB2DF5C61AF32D6B002CB009 /* Smoke.sks */,
+				DB2DF5D21AF33039002CB009 /* MyParticle5.sks */,
+				DB2DF5CE1AF32F93002CB009 /* MyParticle3.sks */,
+				DB2DF5D01AF32FAA002CB009 /* MyParticle4.sks */,
+				DB2DF5CA1AF32F71002CB009 /* MyParticle2.sks */,
+				DB2DF5CB1AF32F71002CB009 /* bokeh.png */,
+				DB2DF5C71AF32D6B002CB009 /* spark.png */,
 				DBDA2A541AC19328003DED4C /* Info.plist */,
 				7B714E471B7E897B00433557 /* ChibiNin.pch */,
 			);
@@ -262,12 +278,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7BC397B21B95002000E5D14E /* Character.swift in Sources */,
 				DBDA2A5A1AC19328003DED4C /* GameScene.swift in Sources */,
 				DB7593351AE0B938008A36D2 /* Wall.swift in Sources */,
+				7BC397B61B963EF800E5D14E /* JumpArrowMark.swift in Sources */,
 				DB683ED71B0A313400975909 /* TileMapMaker.swift in Sources */,
 				7B714E491B811BD100433557 /* GameScene2.swift in Sources */,
 				DB683ED51B0A0FC000975909 /* SpriteBlock.swift in Sources */,
 				DBDA2A5C1AC19328003DED4C /* GameViewController.swift in Sources */,
+				7BC397B01B8FB3AE00E5D14E /* GameScene3.swift in Sources */,
+				7BC397B41B962BDD00E5D14E /* Player.swift in Sources */,
 				DBDA2A561AC19328003DED4C /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

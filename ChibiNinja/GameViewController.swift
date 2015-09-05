@@ -9,6 +9,7 @@
 import UIKit
 import SpriteKit
 
+
 //extension SKNode {
 //    class func unarchiveFromFile(file : NSString) -> SKNode? {
 //        if let path = NSBundle.mainBundle().pathForResource(file, ofType: "sks") {
@@ -29,11 +30,14 @@ class GameViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+      //  self.canDisplayBannerAds = true
 
 //        if let scene = GameScene.unarchiveFromFile("GameScene") as? GameScene {
             // Configure the view.
         
-        let scene = GameScene()
+        let scene = GameScene3()
         
         let skView = self.view as! SKView
         
@@ -45,11 +49,20 @@ class GameViewController: UIViewController {
             skView.ignoresSiblingOrder = true
             
             /* Set the scale mode to scale to fit the window */
-            //scene.scaleMode = .AspectFill
-            scene.scaleMode = .AspectFit
+            scene.scaleMode = .AspectFill
         
+        //MARK:
+        var gameSize = CGSize()
+        gameSize.width = 320
+        if skView.frame.size.height > 480 {
+            //iPhone5以降
+            gameSize.height = 568;
+        } else {
+            //iPhone4s
+            gameSize.height = 480;
+        }
         
-            scene.size = CGSize(width: self.view.bounds.width, height: self.view.bounds.height)
+            scene.size = gameSize
             //scene.size = skView.frame.size
             skView.presentScene(scene)
 //        }

@@ -44,3 +44,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 
+
+// リリース時はログの出力をしない
+//func println(object: Any) {
+//    #if DEBUG
+//        Swift.println(object)
+//    #endif
+//}
+

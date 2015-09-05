@@ -14,7 +14,7 @@ class GameScene2: SKScene , SKPhysicsContactDelegate{
     
     override func didMoveToView(view: SKView) {
     println(__FUNCTION__)
-        
+        make_FontName()
         
         
         let center = CGPoint(x: self.size.width / 2, y: self.size.height / 2)
@@ -33,23 +33,10 @@ class GameScene2: SKScene , SKPhysicsContactDelegate{
         p.position = center
 
 
-        
+        //重力設定
         self.physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame)
         
-        var str = [String]()
-        var count = 0
-        for familyname in UIFont.familyNames(){
-//            println(familyname)
-//            println(count++)
-            
-            for fontName in UIFont.fontNamesForFamilyName(familyname as! String) {
-                //println(fontName)
-                str.append(fontName as! String)
-            }
-            
-        }
         
-
         
         let label = SKLabelNode(fontNamed: str[22])
         label.text = str[22]
@@ -91,7 +78,7 @@ class GameScene2: SKScene , SKPhysicsContactDelegate{
         self.addChild(sprite)
         }
     }
-//    
+    
     
     //MARK:マップチップテクスチャー関連  ///////////////////////////////////////////////////////////////////
     
@@ -142,5 +129,23 @@ class GameScene2: SKScene , SKPhysicsContactDelegate{
          println(__FUNCTION__)
     }
   */
+    
+    //MARK: - フォント名の配列作成
+    var str = [String]()
+    func make_FontName()
+    {
+        
+        var count = 0
+        for familyname in UIFont.familyNames(){
+            
+            for fontName in UIFont.fontNamesForFamilyName(familyname as! String) {
+                //println(fontName)
+                str.append(fontName as! String)
+            }
+            
+        }
+    }
+    //MARK: -
+
 }
 

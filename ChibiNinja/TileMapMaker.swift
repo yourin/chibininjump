@@ -541,7 +541,10 @@ class TileMapMaker {
         let width = CGFloat(HorizontaCount) * tex.size().width
         let height = CGFloat(VerticalCount) * tex.size().height
         
-        let baseSprite = SKSpriteNode(color: SKColor.clearColor(), size: CGSize(width: width, height: height))
+        let baseSprite = SKSpriteNode(color: SKColor.clearColor(),
+            size: CGSize(
+                width: width,
+                height: height))
         //左下原点
         baseSprite.anchorPoint = CGPoint(x: 0, y: 0)
         
