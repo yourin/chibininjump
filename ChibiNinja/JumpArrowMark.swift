@@ -11,7 +11,7 @@ import SpriteKit
 
 class JumpArrowMark:SKLabelNode {
     
-    var arrowDuration:NSTimeInterval = 3.0
+    var arrowDuration:NSTimeInterval = 1.0
     var action:SKAction?
     
     override init(){

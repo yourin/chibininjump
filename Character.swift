@@ -22,6 +22,7 @@ class Character:SKSpriteNode {
     
     var direction:Direction!
     
+    
 //    init(){
 //        super.init(texture: texture, color: SKColor.clearColor(), size: texture.size())
 //        self.physicsBody = SKPhysicsBody(rectangleOfSize: self.size)

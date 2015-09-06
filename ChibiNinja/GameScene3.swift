@@ -19,17 +19,17 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
     var wallBG = SKNode()//壁用Node
     var scoreBG = SKNode()//スコア用Node
     
-    var player:SKSpriteNode!//player
+    var player:Player!//player
     var aryMapChipTexture:TileMapMaker!
     
-    var jumpArrow:SKLabelNode!
+    var jumpArrowMark:JumpArrowMark!
 
     
     //
     var beganPoint:CGPoint!
     
     //MARK:衝突カテゴリ
-    let ninjaCategory:      UInt32 = 0x1 << 1      //0001
+    let playerCategory:      UInt32 = 0x1 << 1      //0001
     let groundCategory:     UInt32 = 0x1 << 10
     let wallLeftCategory:   UInt32 = 0x1 << 11
     let wallRightCategory:  UInt32 = 0x1 << 12
@@ -87,8 +87,8 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         self.addChild(gameoverLine)
         gameoverLine.physicsBody = SKPhysicsBody(edgeLoopFromRect: gameoverLine.frame)
         gameoverLine.physicsBody?.categoryBitMask = gameoverLineCategory
-        gameoverLine.physicsBody?.contactTestBitMask = ninjaCategory
-        gameoverLine.physicsBody?.collisionBitMask = ninjaCategory
+        gameoverLine.physicsBody?.contactTestBitMask = playerCategory
+        gameoverLine.physicsBody?.collisionBitMask = playerCategory
         
         self.gameoverLine = gameoverLine
 
@@ -105,8 +105,8 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         let ground = aryMapChipTexture.make_MapChipRow_OriginLeft(mapNum: 1, HorizontaCount: 10, physics: true)
         ground.name = kGroundName
         ground.physicsBody?.categoryBitMask  = groundCategory
-        ground.physicsBody?.collisionBitMask = ninjaCategory
-        ground.physicsBody?.contactTestBitMask = ninjaCategory
+        ground.physicsBody?.collisionBitMask = playerCategory
+        ground.physicsBody?.contactTestBitMask = playerCategory
         
         ground.physicsBody?.restitution = 0.0 //跳ね返らない
 
@@ -138,6 +138,7 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         sprite.name = kLeftWallName
         
         sprite.physicsBody?.categoryBitMask = wallLeftCategory
+        sprite.physicsBody?.contactTestBitMask = playerCategory
         return sprite
     }
     //右の壁
@@ -152,6 +153,7 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         sprite.name = kRightWallName
         
         sprite.physicsBody?.categoryBitMask = wallRightCategory
+        sprite.physicsBody?.contactTestBitMask = playerCategory
         return sprite
     }
     
@@ -206,7 +208,7 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         
         
         
-      //  右の壁が在庫分表示されないバグあり
+      
         println("stockRightBlock = \(stock_RightBlock)")
         
         //右の壁 在庫がなくなるまで繰り返す
@@ -246,7 +248,7 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         self.addChild(player)
         self.player = player
 
-    }
+    }//プレイヤー作成
     
     func set_jumpArrow(){
         
@@ -256,14 +258,43 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         jumpArrowMark.set_rotation(minAngle: 90, maxAngle: -90)
         
         
-        player.addChild(jumpArrowMark)
         //        jumpArrowMark.hidden = true
+        jumpArrowMark.hidden = true
         
-        self.jumpArrow = jumpArrowMark
-        self.jumpArrow.hidden = true
+        player.addChild(jumpArrowMark)
+        
+        self.jumpArrowMark = jumpArrowMark
+        
+        self.jumpArrowMark.hidden = true
 
     }
     
+    //MARK:矢印の現在の方向からベクターを返す
+    func vectorTojumpArrowAngle() ->CGVector{
+        var vector = CGVector()
+        let player = self.childNodeWithName("player")
+        if let node = player?.childNodeWithName("arrowmark"){
+            let arrow = node as! JumpArrowMark
+            vector = arrow.jumpVector()
+            
+        }
+        return vector
+    }
+    //ジャンプする
+    func action_PlayerJump(){
+        
+        if self.player._isJumpNow  == false{
+            self.player.physicsBody?.dynamic = true
+//            self.player.physicsBody?.velocity = vectorTojumpArrowAngle()
+            self.player.jump(vectorTojumpArrowAngle())
+            self.player._isJumpNow      = true
+            self.jumpArrowMark.hidden   = true
+        }else{
+            println("ジャンプ中なのでジャンプできない")
+        }
+        
+    }
+
     
     
     //MARK: -
@@ -310,9 +341,65 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
     }
     //MARK: - 衝突処理
     func didBeginContact(contact: SKPhysicsContact) {
-        println(__FUNCTION__)
-        jumpArrow.hidden = false
+        println("\(__FUNCTION__) A:\(contact.bodyA.node?.name) B: \(contact.bodyB.node?.name)")
         
+        //地面
+        func ground(){
+            self.player.direction = .Front
+        }
+        //左の壁
+        func wallLeft(){
+            self.player.direction = .Left
+        }
+        //右の壁
+        func wallRight(){
+            self.player.direction = .Right
+        }
+
+        
+        
+        
+        
+        //地面か　壁か　敵か
+        let name = contact.bodyA.node?.name
+//        switch contact.bodyA.node?.name {
+        switch name! {
+        case kGroundName:
+            ground()
+        case kLeftWallName:
+            wallLeft()
+        case kRightWallName:
+            wallRight()
+        default: println("定義されていない")
+        }
+        
+        if contact.bodyA.node?.name == kGroundName{
+            ground()
+        }else
+        if contact.bodyA.node?.name == kLeftWallName{
+                
+                
+        }else
+        if contact.bodyA.node?.name == kRightWallName{
+                    
+                    
+        }
+       
+        
+        //プレイヤーのY位置と衝突スプライトのY位置から壁面（上、横、下）を返す
+        let wallPosY    = contact.bodyA.node?.position.y
+        let playerPosY  = contact.bodyB.node?.position.y
+        
+        
+        //ゴール
+        
+        func stop_Physics(){
+        self.player.physicsBody?.dynamic = false
+        
+            self.jumpArrowMark.hidden = false
+        
+        player._isJumpNow = false
+        }
         
     }
     
@@ -334,9 +421,9 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         
         for touch in (touches as! Set<UITouch>) {
             let location = touch.locationInNode(self)
-            if let node = self.childNodeWithName("player"){
-                node.physicsBody?.velocity = vectorTojumpArrowAngle()
-            }
+            //ジャンプする
+            self.action_PlayerJump()
+            
         }
     }
     
@@ -344,20 +431,18 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         
     }
     
+    
+    
     override func update(currentTime: NSTimeInterval) {
     
         
     }
-    
-    func vectorTojumpArrowAngle() ->CGVector{
-        var vector = CGVector()
-        let player = self.childNodeWithName("player")
-        if let node = player?.childNodeWithName("arrowmark"){
-            let arrow = node as! JumpArrowMark
-            vector = arrow.jumpVector()
-            
-        }
-        return vector
+    override func didEvaluateActions() {
+        
     }
+    override func didSimulatePhysics() {
+        
+    }
+    
     
 }
