@@ -419,12 +419,12 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
             println("up:\(wall_UpperPosY) down:\(wall_UnderPosY) player:\(player.position.y)")
             
             if wall_UpperPosY > player.position.y &&
-                wall_UnderPosY < player.position.y{
+                player.position.y > wall_UnderPosY{
                     println("横面に当たった")
                     wallSide = .Side
             }else
                 //下面よりプレイヤーのY位置が下の場合は下面に当たった
-                if player.position.y > wall_UnderPosY {
+                if player.position.y < wall_UnderPosY {
                     println("下面に当たった")
                     wallSide = .Bottom
             }
