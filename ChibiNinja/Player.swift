@@ -9,12 +9,23 @@
 import Foundation
 import SpriteKit
 
+enum State {
+    case Nomal
+    case WallLeft
+    case WallRight
+    case JumpLeft
+    case JumpRight
+    case Fall
+}
+
+
 class Player:Character {
     let nomalTexture = SKTexture(imageNamed: "ninja_front1.png")
     
     var jumpArrow = SKLabelNode(text: "↑")
     
     var _isJumpNow:Bool = false
+      var state:State!
     
     init(){
         super.init(texture: nomalTexture, color: SKColor.clearColor(), size: nomalTexture.size())
@@ -24,6 +35,7 @@ class Player:Character {
         self.physicsBody?.allowsRotation = false //衝突で角度変化しない
         self.name = "player"
         self.direction = .Front
+        self.state = .Nomal
     }
 
     required init?(coder aDecoder: NSCoder) {
