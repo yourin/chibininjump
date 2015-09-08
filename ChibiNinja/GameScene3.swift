@@ -339,67 +339,115 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         if _isDebugON{ self.debug() }
         
     }
+    
+    func stop_Physics(){
+        self.player.physicsBody?.dynamic = false
+        
+    }
+    
+    func show_JumpArrow(){
+        self.jumpArrowMark.hidden = false
+    }
+    func jump_OK(){
+        player._isJumpNow = false
+    }
+    
     //MARK: - 衝突処理
     func didBeginContact(contact: SKPhysicsContact) {
         println("\(__FUNCTION__) A:\(contact.bodyA.node?.name) B: \(contact.bodyB.node?.name)")
+
         
         //地面
         func ground(){
             self.player.direction = .Front
+            show_JumpArrow()
+            jump_OK()
         }
-        //左の壁
-        func wallLeft(){
-            self.player.direction = .Left
+
+        
+        if contact.bodyA.node?.name == kGroundName {
+            println("")
         }
-        //右の壁
-        func wallRight(){
-            self.player.direction = .Right
+        
+        //壁にあたった
+        func wall(){
+        //プレイヤーのY位置と衝突スプライトのY位置から壁面（上、横、下）を返す
+
+        //左の壁か、右の壁か
+        //壁の高さ 上面　下面　のY位置を保持する
+        let wall_UnderPosY  = contact.bodyA.node!.position.y
+        let wall_UpperPosY  = wall_UnderPosY + contact.bodyA.node!.frame.height
+            println("up:\(wall_UpperPosY) down:\(wall_UnderPosY) player:\(player.position.y)")
+//        let playerPosY      = contact.bodyB.node?.position.y
+
+        
+            //上面よりプレイヤーのY位置が上の場合は上面にあたった
+            if wall_UpperPosY > player.position.y {
+                println("上面に当たった")
+            
+            }else
+                //下面よりプレイヤーのY位置が下の場合は下面に当たった
+                if player.position.y > wall_UnderPosY {
+                    println("下面に当たった")
+            
+                
+            }else
+                //それ以外は横面に当たった
+                {
+                 println("横面に当たった")
+            }
+    
+        
+            //左の壁
+            func wallLeft(){
+                self.player.direction = .Left
+            }
+            //右の壁
+            func wallRight(){
+                self.player.direction = .Right
+            }
+
         }
+        
+        
+        
+        //MARK:衝突物に対しての処理
+        let name = contact.bodyA.node?.name
+        
+        switch name! {
+        case kGroundName:
+            ground()
+        case kLeftWallName:
+            wall()
+        case kRightWallName:
+            wall()
+        default: println("定義されていない")
+        }
+
 
         
         
         
         
-        //地面か　壁か　敵か
-        let name = contact.bodyA.node?.name
-//        switch contact.bodyA.node?.name {
-        switch name! {
-        case kGroundName:
-            ground()
-        case kLeftWallName:
-            wallLeft()
-        case kRightWallName:
-            wallRight()
-        default: println("定義されていない")
-        }
+//        //地面か　壁か　敵か
+//        
+//        if contact.bodyA.node?.name == kGroundName{
+//            ground()
+//        }else
+//        if contact.bodyA.node?.name == kLeftWallName{
+//                
+//                
+//        }else
+//        if contact.bodyA.node?.name == kRightWallName{
+//                    
+//                    
+//        }
+//       
         
-        if contact.bodyA.node?.name == kGroundName{
-            ground()
-        }else
-        if contact.bodyA.node?.name == kLeftWallName{
-                
-                
-        }else
-        if contact.bodyA.node?.name == kRightWallName{
-                    
-                    
-        }
-       
-        
-        //プレイヤーのY位置と衝突スプライトのY位置から壁面（上、横、下）を返す
-        let wallPosY    = contact.bodyA.node?.position.y
-        let playerPosY  = contact.bodyB.node?.position.y
         
         
         //ゴール
         
-        func stop_Physics(){
-        self.player.physicsBody?.dynamic = false
-        
-            self.jumpArrowMark.hidden = false
-        
-        player._isJumpNow = false
-        }
         
     }
     
