@@ -39,6 +39,8 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
     let wallRightCategory:  UInt32 = 0x1 << 12
 
     let gameoverLineCategory:UInt32 = 0x1 << 20
+    
+    let enemyCategory:UInt32        = 0x1 << 21
 
     //名前
     let kNinjaName      = "ninja"
@@ -347,14 +349,28 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
     
     func stop_Physics(){
         self.player.physicsBody?.dynamic = false
-        
     }
     
     func show_JumpArrow(){
         self.jumpArrowMark.hidden = false
     }
+    
+    func hidden_JumpArrow(){
+        self.jumpArrowMark.hidden = true
+
+    }
+    
     func jump_OK(){
+        show_JumpArrow()
         player._isJumpNow = false
+    }
+    func jump_NO(){
+        hidden_JumpArrow()
+        player._isJumpNow = true
+    }
+    
+    func change_PlayerState(){
+        
     }
     
     
@@ -391,9 +407,10 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
 
         
         //地面
-        func ground(){
+        func on_GroundAndUpperWall (){
+            //重力あり、ジャンプ可能
             self.player.direction = .Front
-            show_JumpArrow()
+            self.player.state = .Nomal
             jump_OK()
         }
 

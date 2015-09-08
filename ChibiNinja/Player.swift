@@ -24,13 +24,16 @@ class Player:Character {
     
     var jumpArrow = SKLabelNode(text: "↑")
     
-    var _isJumpNow:Bool = false
+    var _isJumpNow:Bool = true
       var state:State!
     
     init(){
         super.init(texture: nomalTexture, color: SKColor.clearColor(), size: nomalTexture.size())
-        self.physicsBody = SKPhysicsBody(circleOfRadius: self.size.height / 2)
-//        self.physicsBody = SKPhysicsBody(rectangleOfSize: self.size)
+//        self.physicsBody = SKPhysicsBody(circleOfRadius: self.size.height / 2)
+        let size = CGSize(
+            width: self.size.width * 0.9,
+            height: self.size.height * 0.9)
+        self.physicsBody = SKPhysicsBody(rectangleOfSize: size)
         self.physicsBody?.restitution = 0.0 //跳ね返らない
         self.physicsBody?.allowsRotation = false //衝突で角度変化しない
         self.name = "player"
