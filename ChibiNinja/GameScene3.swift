@@ -9,6 +9,12 @@
 import Foundation
 import SpriteKit
 
+enum WallSide {
+    case Upper
+    case Side
+    case Bottom
+}
+
 class GameScene3: SKScene,SKPhysicsContactDelegate {
     
     var _isDebugON = true
@@ -35,6 +41,8 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
     let wallRightCategory:  UInt32 = 0x1 << 12
 
     let gameoverLineCategory:UInt32 = 0x1 << 20
+    
+    let enemyCategory:UInt32        = 0x1 << 21
 
     //名前
     let kNinjaName      = "ninja"
@@ -42,6 +50,7 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
     let kRightWallName  = "rightwall"
     let kGroundName     = "ground"
     let kGameOverLineName = "gameoverline"
+    let kEnemyName          = "enemy"
 
 
     func debug(){
@@ -347,8 +356,19 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
     func show_JumpArrow(){
         self.jumpArrowMark.hidden = false
     }
+    
+    func hidden_JumpArrow(){
+        self.jumpArrowMark.hidden = true
+
+    }
+    
     func jump_OK(){
+        show_JumpArrow()
         player._isJumpNow = false
+    }
+    func jump_NO(){
+        hidden_JumpArrow()
+        player._isJumpNow = true
     }
     
     func change_PlayerState(){
@@ -362,57 +382,78 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         
         //地面
         func on_GroundAndUpperWall (){
-            
+            //重力あり、ジャンプ可能
             self.player.direction = .Front
             self.player.state = .Nomal
-            show_JumpArrow()
+            jump_OK()
+        }
+        
+        func on_BottomWall(){
+            self.player.state = .Fall
+            jump_NO()
+        }
+        
+        func onWall_Left(){
+            //重力停止
+            stop_Physics()
+            self.player.direction = .Left
+            self.player.state = .WallLeft
+            jump_OK()
+        }
+        func onWall_Right(){
+            stop_Physics()
+            self.player.direction = .Right
+            self.player.state = .WallRight
             jump_OK()
         }
 
-        
-        if contact.bodyA.node?.name == kGroundName {
-            println("")
-        }
+
         
         //壁にあたった
-        func wall(){
-        //プレイヤーのY位置と衝突スプライトのY位置から壁面（上、横、下）を返す
-
-        //左の壁か、右の壁か
-        //壁の高さ 上面　下面　のY位置を保持する
-        let wall_UnderPosY  = contact.bodyA.node!.position.y
-        let wall_UpperPosY  = wall_UnderPosY + contact.bodyA.node!.frame.height
+        func check_HitWallSide() -> WallSide{
+            var wallSide = WallSide.Upper
+            //プレイヤーのY位置と衝突スプライトのY位置から壁面（上、横、下）を返す
+            //壁の高さ 上面　下面　のY位置を保持する
+            let wall_UnderPosY  = contact.bodyA.node!.position.y
+            let wall_UpperPosY  = wall_UnderPosY + contact.bodyA.node!.frame.height
             println("up:\(wall_UpperPosY) down:\(wall_UnderPosY) player:\(player.position.y)")
-//        let playerPosY      = contact.bodyB.node?.position.y
-
-        
-            //上面よりプレイヤーのY位置が上の場合は上面にあたった
-            if wall_UpperPosY > player.position.y {
-                println("上面に当たった")
             
+            if wall_UpperPosY > player.position.y &&
+                wall_UnderPosY < player.position.y{
+                    println("横面に当たった")
+                    wallSide = .Side
             }else
                 //下面よりプレイヤーのY位置が下の場合は下面に当たった
                 if player.position.y > wall_UnderPosY {
                     println("下面に当たった")
-            
-                
-            }else
-                //それ以外は横面に当たった
-                {
-                 println("横面に当たった")
+                    wallSide = .Bottom
             }
-    
-        
-//            //左の壁
-//            func wallLeft(){
-//                self.player.direction = .Left
-//            }
-//            //右の壁
-//            func wallRight(){
-//                self.player.direction = .Right
-//            }
-
+            return wallSide
         }
+        
+// ***     ***********
+        if contact.bodyA.node?.name == kGroundName {
+            on_GroundAndUpperWall()
+        }else
+            if contact.bodyA.node?.name == kEnemyName{
+                println("敵にあたった")
+        }else{
+            let side = check_HitWallSide()
+            switch side {
+            case .Upper:
+                on_GroundAndUpperWall()
+            case .Bottom:
+                on_BottomWall()
+                
+            case .Side:
+                if contact.bodyA.node?.name == kLeftWallName{
+                    onWall_Left()
+                }else if contact.bodyA.node?.name == kRightWallName{
+                    onWall_Right()
+                }
+            }
+        }
+
     }
     
     
