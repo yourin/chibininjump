@@ -342,7 +342,6 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
     
     func stop_Physics(){
         self.player.physicsBody?.dynamic = false
-        
     }
     
     func show_JumpArrow(){
@@ -352,14 +351,20 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         player._isJumpNow = false
     }
     
+    func change_PlayerState(){
+        
+    }
+    
     //MARK: - 衝突処理
     func didBeginContact(contact: SKPhysicsContact) {
         println("\(__FUNCTION__) A:\(contact.bodyA.node?.name) B: \(contact.bodyB.node?.name)")
 
         
         //地面
-        func ground(){
+        func on_GroundAndUpperWall (){
+            
             self.player.direction = .Front
+            self.player.state = .Nomal
             show_JumpArrow()
             jump_OK()
         }
@@ -398,57 +403,16 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
             }
     
         
-            //左の壁
-            func wallLeft(){
-                self.player.direction = .Left
-            }
-            //右の壁
-            func wallRight(){
-                self.player.direction = .Right
-            }
+//            //左の壁
+//            func wallLeft(){
+//                self.player.direction = .Left
+//            }
+//            //右の壁
+//            func wallRight(){
+//                self.player.direction = .Right
+//            }
 
         }
-        
-        
-        
-        //MARK:衝突物に対しての処理
-        let name = contact.bodyA.node?.name
-        
-        switch name! {
-        case kGroundName:
-            ground()
-        case kLeftWallName:
-            wall()
-        case kRightWallName:
-            wall()
-        default: println("定義されていない")
-        }
-
-
-        
-        
-        
-        
-//        //地面か　壁か　敵か
-//        
-//        if contact.bodyA.node?.name == kGroundName{
-//            ground()
-//        }else
-//        if contact.bodyA.node?.name == kLeftWallName{
-//                
-//                
-//        }else
-//        if contact.bodyA.node?.name == kRightWallName{
-//                    
-//                    
-//        }
-//       
-        
-        
-        
-        //ゴール
-        
-        
     }
     
     
