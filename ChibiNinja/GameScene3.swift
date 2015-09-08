@@ -8,7 +8,11 @@
 
 import Foundation
 import SpriteKit
-
+enum Side {
+    case Upper
+    case Side
+    case Lower
+}
 class GameScene3: SKScene,SKPhysicsContactDelegate {
     
     var _isDebugON = true
@@ -42,6 +46,7 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
     let kRightWallName  = "rightwall"
     let kGroundName     = "ground"
     let kGameOverLineName = "gameoverline"
+    let kEnemyName      = "enemy"
 
 
     func debug(){
@@ -352,6 +357,34 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         player._isJumpNow = false
     }
     
+    
+    func show_Arrow(){
+        self.jumpArrowMark.hidden = false
+    }
+    
+    //壁面チェック
+    func check_WallSide(#lower:CGFloat,upper:CGFloat,pos:CGFloat) -> Side{
+        
+        var wallSide = Side.Side
+        
+        if pos > lower && pos < upper{
+            println("横壁に当たった")
+            //            self.stop_Physics()
+            //            //self.player.direction = .Left
+            //           // wallSide = Side.Side
+            
+        }else if pos < lower{
+            println("壁　下")
+            wallSide = Side.Lower
+        }else if pos > upper{
+            println("壁　上")
+            wallSide = Side.Upper
+        }
+        return wallSide
+        
+    }
+
+    
     //MARK: - 衝突処理
     func didBeginContact(contact: SKPhysicsContact) {
         println("\(__FUNCTION__) A:\(contact.bodyA.node?.name) B: \(contact.bodyB.node?.name)")
@@ -364,56 +397,33 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
             jump_OK()
         }
 
-        
-        if contact.bodyA.node?.name == kGroundName {
-            println("")
+        func wall() ->Side{
+            //プレイヤーのY位置　壁の高さ
+            let wallLimit_Lower = contact.bodyA.node!.position.y
+            let wallLimit_Upper = wallLimit_Lower + contact.bodyA.node!.frame.size.height
+            let playerPosY  = contact.bodyB.node!.position.y
+            
+            //壁面チェック
+            let wallside = check_WallSide(
+                lower: wallLimit_Lower,
+                upper: wallLimit_Upper,
+                pos: playerPosY)
+            
+            return wallside
+            
+            //            switch wallside {
+            //            case .Lower:
+            //                println("下面にあたった")
+            //            case .Side:
+            //                println("横面にあたった")
+            //            case .Upper:
+            //                println("上面にあたった")
+            //            }
+            
         }
         
-        //壁にあたった
-        func wall(){
-        //プレイヤーのY位置と衝突スプライトのY位置から壁面（上、横、下）を返す
-
-        //左の壁か、右の壁か
-        //壁の高さ 上面　下面　のY位置を保持する
-        let wall_UnderPosY  = contact.bodyA.node!.position.y
-        let wall_UpperPosY  = wall_UnderPosY + contact.bodyA.node!.frame.height
-            println("up:\(wall_UpperPosY) down:\(wall_UnderPosY) player:\(player.position.y)")
-//        let playerPosY      = contact.bodyB.node?.position.y
-
-        
-            //上面よりプレイヤーのY位置が上の場合は上面にあたった
-            if wall_UpperPosY > player.position.y {
-                println("上面に当たった")
-            
-            }else
-                //下面よりプレイヤーのY位置が下の場合は下面に当たった
-                if player.position.y > wall_UnderPosY {
-                    println("下面に当たった")
-            
-                
-            }else
-                //それ以外は横面に当たった
-                {
-                 println("横面に当たった")
-            }
-    
-        
-            //左の壁
-            func wallLeft(){
-                self.player.direction = .Left
-            }
-            //右の壁
-            func wallRight(){
-                self.player.direction = .Right
-            }
-
-        }
-        
-        
-        
-        //MARK:衝突物に対しての処理
         let name = contact.bodyA.node?.name
-        
+        //        switch contact.bodyA.node?.name {
         switch name! {
         case kGroundName:
             ground()
@@ -421,33 +431,12 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
             wall()
         case kRightWallName:
             wall()
+        case kEnemyName:
+            println("enemy")
+        case kGameOverLineName:
+            println("ゲームオーバー")
         default: println("定義されていない")
         }
-
-
-        
-        
-        
-        
-//        //地面か　壁か　敵か
-//        
-//        if contact.bodyA.node?.name == kGroundName{
-//            ground()
-//        }else
-//        if contact.bodyA.node?.name == kLeftWallName{
-//                
-//                
-//        }else
-//        if contact.bodyA.node?.name == kRightWallName{
-//                    
-//                    
-//        }
-//       
-        
-        
-        
-        //ゴール
-        
         
     }
     
