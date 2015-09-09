@@ -51,8 +51,8 @@ class Player:Character {
     
     init(){
         super.init(texture: nomalTexture, color: SKColor.clearColor(), size: nomalTexture.size())
-        self.physicsBody = SKPhysicsBody(
-            circleOfRadius: self.size.height / 2)
+        self.physicsBody =
+            SKPhysicsBody(circleOfRadius: self.size.height / 3)
 //        let size = CGSize(
 //            width: self.size.width * 0.9,
 //            height: self.size.height * 0.9)

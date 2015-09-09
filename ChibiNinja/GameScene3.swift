@@ -118,6 +118,7 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         ground.physicsBody?.contactTestBitMask = playerCategory
         
         ground.physicsBody?.restitution = 0.0 //跳ね返らない
+        ground.physicsBody?.friction = 0.0
 
         
         wallBG.addChild(ground)
@@ -148,6 +149,8 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         
         sprite.physicsBody?.categoryBitMask = wallLeftCategory
         sprite.physicsBody?.contactTestBitMask = playerCategory
+        sprite.physicsBody?.restitution = 0.0 //跳ね返らない
+        sprite.physicsBody?.friction = 1.0
         return sprite
     }
     //右の壁
@@ -163,6 +166,8 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         
         sprite.physicsBody?.categoryBitMask = wallRightCategory
         sprite.physicsBody?.contactTestBitMask = playerCategory
+        sprite.physicsBody?.restitution = 0.0 //跳ね返らない
+        sprite.physicsBody?.friction = 1.0
         return sprite
     }
     
@@ -262,21 +267,37 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
     func set_jumpArrow(){
         
         let jumpArrowMark = JumpArrowMark()
+
         jumpArrowMark.name = "arrowmark"
         //        jumpArrowMark.zRotation = CGFloat(M_PI_2)
-        jumpArrowMark.set_rotation(minAngle: 90, maxAngle: -90)
+        jumpArrowMark.set_Rotation(minAngle: 90, maxAngle: -90)
+//        jumpArrowMark.minimumAngle = 90
+//        jumpArrowMark.maximumAngle = -90
+//        jumpArrowMark.set_Rotation()
         
         
-        //        jumpArrowMark.hidden = true
         jumpArrowMark.hidden = true
-        
         player.addChild(jumpArrowMark)
         
         self.jumpArrowMark = jumpArrowMark
         
         self.jumpArrowMark.hidden = true
-
     }
+    func chenge_jumpArrowDirection_Left(){
+        jumpArrowMark.set_Rotation(minAngle: 90.0, maxAngle: 0)
+//       jumpArrowMark.minimumAngle = 0.0
+//        jumpArrowMark.maximumAngle = 90.0
+//        jumpArrowMark.set_Rotation()
+        
+    }
+    func chenge_jumpArrowDirection_Right(){
+        jumpArrowMark.set_Rotation(minAngle: -90.0, maxAngle: 0)
+//        jumpArrowMark.minimumAngle = 0.0
+//        jumpArrowMark.maximumAngle = -90.0
+//        jumpArrowMark.set_Rotation()
+        
+    }
+
     
     //MARK:矢印の現在の方向からベクターを返す
     func vectorTojumpArrowAngle() ->CGVector{
@@ -407,12 +428,14 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
             stop_Physics()
             self.player.direction = .Left
             self.player.chenge_State(State.WallLeft)
+            chenge_jumpArrowDirection_Right()
             jump_OK()
         }
         func onWall_Right(){
             stop_Physics()
             self.player.direction = .Right
             self.player.chenge_State(State.WallRight)
+            chenge_jumpArrowDirection_Left()
             jump_OK()
         }
 
@@ -420,6 +443,8 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         
         //壁にあたった
         func check_HitWallSide() -> WallSide{
+            
+            //仮に上面にセット
             var wallSide = WallSide.Upper
             //プレイヤーのY位置と衝突スプライトのY位置から壁面（上、横、下）を返す
             //壁の高さ 上面　下面　のY位置を保持する
@@ -457,7 +482,8 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
             case .Side:
                 if contact.bodyA.node?.name == kLeftWallName{
                     onWall_Left()
-                }else if contact.bodyA.node?.name == kRightWallName{
+                }else
+                if contact.bodyA.node?.name == kRightWallName{
                     onWall_Right()
                 }
             }

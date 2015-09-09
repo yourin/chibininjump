@@ -13,6 +13,8 @@ class JumpArrowMark:SKLabelNode {
     
     var arrowDuration:NSTimeInterval = 1.0
     var action:SKAction?
+    var minimumAngle:Double!
+    var maximumAngle:Double!
     
     override init(){
         super.init()
@@ -23,6 +25,8 @@ class JumpArrowMark:SKLabelNode {
         self.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
         self.verticalAlignmentMode = SKLabelVerticalAlignmentMode.Bottom
         
+        self.minimumAngle = 0.0
+        self.maximumAngle = 360.0
 //        set_rotation(minAngle: 0, maxAngle: 360)
 //        let timer = NSTimer.scheduledTimerWithTimeInterval(1/30, target: self, selector: "update", userInfo: nil, repeats: true)
         
@@ -33,22 +37,47 @@ class JumpArrowMark:SKLabelNode {
     }
     
     //時計の文字盤の角度指定ができる
-    func clockAngle(startTime:Int,endTime:Int){
-        
-        
-        
-        
+    func clockAngle(#directionTime:Int){
         
     }
     
+    func durationTime() -> NSTimeInterval{
+        var max = self.maximumAngle
+        var min = self.minimumAngle
+        if max < min {
+            min = self.maximumAngle
+            max = self.minimumAngle
+        }
+        
+        println("durationTime = \(NSTimeInterval((max - min) / 180))")
+        return NSTimeInterval((max - min) / 180)
+    }
+   
+    func set_Rotation(){
+        self.zRotation = DegreeToRadian(self.minimumAngle)
+        
+        let action = SKAction.sequence([
+            
+            SKAction.rotateToAngle(DegreeToRadian(self.minimumAngle), duration: durationTime()),
+            SKAction.rotateToAngle(DegreeToRadian(self.maximumAngle), duration: durationTime())
+            ])
+  
+        action.timingMode = SKActionTimingMode.EaseInEaseOut
+        self.runAction(SKAction.repeatActionForever(action))
+
+        
+    }
     
-    func set_rotation(#minAngle:Double,maxAngle:Double){
+    func set_Rotation(#minAngle:Double,maxAngle:Double){
+        if self.hasActions(){
+            self.removeAllActions()
+        }
         self.zRotation = DegreeToRadian(minAngle)
         
         let action = SKAction.sequence([
             
-            SKAction.rotateToAngle(DegreeToRadian(minAngle), duration: arrowDuration),
-            SKAction.rotateToAngle(DegreeToRadian(maxAngle), duration: arrowDuration)
+            SKAction.rotateToAngle(DegreeToRadian(minAngle), duration: durationTime()),
+            SKAction.rotateToAngle(DegreeToRadian(maxAngle), duration: durationTime())
 
             ])
         action.timingMode = SKActionTimingMode.EaseInEaseOut
