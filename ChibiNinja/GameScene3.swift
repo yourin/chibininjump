@@ -9,11 +9,6 @@
 import Foundation
 import SpriteKit
 
-enum WallSide {
-    case Upper
-    case Side
-    case Bottom
-}
 
 class GameScene3: SKScene,SKPhysicsContactDelegate {
     
@@ -26,8 +21,8 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
     var scoreBG = SKNode()//スコア用Node
     
     var player:Player!//player
-    var aryMapChipTexture:TileMapMaker!
-    
+//    var aryMapChipTexture:TileMapMaker!
+    var aryMapChipTexture:WallMaker!
     var jumpArrowMark:JumpArrowMark!
 
     
@@ -104,7 +99,9 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
     }
     //MARK:マップチップテクスチャー作成
     func make_MapChipTexture(){
-        aryMapChipTexture = TileMapMaker(textureFileName: "map", numberOfColumns: 8, numberOfRows: 16)
+        
+        aryMapChipTexture = WallMaker(textureFileName: "map", numberOfColumns: 8, numberOfRows: 16)
+//        aryMapChipTexture = TileMapMaker(textureFileName: "map", numberOfColumns: 8, numberOfRows: 16)
         println("mapchip = \(aryMapChipTexture.mapChip.count)")
 
     }
@@ -383,21 +380,18 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         println("\(__FUNCTION__) A:\(contact.bodyA.node?.name) B: \(contact.bodyB.node?.name)")
 
         
-        //地面
         func on_GroundAndUpperWall (){
             //重力あり、ジャンプ可能
             self.player.direction = .Front
             self.player.chenge_State(State.Nomal)
             change_jumpAroowDirection_Nomal()
             jump_OK()
-        }
-        
+        }//地面
         func on_BottomWall(){
             self.player.chenge_State(State.Fall)
             jump_NO()
             self.player.physicsBody?.velocity = CGVector(dx: 0, dy: -1)
-        }
-        
+        }//壁下
         func onWall_Left(){
             //重力停止
             stop_Physics()
@@ -405,20 +399,18 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
             self.player.chenge_State(State.WallLeft)
             chenge_jumpArrowDirection_Right()
             jump_OK()
-        }
+        }//左壁　横
         func onWall_Right(){
             stop_Physics()
             self.player.direction = .Right
             self.player.chenge_State(State.WallRight)
             chenge_jumpArrowDirection_Left()
             jump_OK()
-        }
-
-
+        }//右壁　横
         
-        //壁にあたった
+        //壁にあたった 
+/*
         func check_HitWallSide() -> WallSide{
-            
             //仮に上面にセット
             var wallSide = WallSide.Upper
             //プレイヤーのY位置と衝突スプライトのY位置から壁面（上、横、下）を返す
@@ -439,7 +431,8 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
             }
             return wallSide
         }
-        
+*/
+    
 // ***     ***********
         if contact.bodyA.node?.name == kGroundName {
             on_GroundAndUpperWall()
@@ -447,7 +440,8 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
             if contact.bodyA.node?.name == kEnemyName{
                 println("敵にあたった")
         }else{
-            let side = check_HitWallSide()
+            let side = WallMaker.check_HitWallSide(contact: contact)
+//            let side = check_HitWallSide()
             switch side {
             case .Upper:
                 on_GroundAndUpperWall()
@@ -466,11 +460,21 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
 
     }
     
+    func panelTouch_Start(#location:CGPoint){
+        _isTouchON = true
+    }
+    func panelTouch_Ended(#location:CGPoint){
+        //ジャンプする
+        self.action_PlayerJump()
+        _isTouchON = false
+    }
     
     //MARK: - タッチ処理
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+        
         for touch in (touches as! Set<UITouch>) {
             let location = touch.locationInNode(self)
+            self.panelTouch_Start(location: location)
         }
     }
     
@@ -484,11 +488,13 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         
         for touch in (touches as! Set<UITouch>) {
             let location = touch.locationInNode(self)
-            //ジャンプする
-            self.action_PlayerJump()
+            
+            self.panelTouch_Ended(location: location)
+        
             
         }
-    }
+        
+         }
     
     override func touchesCancelled(touches: Set<NSObject>!, withEvent event: UIEvent!) {
         

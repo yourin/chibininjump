@@ -13,6 +13,7 @@
 		7BC397B21B95002000E5D14E /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC397B11B95002000E5D14E /* Character.swift */; };
 		7BC397B41B962BDD00E5D14E /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC397B31B962BDC00E5D14E /* Player.swift */; };
 		7BC397B61B963EF800E5D14E /* JumpArrowMark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC397B51B963EF800E5D14E /* JumpArrowMark.swift */; };
+		7BC397EA1BA22D6A00E5D14E /* WallMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC397E91BA22D6A00E5D14E /* WallMaker.swift */; };
 		DB2DF5C81AF32D6B002CB009 /* Smoke.sks in Resources */ = {isa = PBXBuildFile; fileRef = DB2DF5C61AF32D6B002CB009 /* Smoke.sks */; };
 		DB2DF5C91AF32D6B002CB009 /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = DB2DF5C71AF32D6B002CB009 /* spark.png */; };
 		DB2DF5CC1AF32F71002CB009 /* MyParticle2.sks in Resources */ = {isa = PBXBuildFile; fileRef = DB2DF5CA1AF32F71002CB009 /* MyParticle2.sks */; };
@@ -51,6 +52,7 @@
 		7BC397B11B95002000E5D14E /* Character.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Character.swift; path = ../Character.swift; sourceTree = "<group>"; };
 		7BC397B31B962BDC00E5D14E /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		7BC397B51B963EF800E5D14E /* JumpArrowMark.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JumpArrowMark.swift; sourceTree = "<group>"; };
+		7BC397E91BA22D6A00E5D14E /* WallMaker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WallMaker.swift; sourceTree = "<group>"; };
 		DB2DF5C61AF32D6B002CB009 /* Smoke.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Smoke.sks; sourceTree = "<group>"; };
 		DB2DF5C71AF32D6B002CB009 /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
 		DB2DF5CA1AF32F71002CB009 /* MyParticle2.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MyParticle2.sks; sourceTree = "<group>"; };
@@ -139,6 +141,7 @@
 				DB683ED41B0A0FC000975909 /* SpriteBlock.swift */,
 				DB683ED61B0A313400975909 /* TileMapMaker.swift */,
 				7BC397B51B963EF800E5D14E /* JumpArrowMark.swift */,
+				7BC397E91BA22D6A00E5D14E /* WallMaker.swift */,
 				DB2DF5C61AF32D6B002CB009 /* Smoke.sks */,
 				DB2DF5D21AF33039002CB009 /* MyParticle5.sks */,
 				DB2DF5CE1AF32F93002CB009 /* MyParticle3.sks */,
@@ -288,6 +291,7 @@
 				DBDA2A5C1AC19328003DED4C /* GameViewController.swift in Sources */,
 				7BC397B01B8FB3AE00E5D14E /* GameScene3.swift in Sources */,
 				7BC397B41B962BDD00E5D14E /* Player.swift in Sources */,
+				7BC397EA1BA22D6A00E5D14E /* WallMaker.swift in Sources */,
 				DBDA2A561AC19328003DED4C /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
