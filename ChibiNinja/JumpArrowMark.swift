@@ -37,9 +37,22 @@ class JumpArrowMark:SKLabelNode {
     }
     
     //時計の文字盤の角度指定ができる
-    func clockAngle(#directionTime:Int){
+//    func clockAngle(#directionTime:Int) -> Double{
+//        switch directionTime {
+//        
+//        
+//        
+//        case 0...5:
+//            println()
+//            
+//        case 7...11:
+//            return 180
+//            
+//        default:println("")
+//            
+//        }
         
-    }
+//    }
     
     func durationTime() -> NSTimeInterval{
         var max = self.maximumAngle
@@ -48,8 +61,8 @@ class JumpArrowMark:SKLabelNode {
             min = self.maximumAngle
             max = self.minimumAngle
         }
-        
-        println("durationTime = \(NSTimeInterval((max - min) / 180))")
+        println("max = \(max),min = \(min)")
+        println("durationTime = \(NSTimeInterval((max - min) / 90))")
         return NSTimeInterval((max - min) / 180)
     }
    
@@ -72,6 +85,10 @@ class JumpArrowMark:SKLabelNode {
         if self.hasActions(){
             self.removeAllActions()
         }
+        
+        self.minimumAngle = minAngle
+        self.maximumAngle = maxAngle
+        
         self.zRotation = DegreeToRadian(minAngle)
         
         let action = SKAction.sequence([

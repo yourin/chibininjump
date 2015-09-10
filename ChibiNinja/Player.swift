@@ -69,6 +69,18 @@ class Player:Character {
     }
     
     func jump(vector:CGVector){
+        
+        
+        println("vector = \(vector.dx)")
+        
+        if vector.dx < 0 {
+            //左にジャンプ
+            self.chenge_State(State.JumpLeft)
+        }else{
+            //右にジャンプ
+            self.chenge_State(State.JumpRight)
+        }
+
         self.physicsBody?.velocity = vector
     }
     

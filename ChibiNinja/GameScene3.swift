@@ -118,7 +118,7 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         ground.physicsBody?.contactTestBitMask = playerCategory
         
         ground.physicsBody?.restitution = 0.0 //跳ね返らない
-        ground.physicsBody?.friction = 0.0
+        ground.physicsBody?.friction = 1.0
 
         
         wallBG.addChild(ground)
@@ -267,35 +267,21 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
     func set_jumpArrow(){
         
         let jumpArrowMark = JumpArrowMark()
-
         jumpArrowMark.name = "arrowmark"
-        //        jumpArrowMark.zRotation = CGFloat(M_PI_2)
-        jumpArrowMark.set_Rotation(minAngle: 90, maxAngle: -90)
-//        jumpArrowMark.minimumAngle = 90
-//        jumpArrowMark.maximumAngle = -90
-//        jumpArrowMark.set_Rotation()
-        
-        
-        jumpArrowMark.hidden = true
         player.addChild(jumpArrowMark)
         
         self.jumpArrowMark = jumpArrowMark
-        
         self.jumpArrowMark.hidden = true
+    }
+    
+    func change_jumpAroowDirection_Nomal(){
+        jumpArrowMark.set_Rotation(minAngle: 90, maxAngle: -90)
     }
     func chenge_jumpArrowDirection_Left(){
         jumpArrowMark.set_Rotation(minAngle: 90.0, maxAngle: 0)
-//       jumpArrowMark.minimumAngle = 0.0
-//        jumpArrowMark.maximumAngle = 90.0
-//        jumpArrowMark.set_Rotation()
-        
     }
     func chenge_jumpArrowDirection_Right(){
         jumpArrowMark.set_Rotation(minAngle: -90.0, maxAngle: 0)
-//        jumpArrowMark.minimumAngle = 0.0
-//        jumpArrowMark.maximumAngle = -90.0
-//        jumpArrowMark.set_Rotation()
-        
     }
 
     
@@ -315,18 +301,6 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         
         if self.player._isJumpNow  == false{
             start_Physics()
-//            self.player.physicsBody?.dynamic = true
-            
-            let vector:CGVector! = vectorTojumpArrowAngle()
-    println("vector = \(vector.dx)")
-            
-            if vector.dx < 0 {
-                //左にジャンプ
-                self.player.chenge_State(State.JumpLeft)
-            }else{
-                //右にジャンプ
-                self.player.chenge_State(State.JumpRight)
-            }
             self.player.jump(vectorTojumpArrowAngle())
             jump_NO()
             hidden_JumpArrow()
@@ -414,6 +388,7 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
             //重力あり、ジャンプ可能
             self.player.direction = .Front
             self.player.chenge_State(State.Nomal)
+            change_jumpAroowDirection_Nomal()
             jump_OK()
         }
         
