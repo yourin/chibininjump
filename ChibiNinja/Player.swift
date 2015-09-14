@@ -70,19 +70,22 @@ class Player:Character {
     
     func jump(vector:CGVector){
         
-        
         println("vector = \(vector.dx)")
         
         if vector.dx < 0 {
             //左にジャンプ
             self.chenge_State(State.JumpLeft)
+//            self.jumpAnimation(State.JumpLeft)
         }else{
             //右にジャンプ
             self.chenge_State(State.JumpRight)
+//            self.jumpAnimation(State.JumpRight)
         }
 
         self.physicsBody?.velocity = vector
     }
+   
+    
     
     func change_Direction(newDirection:Direction){
         println(__FUNCTION__)
@@ -101,6 +104,30 @@ class Player:Character {
         }
     }
     
+    func jumpAnimation(){
+        switch self.state! {
+        case .JumpLeft:
+//            var pt = self.position
+//            var vector = self.physicsBody?.velocity
+//            var radian :CGFloat = atan2(
+//                (pt.y + vector!.dy) - pt.y ,
+//                (pt.x + vector!.dx) - pt.x)
+//            self.zRotation = radian
+        self.zRotation = 0
+        case .JumpRight:
+            var pt = self.position
+            var vector = self.physicsBody?.velocity
+            var radian :CGFloat = atan2(
+                (pt.y + vector!.dy) - pt.y ,
+                (pt.x + vector!.dx) - pt.x)
+            self.zRotation = radian
+        default:
+            self.zRotation = 0
+        }
+        
+    }
+    
+    //ステータスの変更があった場合は
     func chenge_State(newState:State){
         if self.state != newState {
             self.state = newState
@@ -108,11 +135,13 @@ class Player:Character {
         }
     }
     
-    
+    //テクスチャーを変更する
     func chenge_Texture(){
         println(__FUNCTION__)
         self.texture = self.state.texture()
     }
+    
+    
 
 
 }

@@ -126,7 +126,7 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
     
 
     //壁作成のための 変数
-    let stock_NumberOfVertical:UInt32 = 16//縦の在庫数
+    let stock_NumberOfVertical:UInt32 = 32//縦の在庫数
     var nextPosY_LeftWall:CGFloat = 0//次の縦位置　左
     var nextPosY_RightWall:CGFloat = 0//次の縦位置　右
 
@@ -250,6 +250,7 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         println("右壁縦の個数 = \(wallRight_VerticalNumber)")
         
     }
+    //MARK:プレイヤー作成
     func set_Player(){
         let player = Player()
         
@@ -257,6 +258,7 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         player.setScale(2.0)
         self.addChild(player)
         self.player = player
+        self.player._isJumpNow = true
 
     }//プレイヤー作成
     
@@ -292,11 +294,12 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         }
         return vector
     }
-    //ジャンプする
+    //MARK:ジャンプする
     func action_PlayerJump(){
-        
+        //
         if self.player._isJumpNow  == false{
             start_Physics()
+            
             self.player.jump(vectorTojumpArrowAngle())
             jump_NO()
             hidden_JumpArrow()
@@ -509,7 +512,12 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         
     }
     override func didSimulatePhysics() {
-        
+        if self.player._isJumpNow == true{
+            self.player.jumpAnimation()
+         }else{
+            println("ジャンプ中じゃない")
+            self.player.zRotation = 0
+        }
     }
     
     
