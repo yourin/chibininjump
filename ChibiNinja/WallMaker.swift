@@ -18,33 +18,47 @@ enum WallSide {
 
 class WallMaker: TileMapMaker {
     
-//    func wallSide(contact: SKPhysicsContact) -> WallSide{
-//        
-//    }
     
+    //プレイヤーのY位置と衝突スプライトのY位置から壁面（上、横、下）を返す
     class func check_HitWallSide(#contact: SKPhysicsContact) -> WallSide{
         
-        //仮に上面にセット
-        var wallSide = WallSide.Upper
-        //プレイヤーのY位置と衝突スプライトのY位置から壁面（上、横、下）を返す
-        //壁の高さ 上面　下面　のY位置を保持する
-        let wall_UnderPosY  = contact.bodyA.node!.position.y
-        let wall_UpperPosY  = wall_UnderPosY + contact.bodyA.node!.frame.height
-        let playerPosY = contact.bodyB.node?.position.y
-        println("up:\(wall_UpperPosY) down:\(wall_UnderPosY) player:\(playerPosY)")
+        println("コンタクトポイント　\(contact.contactPoint)")
         
-        if wall_UpperPosY > playerPosY &&
-            playerPosY > wall_UnderPosY{
-                println("横面に当たった")
-                wallSide = .Side
+        //横面にセット
+        var wallSide = WallSide.Side
+        
+        
+        let wallNode    = contact.bodyA.node as! SKSpriteNode
+        let player      = contact.bodyB.node as! SKSpriteNode
+        
+        var x0:CGFloat!
+        var x1:CGFloat!
+        //横幅を設定　x0 - x1
+        if contact.bodyA.node?.name == "leftwall"{
+            x0 = wallNode.position.x
+            x1 = x0 + wallNode.frame.width
+        println("Left ")
         }else
-            //下面よりプレイヤーのY位置が下の場合は下面に当たった
-            if playerPosY < wall_UnderPosY {
-                println("下面に当たった")
-                wallSide = .Bottom
-            }else{
-                println("上面に当たった")
+        if contact.bodyA.node?.name == "rightwall"{
+            x1 = wallNode.position.x
+            x0 = x1 - wallNode.frame.width
+            print("Right ")
         }
+        println("wall　\(x0) - \(x1)")
+        println("contactPoint = \(contact.contactPoint)")
+        
+        if x0 < contact.contactPoint.x &&
+            x1 > contact.contactPoint.x{
+                println("プレイヤーは壁の上か下にいる")
+                if wallNode.position.y + wallNode.frame.height
+                    < contact.contactPoint.y{
+                        wallSide = WallSide.Upper
+                }else
+                    if wallNode.position.y > contact.contactPoint.y{
+                        wallSide = WallSide.Bottom
+                }
+        }
+    
         return wallSide
     }
 }

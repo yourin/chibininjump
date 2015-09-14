@@ -127,7 +127,6 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
 
     //壁作成のための 変数
     let stock_NumberOfVertical:UInt32 = 16//縦の在庫数
-
     var nextPosY_LeftWall:CGFloat = 0//次の縦位置　左
     var nextPosY_RightWall:CGFloat = 0//次の縦位置　右
 
@@ -271,7 +270,7 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         self.jumpArrowMark.hidden = true
     }
     
-    func change_jumpAroowDirection_Nomal(){
+    func change_jumpArrowDirection_Nomal(){
         jumpArrowMark.set_Rotation(minAngle: 90, maxAngle: -90)
     }
     func chenge_jumpArrowDirection_Left(){
@@ -384,7 +383,7 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
             //重力あり、ジャンプ可能
             self.player.direction = .Front
             self.player.chenge_State(State.Nomal)
-            change_jumpAroowDirection_Nomal()
+            change_jumpArrowDirection_Nomal()
             jump_OK()
         }//地面
         func on_BottomWall(){
