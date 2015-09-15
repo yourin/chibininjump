@@ -21,9 +21,10 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
     var scoreBG = SKNode()//スコア用Node
     
     var player:Player!//player
-//    var aryMapChipTexture:TileMapMaker!
     var aryMapChipTexture:WallMaker!
     var jumpArrowMark:JumpArrowMark!
+    
+    var updateCount_Touch = 0
 
     
     //
@@ -70,20 +71,6 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         return rand
     }
     
-    func set_GameGravityAndPhysics(){
-        self.physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame)
-        
-        self.physicsBody?.categoryBitMask = 0
-        self.physicsBody?.contactTestBitMask = 0
-        self.physicsBody?.collisionBitMask = 0
-        
-        //物理シミュレーション設定
-        self.physicsWorld.gravity = CGVector(dx: 0.0, dy: -5.0)
-        self.physicsWorld.speed = 0.5
-        self.physicsWorld.contactDelegate = self
-
-        
-    }
     func make_GameOverLine(){
         let gameoverLine = SKSpriteNode(color: SKColor.clearColor(), size: CGSize(width: self.size.width * 2, height: 10))
         gameoverLine.position = CGPoint(x:self.size.width / 2, y: -100)
@@ -101,7 +88,6 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
     func make_MapChipTexture(){
         
         aryMapChipTexture = WallMaker(textureFileName: "map", numberOfColumns: 8, numberOfRows: 16)
-//        aryMapChipTexture = TileMapMaker(textureFileName: "map", numberOfColumns: 8, numberOfRows: 16)
         println("mapchip = \(aryMapChipTexture.mapChip.count)")
 
     }
@@ -122,6 +108,20 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         //        println(ground)
         groundPosY = ground.position.y + ground.size.height
         println("groundPosY = \(groundPosY)")
+    }
+    func set_GameGravityAndPhysics(){
+        self.physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame)
+        
+        self.physicsBody?.categoryBitMask = 0
+        self.physicsBody?.contactTestBitMask = 0
+        self.physicsBody?.collisionBitMask = 0
+        
+        //物理シミュレーション設定
+        self.physicsWorld.gravity = CGVector(dx: 0.0, dy: -5.0)
+        self.physicsWorld.speed = 0.5
+        self.physicsWorld.contactDelegate = self
+        
+        
     }
     
 
@@ -316,9 +316,18 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         }
         
     }
-
-    
-    
+    //MARK:アップデートカウントをリセット
+    func reset_updateCount(){
+        self.updateCount_Touch = 1
+    }
+    func chenge_ArrowScale(){
+        let newScale:CGFloat = 1.0 + CGFloat(updateCount_Touch / 20)
+        self.jumpArrowMark.yScale = newScale
+    }
+    func reset_ArrowScale(){
+        self.jumpArrowMark.yScale = 1.0
+    }
+//************************************************************
     //MARK: -
     override func didMoveToView(view: SKView) {
         
@@ -479,19 +488,21 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         }
 
     }
-    
+
+    //MARK: - タッチ処理
     func panelTouch_Start(#location:CGPoint){
         _isTouchON = true
-        self.jumpArrowMark.yScale = 2.0
     }
+    
     func panelTouch_Ended(#location:CGPoint){
         //ジャンプする
         self.action_PlayerJump()
         _isTouchON = false
-        self.jumpArrowMark.yScale = 1.0
+    
+        self.reset_updateCount()
+        self.reset_ArrowScale()
     }
     
-    //MARK: - タッチ処理
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         
         for touch in (touches as! Set<UITouch>) {
@@ -510,13 +521,10 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         
         for touch in (touches as! Set<UITouch>) {
             let location = touch.locationInNode(self)
-            
             self.panelTouch_Ended(location: location)
-        
-            
         }
         
-         }
+    }
     
     override func touchesCancelled(touches: Set<NSObject>!, withEvent event: UIEvent!) {
         
@@ -524,48 +532,21 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
     
     
     override func update(currentTime: NSTimeInterval) {
-//    s = s * 1.2
-//    self.jumpArrowMark.setScale(s)
-        
-//        // 画面半分を超えたらスクロールを開始する　-------
-//        if self.player.position.y > scrollPoint{
-//            
-//            let moveY = player.position.y - scrollPoint
-//            
-//            wallBG.position = CGPoint(x: wallBG.position.x, y: wallBG.position.y - moveY)
-//            self.scrollPoint = self.scrollPoint + moveY
-//        }
-
-//        println("wallBG = \(wallBG.position)")
-//        let playerPosOnWallBG = self.wallBG.convertPoint(self.player.position, fromNode: wallBG)
-//        println("playerPosOnWallBG = \(playerPosOnWallBG)")
-//        let moveX = self.size.width / 2 - playerPosOnWallBG.x
-//
-//
-//        let moveY = self.size.height / 2 - playerPosOnWallBG.y
-//        println("moveX = \(moveX) moveY = \(moveY)")
-//        
-//        wallBG.position = CGPoint(x: moveX, y: moveY)
-    
-//        let center:CGPoint = CGPoint(x: self.size.width / 2, y: self.size.height / 2)
-//        let playerPos = self.player.position
-//        if wallBG.position.x != playerPos.x {
-//            if center.x > playerPos.x {
-//                wallBG.position =
-//                    CGPoint(
-//                        x: wallBG.position.x + (center.x - playerPos.x),
-//                        y: wallBG.position.y)
-//            }else
-//                if center.x < playerPos.x {
-//                    wallBG.position =
-//                        CGPoint(
-//                            x: wallBG.position.x - (playerPos.x - center.x ),
-//                            y: wallBG.position.y)
-//                    }
-//        }
-    
-        
+        //タッチ中、
+        if self._isTouchON {
+            //ジャンプしてない、
+            if self.player._isJumpNow == false {
+                //カウントが100以下
+                if updateCount_Touch < 100{
+                    updateCount_Touch++
+                    println(updateCount_Touch)
+                    self.chenge_ArrowScale()
+                }
+            }
+            
+        }
     }
+    
     override func didEvaluateActions() {
         
     }
