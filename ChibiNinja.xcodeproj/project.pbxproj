@@ -23,7 +23,6 @@
 		DB2DF5D31AF33039002CB009 /* MyParticle5.sks in Resources */ = {isa = PBXBuildFile; fileRef = DB2DF5D21AF33039002CB009 /* MyParticle5.sks */; };
 		DB683ED51B0A0FC000975909 /* SpriteBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB683ED41B0A0FC000975909 /* SpriteBlock.swift */; };
 		DB683ED71B0A313400975909 /* TileMapMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB683ED61B0A313400975909 /* TileMapMaker.swift */; };
-		DB7593351AE0B938008A36D2 /* Wall.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB7593341AE0B938008A36D2 /* Wall.swift */; };
 		DBDA2A561AC19328003DED4C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDA2A551AC19328003DED4C /* AppDelegate.swift */; };
 		DBDA2A581AC19328003DED4C /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = DBDA2A571AC19328003DED4C /* GameScene.sks */; };
 		DBDA2A5A1AC19328003DED4C /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDA2A591AC19328003DED4C /* GameScene.swift */; };
@@ -62,7 +61,6 @@
 		DB2DF5D21AF33039002CB009 /* MyParticle5.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MyParticle5.sks; sourceTree = "<group>"; };
 		DB683ED41B0A0FC000975909 /* SpriteBlock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SpriteBlock.swift; path = ../SpriteBlock.swift; sourceTree = "<group>"; };
 		DB683ED61B0A313400975909 /* TileMapMaker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileMapMaker.swift; sourceTree = "<group>"; };
-		DB7593341AE0B938008A36D2 /* Wall.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Wall.swift; sourceTree = "<group>"; };
 		DBDA2A501AC19328003DED4C /* ChibiNinja.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChibiNinja.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBDA2A541AC19328003DED4C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DBDA2A551AC19328003DED4C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -128,7 +126,6 @@
 				DBDA2A601AC19328003DED4C /* Images.xcassets */,
 				DBDA2A621AC19328003DED4C /* LaunchScreen.xib */,
 				DBDA2A531AC19328003DED4C /* Supporting Files */,
-				DB7593341AE0B938008A36D2 /* Wall.swift */,
 			);
 			path = ChibiNinja;
 			sourceTree = "<group>";
@@ -283,7 +280,6 @@
 			files = (
 				7BC397B21B95002000E5D14E /* Character.swift in Sources */,
 				DBDA2A5A1AC19328003DED4C /* GameScene.swift in Sources */,
-				DB7593351AE0B938008A36D2 /* Wall.swift in Sources */,
 				7BC397B61B963EF800E5D14E /* JumpArrowMark.swift in Sources */,
 				DB683ED71B0A313400975909 /* TileMapMaker.swift in Sources */,
 				7B714E491B811BD100433557 /* GameScene2.swift in Sources */,

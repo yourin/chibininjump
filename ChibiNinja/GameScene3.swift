@@ -79,7 +79,7 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         
         //物理シミュレーション設定
         self.physicsWorld.gravity = CGVector(dx: 0.0, dy: -5.0)
-        self.physicsWorld.speed = 0.6
+        self.physicsWorld.speed = 0.5
         self.physicsWorld.contactDelegate = self
 
         
@@ -272,14 +272,22 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         self.jumpArrowMark.hidden = true
     }
     
+    //MARK:矢印の角度限界設定
     func change_jumpArrowDirection_Nomal(){
         jumpArrowMark.set_Rotation(minAngle: 90, maxAngle: -90)
     }
+    func change_jumpArrowDirection_RightFromLeft(){
+        jumpArrowMark.set_Rotation(minAngle: 80, maxAngle: -80)
+    }
+    func change_jumpArrowDirection_LeftFromRight(){
+        jumpArrowMark.set_Rotation(minAngle: -80, maxAngle: 80)
+    }
+    
     func chenge_jumpArrowDirection_Left(){
-        jumpArrowMark.set_Rotation(minAngle: 90.0, maxAngle: 0)
+        jumpArrowMark.set_Rotation(minAngle: 100.0, maxAngle: 15)
     }
     func chenge_jumpArrowDirection_Right(){
-        jumpArrowMark.set_Rotation(minAngle: -90.0, maxAngle: 0)
+        jumpArrowMark.set_Rotation(minAngle: -100.0, maxAngle: -15)
     }
 
     
@@ -346,6 +354,8 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         //ジャンプマーク
         self.set_jumpArrow()
         
+//        self.scrollPoint = self.size.height / 2
+        
 //MARK:デバッグモードセット
         if _isDebugON{ self.debug() }
         
@@ -386,7 +396,15 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
             //重力あり、ジャンプ可能
             self.player.direction = .Front
             self.player.chenge_State(State.Nomal)
-            change_jumpArrowDirection_Nomal()
+            //矢印の角度変更
+//            change_jumpArrowDirection_Nomal()
+            if self.player.position.x < self.size.width / 2 {
+                change_jumpArrowDirection_LeftFromRight()
+                
+            }else{
+                change_jumpArrowDirection_RightFromLeft()
+            }
+            
             jump_OK()
         }//地面
         func on_BottomWall(){
@@ -464,11 +482,13 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
     
     func panelTouch_Start(#location:CGPoint){
         _isTouchON = true
+        self.jumpArrowMark.yScale = 2.0
     }
     func panelTouch_Ended(#location:CGPoint){
         //ジャンプする
         self.action_PlayerJump()
         _isTouchON = false
+        self.jumpArrowMark.yScale = 1.0
     }
     
     //MARK: - タッチ処理
@@ -503,8 +523,46 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
     }
     
     
-    
     override func update(currentTime: NSTimeInterval) {
+//    s = s * 1.2
+//    self.jumpArrowMark.setScale(s)
+        
+//        // 画面半分を超えたらスクロールを開始する　-------
+//        if self.player.position.y > scrollPoint{
+//            
+//            let moveY = player.position.y - scrollPoint
+//            
+//            wallBG.position = CGPoint(x: wallBG.position.x, y: wallBG.position.y - moveY)
+//            self.scrollPoint = self.scrollPoint + moveY
+//        }
+
+//        println("wallBG = \(wallBG.position)")
+//        let playerPosOnWallBG = self.wallBG.convertPoint(self.player.position, fromNode: wallBG)
+//        println("playerPosOnWallBG = \(playerPosOnWallBG)")
+//        let moveX = self.size.width / 2 - playerPosOnWallBG.x
+//
+//
+//        let moveY = self.size.height / 2 - playerPosOnWallBG.y
+//        println("moveX = \(moveX) moveY = \(moveY)")
+//        
+//        wallBG.position = CGPoint(x: moveX, y: moveY)
+    
+//        let center:CGPoint = CGPoint(x: self.size.width / 2, y: self.size.height / 2)
+//        let playerPos = self.player.position
+//        if wallBG.position.x != playerPos.x {
+//            if center.x > playerPos.x {
+//                wallBG.position =
+//                    CGPoint(
+//                        x: wallBG.position.x + (center.x - playerPos.x),
+//                        y: wallBG.position.y)
+//            }else
+//                if center.x < playerPos.x {
+//                    wallBG.position =
+//                        CGPoint(
+//                            x: wallBG.position.x - (playerPos.x - center.x ),
+//                            y: wallBG.position.y)
+//                    }
+//        }
     
         
     }
@@ -512,12 +570,12 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         
     }
     override func didSimulatePhysics() {
-        if self.player._isJumpNow == true{
-            self.player.jumpAnimation()
-         }else{
-            println("ジャンプ中じゃない")
-            self.player.zRotation = 0
-        }
+//        if self.player._isJumpNow == true{
+//            self.player.jumpAnimation()
+//         }else{
+//            println("ジャンプ中じゃない")
+//            self.player.zRotation = 0
+//        }
     }
     
     

@@ -19,7 +19,7 @@ class JumpArrowMark:SKLabelNode {
     override init(){
         super.init()
         self.text = "↑"
-        self.fontSize = 30
+        self.fontSize = 15
         self.fontColor = UIColor.redColor()
         self.alpha = 0.5
         self.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center

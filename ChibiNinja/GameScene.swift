@@ -881,6 +881,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         hide_Joypad()
         
         return
+        
         // JoyBall MoveingLimit Ring
         let joyballLimitRing = SKShapeNode(circleOfRadius: ballHeight * 2)
         joyballLimitRing.strokeColor = joyColor
