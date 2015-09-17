@@ -43,7 +43,12 @@ class GameViewController: UIViewController {
         
             skView.showsFPS = true
             skView.showsNodeCount = true
-            skView.showsPhysics = true
+
+            if #available(iOS 8.0, *) {
+                skView.showsPhysics = true
+            } else {
+                // Fallback on earlier versions
+            }
             
             /* Sprite Kit applies additional optimizations to improve rendering performance */
             skView.ignoresSiblingOrder = true
@@ -71,14 +76,23 @@ class GameViewController: UIViewController {
     override func shouldAutorotate() -> Bool {
         return true
     }
-
-    override func supportedInterfaceOrientations() -> Int {
+    
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
         if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
-            return Int(UIInterfaceOrientationMask.AllButUpsideDown.rawValue)
+            return .AllButUpsideDown
         } else {
-            return Int(UIInterfaceOrientationMask.All.rawValue)
+            return .All
         }
     }
+
+
+//    override func supportedInterfaceOrientations() -> Int {
+//        if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
+//            return Int(UIInterfaceOrientationMask.AllButUpsideDown.rawValue)
+//        } else {
+//            return Int(UIInterfaceOrientationMask.All.rawValue)
+//        }
+//    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

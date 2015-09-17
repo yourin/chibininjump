@@ -10,10 +10,10 @@ import SpriteKit
 
 class GameScene2: SKScene , SKPhysicsContactDelegate{
 
-    
+/*
     
     override func didMoveToView(view: SKView) {
-    println(__FUNCTION__)
+    print(__FUNCTION__)
         make_FontName()
         
         
@@ -58,7 +58,7 @@ class GameScene2: SKScene , SKPhysicsContactDelegate{
             sprite.position = CGPoint(x:0, y: nextYpos)
             //        sprite.position = center
             nextYpos = nextYpos + 32 * CGFloat(randV)
-            println("nextYpos = \(nextYpos)")
+            print("nextYpos = \(nextYpos)")
             self.addChild(sprite)
         }
 
@@ -69,12 +69,12 @@ class GameScene2: SKScene , SKPhysicsContactDelegate{
             let randV = arc4random_uniform(4)+1
         let sprite = aryMapChipTexture.make_MapChipBlock_OriginRight(mapNum: 2, HorizontaCount: randH, VerticalCount: randV, physicsType: .Edge)
             
-            println("\(i): \(randH) x \(randV)")
+            print("\(i): \(randH) x \(randV)")
 
             sprite.position = CGPoint(x:self.size.width, y: nextYpos)
 //        sprite.position = center
         nextYpos = nextYpos + 32 * CGFloat(randV)
-            println("nextYpos = \(nextYpos)")
+            prprintnextYpos = \(nextYpos)")
         self.addChild(sprite)
         }
     }
@@ -146,6 +146,6 @@ class GameScene2: SKScene , SKPhysicsContactDelegate{
         }
     }
     //MARK: -
-
+*/
 }
 

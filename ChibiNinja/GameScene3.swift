@@ -64,7 +64,7 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         
     }
     
-    func randomRange(#min:UInt32,max:UInt32) -> UInt32{
+    func randomRange(min min:UInt32,max:UInt32) -> UInt32{
         
         let rand = arc4random_uniform(max)+min
         
@@ -88,7 +88,7 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
     func make_MapChipTexture(){
         
         aryMapChipTexture = WallMaker(textureFileName: "map", numberOfColumns: 8, numberOfRows: 16)
-        println("mapchip = \(aryMapChipTexture.mapChip.count)")
+        print("mapchip = \(aryMapChipTexture.mapChip.count)")
 
     }
     
@@ -105,9 +105,9 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
 
         
         wallBG.addChild(ground)
-        //        println(ground)
+        //        print(ground)
         groundPosY = ground.position.y + ground.size.height
-        println("groundPosY = \(groundPosY)")
+        print("groundPosY = \(groundPosY)")
     }
     func set_GameGravityAndPhysics(){
         self.physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame)
@@ -133,7 +133,7 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
     var wallLeft_VerticalNumber:UInt32 = 0
     var wallRight_VerticalNumber:UInt32 = 0
     //左の壁
-    func make_WallLeft(#mapChipNumber:Int,horizontal:UInt32,vertical:UInt32) ->SKSpriteNode{
+    func make_WallLeft(mapChipNumber:Int,horizontal:UInt32,vertical:UInt32) ->SKSpriteNode{
         //左下原点の塊を作成
         let sprite =
         aryMapChipTexture.make_MapChipBlock_OriginLeft(
@@ -150,7 +150,7 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         return sprite
     }
     //右の壁
-    func make_WallRight(#mapChipNumber:Int,horizontal:UInt32,vertical:UInt32) ->SKSpriteNode{
+    func make_WallRight(mapChipNumber:Int,horizontal:UInt32,vertical:UInt32) ->SKSpriteNode{
         //左下原点の塊を作成
         let sprite =
         aryMapChipTexture.make_MapChipBlock_OriginRight(
@@ -179,27 +179,27 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         var stock_RightBlock = stock_NumberOfVertical
         
         //ブロック縦の在庫を返す
-        func stockCheck_verticalNumberBlock(#stock:UInt32) -> UInt32{
+        func stockCheck_verticalNumberBlock(stock:UInt32) -> UInt32{
             
             var number:UInt32 = self.randomRange(min: 1, max: 5)
             if stock < number {
                 number = stock
-                println("在庫を返す")
+                print("在庫を返す")
             }
-            println("number = \(number)")//
+            print("number = \(number)")//
             return number
         }
 
         
         //左壁　在庫がなくなるまで繰り返す
-        do{
+        repeat{
             let horizontal = self.randomRange(min: 1, max: 4)//
-            let vertical = stockCheck_verticalNumberBlock(stock: stock_LeftBlock)
+            let vertical = stockCheck_verticalNumberBlock(stock_LeftBlock)
             
         
             //左下原点の塊を作成
             let sprite = make_WallLeft(
-                mapChipNumber: mapChipNumber,
+                mapChipNumber,
                 horizontal: horizontal,
                 vertical: vertical)
             
@@ -210,26 +210,26 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
             
             //在庫から減らす
             stock_LeftBlock -= vertical
-            println("stock_LeftBlock = \(stock_LeftBlock)")
+            print("stock_LeftBlock = \(stock_LeftBlock)")
 
             wallLeft_VerticalNumber += vertical
-            println("wallLeft_VerticalNumber = \(wallLeft_VerticalNumber) stock_NumberOfVertical = \(stock_NumberOfVertical)")
+            print("wallLeft_VerticalNumber = \(wallLeft_VerticalNumber) stock_NumberOfVertical = \(stock_NumberOfVertical)")
         } while wallLeft_VerticalNumber != stock_NumberOfVertical
         
         
         
       
-        println("stockRightBlock = \(stock_RightBlock)")
+        print("stockRightBlock = \(stock_RightBlock)")
         
         //右の壁 在庫がなくなるまで繰り返す
-        do{
+        repeat{
             let horizontal = self.randomRange(min: 1, max: 4)//
-            let vertical = stockCheck_verticalNumberBlock(stock: stock_RightBlock)
+            let vertical = stockCheck_verticalNumberBlock(stock_RightBlock)
             
             
             //右下原点の塊を作成
             let sprite = make_WallRight(
-                mapChipNumber: mapChipNumber,
+                mapChipNumber,
                 horizontal: horizontal,
                 vertical: vertical)
             
@@ -240,14 +240,14 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
             
             //在庫から減らす
             stock_RightBlock -= vertical
-            println("stock_RightBlock = \(stock_RightBlock)")
+            print("stock_RightBlock = \(stock_RightBlock)")
             
             wallRight_VerticalNumber += vertical
-            println("wallRight_VerticalNumber = \(wallRight_VerticalNumber) stock_NumberOfVertical = \(stock_NumberOfVertical)")
+            print("wallRight_VerticalNumber = \(wallRight_VerticalNumber) stock_NumberOfVertical = \(stock_NumberOfVertical)")
         } while wallRight_VerticalNumber != stock_NumberOfVertical
 
-        println("左壁縦の個数 = \(wallLeft_VerticalNumber)")
-        println("右壁縦の個数 = \(wallRight_VerticalNumber)")
+        print("左壁縦の個数 = \(wallLeft_VerticalNumber)")
+        print("右壁縦の個数 = \(wallRight_VerticalNumber)")
         
     }
     //MARK:プレイヤー作成
@@ -312,7 +312,7 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
             jump_NO()
             hidden_JumpArrow()
         }else{
-            println("ジャンプ中なのでジャンプできない")
+            print("ジャンプ中なのでジャンプできない")
         }
         
     }
@@ -398,7 +398,7 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
     
     //MARK: - 衝突処理
     func didBeginContact(contact: SKPhysicsContact) {
-        println("\(__FUNCTION__) A:\(contact.bodyA.node?.name) B: \(contact.bodyB.node?.name)")
+        print("\(__FUNCTION__) A:\(contact.bodyA.node?.name) B: \(contact.bodyB.node?.name)")
 
         
         func on_GroundAndUpperWall (){
@@ -446,16 +446,16 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
             //壁の高さ 上面　下面　のY位置を保持する
             let wall_UnderPosY  = contact.bodyA.node!.position.y
             let wall_UpperPosY  = wall_UnderPosY + contact.bodyA.node!.frame.height
-            println("up:\(wall_UpperPosY) down:\(wall_UnderPosY) player:\(player.position.y)")
+            print("up:\(wall_UpperPosY) down:\(wall_UnderPosY) player:\(player.position.y)")
             
             if wall_UpperPosY > player.position.y &&
                 player.position.y > wall_UnderPosY{
-                    println("横面に当たった")
+                    print("横面に当たった")
                     wallSide = .Side
             }else
                 //下面よりプレイヤーのY位置が下の場合は下面に当たった
                 if player.position.y < wall_UnderPosY {
-                    println("下面に当たった")
+                    print("下面に当たった")
                     wallSide = .Bottom
             }
             return wallSide
@@ -467,7 +467,7 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
             on_GroundAndUpperWall()
         }else
             if contact.bodyA.node?.name == kEnemyName{
-                println("敵にあたった")
+                print("敵にあたった")
         }else{
             let side = WallMaker.check_HitWallSide(contact: contact)
 //            let side = check_HitWallSide()
@@ -490,11 +490,11 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
     }
 
     //MARK: - タッチ処理
-    func panelTouch_Start(#location:CGPoint){
+    func panelTouch_Start(location location:CGPoint){
         _isTouchON = true
     }
     
-    func panelTouch_Ended(#location:CGPoint){
+    func panelTouch_Ended(location location:CGPoint){
         //ジャンプする
         self.action_PlayerJump()
         _isTouchON = false
@@ -503,21 +503,23 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         self.reset_ArrowScale()
     }
     
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+    
+    
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
-        for touch in (touches as! Set<UITouch>) {
+        for touch in touches {
             let location = touch.locationInNode(self)
             self.panelTouch_Start(location: location)
         }
     }
     
-    override func touchesMoved(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
         for touch in (touches as! Set<UITouch>) {
             let location = touch.locationInNode(self)
         }
     }
     
-    override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
         for touch in (touches as! Set<UITouch>) {
             let location = touch.locationInNode(self)
@@ -526,7 +528,7 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         
     }
     
-    override func touchesCancelled(touches: Set<NSObject>!, withEvent event: UIEvent!) {
+    override func touchesCancelled(touches: Set<UITouch>!, withEvent event: UIEvent!) {
         
     }
     
@@ -539,7 +541,7 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
                 //カウントが100以下
                 if updateCount_Touch < 100{
                     updateCount_Touch++
-                    println(updateCount_Touch)
+                    print(updateCount_Touch)
                     self.chenge_ArrowScale()
                 }
             }
@@ -554,7 +556,7 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
 //        if self.player._isJumpNow == true{
 //            self.player.jumpAnimation()
 //         }else{
-//            println("ジャンプ中じゃない")
+//            print("ジャンプ中じゃない")
 //            self.player.zRotation = 0
 //        }
     }

@@ -213,6 +213,7 @@
 		DBDA2A481AC19328003DED4C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0620;
 				ORGANIZATIONNAME = tone.youring;
 				TargetAttributes = {

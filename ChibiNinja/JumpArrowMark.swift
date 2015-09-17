@@ -43,12 +43,12 @@ class JumpArrowMark:SKLabelNode {
 //        
 //        
 //        case 0...5:
-//            println()
+//            print()
 //            
 //        case 7...11:
 //            return 180
 //            
-//        default:println("")
+//        default:print("")
 //            
 //        }
         
@@ -61,8 +61,8 @@ class JumpArrowMark:SKLabelNode {
             min = self.maximumAngle
             max = self.minimumAngle
         }
-        println("max = \(max),min = \(min)")
-        println("durationTime = \(NSTimeInterval((max - min) / 90))")
+        print("max = \(max),min = \(min)")
+        print("durationTime = \(NSTimeInterval((max - min) / 90))")
         return NSTimeInterval((max - min) / 180)
     }
    
@@ -81,7 +81,7 @@ class JumpArrowMark:SKLabelNode {
         
     }
     
-    func set_Rotation(#minAngle:Double,maxAngle:Double){
+    func set_Rotation(minAngle minAngle:Double,maxAngle:Double){
         if self.hasActions(){
             self.removeAllActions()
         }
@@ -102,7 +102,7 @@ class JumpArrowMark:SKLabelNode {
     }
     
     func update(){
-        println("角度　＝　\(RadianToDegree(self.zRotation))")
+        print("角度　＝　\(RadianToDegree(self.zRotation))")
     }
     
     /*

@@ -35,29 +35,29 @@ class TileMapMaker {
         
         let XSize = CGFloat(1.0 / Double(numberOfColumns))
         let YSize = CGFloat(1.0 / Double(numberOfRows))
-        //    println("xsize = \(XSize)")
+        //    print("xsize = \(XSize)")
         
         for i in 0..<numberOfRows{
             for j in 0..<numberOfColumns{
-                //            println("j = \(j)")
+                //            print("j = \(j)")
                 //切り出す位置
                 let tilePositionRect = CGRect(
                     x:XSize * CGFloat(j) , y:YSize * CGFloat(i), width:XSize, height:YSize )
-                //            println(tilePositionRect)
+                //            print(tilePositionRect)
                 
                 //切り出す
                 let tex = SKTexture(rect: tilePositionRect, inTexture: texture)
                 mapChip.append(tex)
             }
-            println("mapChip = \(mapChip.count)")
-            println(self.numberOfColumns)
-            println(self.numberOfRows)
+            print("mapChip = \(mapChip.count)")
+            print(self.numberOfColumns)
+            print(self.numberOfRows)
             
         }
         
     }
     //MARK:マップの塊(右下原点）作成　縦　横
-    func make_MapChipBlock_OriginRight(#mapNum:Int,HorizontaCount:UInt32,VerticalCount:UInt32,physicsType:PhysicsType) -> SKSpriteNode{
+    func make_MapChipBlock_OriginRight(mapNum mapNum:Int,HorizontaCount:UInt32,VerticalCount:UInt32,physicsType:PhysicsType) -> SKSpriteNode{
         
         let tex:SKTexture = self.mapChip[mapNum]
         var ary      = [SKSpriteNode]()
@@ -98,7 +98,7 @@ class TileMapMaker {
                     x:newOrigin.x + tex.size().width * CGFloat(i),
                     y:newOrigin.y + tex.size().height * CGFloat(j))
                 baseSprite.addChild(ary[textureNumber])
-//                println("blockPos = \(textureNumber):\(ary[textureNumber].position)")
+//                print("blockPos = \(textureNumber):\(ary[textureNumber].position)")
                 textureNumber++
             }
         }
@@ -111,7 +111,7 @@ class TileMapMaker {
             baseSprite.physicsBody = SKPhysicsBody(rectangleOfSize:
                 baseSprite.size, center: CGPoint(x: 1, y: 0))
         case .None:
-            println("物理ボディなし")
+            print("物理ボディなし")
             
         }
         
@@ -121,12 +121,13 @@ class TileMapMaker {
     
     
     //MARK:シェイプノードにテクスチャーを貼る
-    func make_ShapeNode_Rect(mapNum:Int) -> SKShapeNode{
-        let tex = self.mapChip[mapNum]
-        let shape = SKShapeNode(rectOfSize:tex.size())
-        shape.fillTexture = tex
-        return shape
-    }
+//    func make_ShapeNode_Rect(mapNum:Int) -> SKShapeNode{
+//        let tex = self.mapChip[mapNum]
+//        
+//        let shape = SKShapeNode(rectOfSize:tex.size())
+//        shape.fillTexture = tex
+//        return shape
+//    }
     
     //MARK:テクスチャー切り出し
     func make_Texture(mapNum:Int) -> SKTexture{
@@ -135,7 +136,7 @@ class TileMapMaker {
         if self.mapChip.count > mapNum {
             tex = self.mapChip[mapNum]
         }else{
-            println("マップチップの引数が間違っている")
+            print("マップチップの引数が間違っている")
             tex = self.mapChip[0]
         }
         return tex
@@ -227,14 +228,14 @@ class TileMapMaker {
     //MARK:スプライトに物理ボディをつける
     func addPhysics(sprite:SKSpriteNode) -> SKSpriteNode{
         let newOrigin = CGPoint(x: -sprite.size.width / 2, y:-sprite.size.height / 2)
-        //            println("newOrigin = \(newOrigin)")
+        //            print("newOrigin = \(newOrigin)")
         sprite.physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRect(origin: newOrigin, size: sprite.size))
         return sprite
     
     }
     //MARK:-
     //MARK:マップチップを横に並べる 物理ボディを付ける　付けない
-    func make_MapChipRow(#mapNum:Int,HorizontaCount:UInt32,physics:Bool) -> SKSpriteNode{
+    func make_MapChipRow(mapNum mapNum:Int,HorizontaCount:UInt32,physics:Bool) -> SKSpriteNode{
         let tex = self.mapChip[mapNum]
         var ary = [SKSpriteNode]()
         
@@ -272,7 +273,7 @@ class TileMapMaker {
         return baseSprite
     }
     //MARK:マップチップ(原点左下)を横に並べる 物理ボディを付ける　付けない
-    func make_MapChipRow_OriginLeft(#mapNum:Int,HorizontaCount:UInt32,physics:Bool) -> SKSpriteNode{
+    func make_MapChipRow_OriginLeft(mapNum mapNum:Int,HorizontaCount:UInt32,physics:Bool) -> SKSpriteNode{
         
         let tex = self.mapChip[mapNum]
         var ary = [SKSpriteNode]()
@@ -292,7 +293,7 @@ class TileMapMaker {
         let newOrigin = CGPoint(
             x:tex.size().width / 2,
             y:tex.size().height / 2)
-        println("NewOrigin = \(newOrigin)")
+        print("NewOrigin = \(newOrigin)")
         
         //ベースにスプライトを貼り付ける
         for i in 0 ..< ary.count{
@@ -316,7 +317,7 @@ class TileMapMaker {
     
     //MARK:-
     //MARK:マップチップを縦に並べる 物理ボディを付ける　付けない
-    func make_MapChipColumn(#mapNum:Int,VerticalCount:UInt32,physics:Bool) -> SKSpriteNode{
+    func make_MapChipColumn(mapNum mapNum:Int,VerticalCount:UInt32,physics:Bool) -> SKSpriteNode{
         let tex = self.mapChip[mapNum]
         var ary = [SKSpriteNode]()
         
@@ -354,7 +355,7 @@ class TileMapMaker {
         return baseSprite
     }
     //MARK:マップチップ(左下原点)を縦に並べる 物理ボディを付ける　付けない
-    func make_MapChipColumn_OriginLeft(#mapNum:Int,VerticalCount:UInt32,physics:Bool) -> SKSpriteNode{
+    func make_MapChipColumn_OriginLeft(mapNum mapNum:Int,VerticalCount:UInt32,physics:Bool) -> SKSpriteNode{
         let tex = self.mapChip[mapNum]
         var ary = [SKSpriteNode]()
         
@@ -396,7 +397,7 @@ class TileMapMaker {
     }
 
     //MARK:マップの塊作成　縦　横
-    func make_MapChipBlock(#mapNum:Int,HorizontaCount:Int,VerticalCount:UInt32,physics:Bool) -> SKSpriteNode{
+    func make_MapChipBlock(mapNum mapNum:Int,HorizontaCount:Int,VerticalCount:UInt32,physics:Bool) -> SKSpriteNode{
         
         let tex:SKTexture = self.mapChip[mapNum]
         var ary      = [SKSpriteNode]()
@@ -456,20 +457,20 @@ class TileMapMaker {
     func appendPhysics(sprite:SKSpriteNode, physicsType:PhysicsType) ->SKSpriteNode{
         switch physicsType {
         case .None:
-            println("物理ボディ　なし")
+            print("物理ボディ　なし")
         case .Edge:
             sprite.physicsBody = SKPhysicsBody(edgeLoopFromRect: sprite.frame)
-        println("エッジ物理ボディをセット")
+        print("エッジ物理ボディをセット")
         case .Rect:
             sprite.physicsBody = SKPhysicsBody(rectangleOfSize: sprite.size)
-        println("ボリューム物理ボディをセット")
+        print("ボリューム物理ボディをセット")
         }
         
         return sprite
     }
     
     //MARK:マップの塊作成　縦　横
-    func make_MapChipBlock(#mapNum:Int,HorizontaCount:Int,VerticalCount:Int,physicsType:PhysicsType) -> SKSpriteNode{
+    func make_MapChipBlock(mapNum mapNum:Int,HorizontaCount:Int,VerticalCount:Int,physicsType:PhysicsType) -> SKSpriteNode{
         
         let tex:SKTexture = self.mapChip[mapNum]
         var ary      = [SKSpriteNode]()
@@ -522,7 +523,7 @@ class TileMapMaker {
         
     }
     //MARK:マップの塊作成　縦　横
-    func make_MapChipBlock_OriginLeft(#mapNum:Int,HorizontaCount:UInt32,VerticalCount:UInt32,physicsType:PhysicsType) -> SKSpriteNode{
+    func make_MapChipBlock_OriginLeft(mapNum mapNum:Int,HorizontaCount:UInt32,VerticalCount:UInt32,physicsType:PhysicsType) -> SKSpriteNode{
         
         let tex:SKTexture = self.mapChip[mapNum]
         var ary      = [SKSpriteNode]()
@@ -579,7 +580,7 @@ class TileMapMaker {
             baseSprite.physicsBody = SKPhysicsBody(rectangleOfSize:
                 baseSprite.size, center: CGPoint(x: 0, y: 0))
         case .None:
-            println("物理ボディなし")
+            print("物理ボディなし")
             
         }
         

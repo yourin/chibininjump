@@ -20,9 +20,9 @@ class WallMaker: TileMapMaker {
     
     
     //プレイヤーのY位置と衝突スプライトのY位置から壁面（上、横、下）を返す
-    class func check_HitWallSide(#contact: SKPhysicsContact) -> WallSide{
+    class func check_HitWallSide(contact contact: SKPhysicsContact) -> WallSide{
         
-        println("コンタクトポイント　\(contact.contactPoint)")
+        print("コンタクトポイント　\(contact.contactPoint)")
         
         //横面にセット
         var wallSide = WallSide.Side
@@ -37,19 +37,19 @@ class WallMaker: TileMapMaker {
         if contact.bodyA.node?.name == "leftwall"{
             x0 = wallNode.position.x
             x1 = x0 + wallNode.frame.width
-        println("Left ")
+        print("Left ")
         }else
         if contact.bodyA.node?.name == "rightwall"{
             x1 = wallNode.position.x
             x0 = x1 - wallNode.frame.width
             print("Right ")
         }
-        println("wall　\(x0) - \(x1)")
-        println("contactPoint = \(contact.contactPoint)")
+        print("wall　\(x0) - \(x1)")
+        print("contactPoint = \(contact.contactPoint)")
         
         if x0 < contact.contactPoint.x &&
             x1 > contact.contactPoint.x{
-                println("プレイヤーは壁の上か下にいる")
+                print("プレイヤーは壁の上か下にいる")
                 if wallNode.position.y + wallNode.frame.height
                     < contact.contactPoint.y{
                         wallSide = WallSide.Upper
