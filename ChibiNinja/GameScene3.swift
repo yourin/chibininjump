@@ -514,14 +514,15 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
     }
     
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        for touch in (touches as! Set<UITouch>) {
+        for touch in touches {
             let location = touch.locationInNode(self)
+            print(__FUNCTION__, "\(location)")
         }
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
-        for touch in (touches as! Set<UITouch>) {
+        for touch in touches {
             let location = touch.locationInNode(self)
             self.panelTouch_Ended(location: location)
         }

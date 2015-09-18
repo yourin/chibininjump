@@ -61,12 +61,12 @@ class TileMapMaker {
         
         let tex:SKTexture = self.mapChip[mapNum]
         var ary      = [SKSpriteNode]()
-        var aryColmn    = [SKSpriteNode]()
+//        var aryColmn    = [SKSpriteNode]()
         
         //テクスチャーからスプライトを作成し配列にする
-        for j in 0 ..< VerticalCount {
+        for _ in 0 ..< VerticalCount {
             
-            for i in 0 ..< HorizontaCount {
+            for _ in 0 ..< HorizontaCount {
                 let sprite = SKSpriteNode(texture: tex)
                 ary.append(sprite)
             }
@@ -181,7 +181,7 @@ class TileMapMaker {
     func make_SpritePhysicsRect(mapNum:Int) -> SKSpriteNode{
         let sprite = self.make_Sprite(mapNum)
         
-        let newOrigin = CGPoint(x: -sprite.size.width / 2, y:-sprite.size.height / 2)
+//        let newOrigin = CGPoint(x: -sprite.size.width / 2, y:-sprite.size.height / 2)
        
         sprite.physicsBody = SKPhysicsBody(rectangleOfSize:sprite.size)
         
@@ -239,7 +239,7 @@ class TileMapMaker {
         let tex = self.mapChip[mapNum]
         var ary = [SKSpriteNode]()
         
-        for i in 0 ..< HorizontaCount {
+        for _ in 0 ..< HorizontaCount {
             let sprite = SKSpriteNode(texture: tex)
   //          sprite.position = CGPoint(x:sprite.size.width * CGFloat(i), y:0)
             ary.append(sprite)
@@ -278,7 +278,7 @@ class TileMapMaker {
         let tex = self.mapChip[mapNum]
         var ary = [SKSpriteNode]()
         
-        for i in 0 ..< HorizontaCount {
+        for _ in 0 ..< HorizontaCount {
             let sprite = SKSpriteNode(texture: tex)
             ary.append(sprite)
         }
@@ -321,7 +321,7 @@ class TileMapMaker {
         let tex = self.mapChip[mapNum]
         var ary = [SKSpriteNode]()
         
-        for i in 0 ..< VerticalCount {
+        for _ in 0 ..< VerticalCount {
             let sprite = SKSpriteNode(texture: tex)
             //          sprite.position = CGPoint(x:sprite.size.width * CGFloat(i), y:0)
             ary.append(sprite)
@@ -359,7 +359,7 @@ class TileMapMaker {
         let tex = self.mapChip[mapNum]
         var ary = [SKSpriteNode]()
         
-        for i in 0 ..< VerticalCount {
+        for _ in 0 ..< VerticalCount {
             let sprite = SKSpriteNode(texture: tex)
             //          sprite.position = CGPoint(x:sprite.size.width * CGFloat(i), y:0)
             ary.append(sprite)
@@ -401,12 +401,12 @@ class TileMapMaker {
         
         let tex:SKTexture = self.mapChip[mapNum]
         var ary      = [SKSpriteNode]()
-        var aryColmn    = [SKSpriteNode]()
+//        var aryColmn    = [SKSpriteNode]()
         
         //テクスチャーからスプライトを作成し配列にする
-        for j in 0 ..< VerticalCount {
+        for _ in 0 ..< VerticalCount {
             
-            for i in 0 ..< HorizontaCount {
+            for _ in 0 ..< HorizontaCount {
                 let sprite = SKSpriteNode(texture: tex)
                 ary.append(sprite)
             }
@@ -474,12 +474,12 @@ class TileMapMaker {
         
         let tex:SKTexture = self.mapChip[mapNum]
         var ary      = [SKSpriteNode]()
-        var aryColmn    = [SKSpriteNode]()
+//        var aryColmn    = [SKSpriteNode]()
         
         //テクスチャーからスプライトを作成し配列にする
-        for j in 0 ..< VerticalCount {
+        for _ in 0 ..< VerticalCount {
             
-            for i in 0 ..< HorizontaCount {
+            for _ in 0 ..< HorizontaCount {
                 let sprite = SKSpriteNode(texture: tex)
                 ary.append(sprite)
             }
@@ -527,12 +527,12 @@ class TileMapMaker {
         
         let tex:SKTexture = self.mapChip[mapNum]
         var ary      = [SKSpriteNode]()
-        var aryColmn    = [SKSpriteNode]()
+//        var aryColmn    = [SKSpriteNode]()
         
         //テクスチャーからスプライトを作成し配列にする
-        for j in 0 ..< VerticalCount {
+        for _ in 0 ..< VerticalCount {
             
-            for i in 0 ..< HorizontaCount {
+            for _ in 0 ..< HorizontaCount {
                 let sprite = SKSpriteNode(texture: tex)
                 ary.append(sprite)
             }

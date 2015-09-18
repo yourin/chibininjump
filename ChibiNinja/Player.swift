@@ -32,8 +32,8 @@ enum State {
         case .Fall:
             tex = SKTexture(imageNamed: "ninja_front1.png")
             
-        default:
-            tex = SKTexture(imageNamed: "ninja_front1.png")
+//        default:
+//            tex = SKTexture(imageNamed: "ninja_front1.png")
         }
      return tex
     }
@@ -70,7 +70,7 @@ class Player:Character {
     
     func jump(vector:CGVector){
         
-        println("vector = \(vector.dx)")
+        print("vector = \(vector.dx)")
         
         if vector.dx < 0 {
             //左にジャンプ
@@ -88,7 +88,7 @@ class Player:Character {
     
     
     func change_Direction(newDirection:Direction){
-        println(__FUNCTION__)
+        print(__FUNCTION__)
         if newDirection != self.direction{
             switch newDirection {
             case .Front:
@@ -115,9 +115,9 @@ class Player:Character {
 //            self.zRotation = radian
         self.zRotation = 0
         case .JumpRight:
-            var pt = self.position
-            var vector = self.physicsBody?.velocity
-            var radian :CGFloat = atan2(
+            let pt = self.position
+            let vector = self.physicsBody?.velocity
+            let radian :CGFloat = atan2(
                 (pt.y + vector!.dy) - pt.y ,
                 (pt.x + vector!.dx) - pt.x)
             self.zRotation = radian
@@ -137,7 +137,7 @@ class Player:Character {
     
     //テクスチャーを変更する
     func chenge_Texture(){
-        println(__FUNCTION__)
+        print(__FUNCTION__)
         self.texture = self.state.texture()
     }
     

@@ -786,8 +786,8 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             case .VerySlow:
                 print("\(jumpTiming?.rawValue)")
 
-            default:
-                print("\(jumpTiming?.rawValue)")
+//            default:
+//                print("\(jumpTiming?.rawValue)")
             }
         }else{
             ninja.physicsBody?.applyImpulse(CGVector(dx: 15, dy:15))
@@ -970,7 +970,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     }
     //MARK:タッチ　移動
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        <#code#>
+
         
         for touch in touches {
             let location = touch.locationInNode(self)
@@ -981,7 +981,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     }
     
     //MARK:タッチ　終了
-    override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         print(__FUNCTION__)
         
         hide_Joypad()

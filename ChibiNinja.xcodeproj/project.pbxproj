@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7B714E491B811BD100433557 /* GameScene2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B714E481B811BD100433557 /* GameScene2.swift */; };
 		7BB9AD331B8B547000012108 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BB9AD321B8B547000012108 /* iAd.framework */; };
 		7BC397B01B8FB3AE00E5D14E /* GameScene3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC397AF1B8FB3AE00E5D14E /* GameScene3.swift */; };
 		7BC397B21B95002000E5D14E /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC397B11B95002000E5D14E /* Character.swift */; };
@@ -21,7 +20,6 @@
 		DB2DF5CF1AF32F93002CB009 /* MyParticle3.sks in Resources */ = {isa = PBXBuildFile; fileRef = DB2DF5CE1AF32F93002CB009 /* MyParticle3.sks */; };
 		DB2DF5D11AF32FAA002CB009 /* MyParticle4.sks in Resources */ = {isa = PBXBuildFile; fileRef = DB2DF5D01AF32FAA002CB009 /* MyParticle4.sks */; };
 		DB2DF5D31AF33039002CB009 /* MyParticle5.sks in Resources */ = {isa = PBXBuildFile; fileRef = DB2DF5D21AF33039002CB009 /* MyParticle5.sks */; };
-		DB683ED51B0A0FC000975909 /* SpriteBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB683ED41B0A0FC000975909 /* SpriteBlock.swift */; };
 		DB683ED71B0A313400975909 /* TileMapMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB683ED61B0A313400975909 /* TileMapMaker.swift */; };
 		DBDA2A561AC19328003DED4C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDA2A551AC19328003DED4C /* AppDelegate.swift */; };
 		DBDA2A581AC19328003DED4C /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = DBDA2A571AC19328003DED4C /* GameScene.sks */; };
@@ -45,7 +43,6 @@
 
 /* Begin PBXFileReference section */
 		7B714E471B7E897B00433557 /* ChibiNin.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChibiNin.pch; sourceTree = "<group>"; };
-		7B714E481B811BD100433557 /* GameScene2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene2.swift; sourceTree = "<group>"; };
 		7BB9AD321B8B547000012108 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		7BC397AF1B8FB3AE00E5D14E /* GameScene3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene3.swift; sourceTree = "<group>"; };
 		7BC397B11B95002000E5D14E /* Character.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Character.swift; path = ../Character.swift; sourceTree = "<group>"; };
@@ -59,7 +56,6 @@
 		DB2DF5CE1AF32F93002CB009 /* MyParticle3.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MyParticle3.sks; sourceTree = "<group>"; };
 		DB2DF5D01AF32FAA002CB009 /* MyParticle4.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MyParticle4.sks; sourceTree = "<group>"; };
 		DB2DF5D21AF33039002CB009 /* MyParticle5.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MyParticle5.sks; sourceTree = "<group>"; };
-		DB683ED41B0A0FC000975909 /* SpriteBlock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SpriteBlock.swift; path = ../SpriteBlock.swift; sourceTree = "<group>"; };
 		DB683ED61B0A313400975909 /* TileMapMaker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileMapMaker.swift; sourceTree = "<group>"; };
 		DBDA2A501AC19328003DED4C /* ChibiNinja.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChibiNinja.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBDA2A541AC19328003DED4C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -120,7 +116,6 @@
 				DBDA2A571AC19328003DED4C /* GameScene.sks */,
 				DBDA2A5B1AC19328003DED4C /* GameViewController.swift */,
 				DBDA2A591AC19328003DED4C /* GameScene.swift */,
-				7B714E481B811BD100433557 /* GameScene2.swift */,
 				7BC397AF1B8FB3AE00E5D14E /* GameScene3.swift */,
 				DBDA2A5D1AC19328003DED4C /* Main.storyboard */,
 				DBDA2A601AC19328003DED4C /* Images.xcassets */,
@@ -135,7 +130,6 @@
 			children = (
 				7BC397B11B95002000E5D14E /* Character.swift */,
 				7BC397B31B962BDC00E5D14E /* Player.swift */,
-				DB683ED41B0A0FC000975909 /* SpriteBlock.swift */,
 				DB683ED61B0A313400975909 /* TileMapMaker.swift */,
 				7BC397B51B963EF800E5D14E /* JumpArrowMark.swift */,
 				7BC397E91BA22D6A00E5D14E /* WallMaker.swift */,
@@ -214,7 +208,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0620;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = tone.youring;
 				TargetAttributes = {
 					DBDA2A4F1AC19328003DED4C = {
@@ -283,8 +277,6 @@
 				DBDA2A5A1AC19328003DED4C /* GameScene.swift in Sources */,
 				7BC397B61B963EF800E5D14E /* JumpArrowMark.swift in Sources */,
 				DB683ED71B0A313400975909 /* TileMapMaker.swift in Sources */,
-				7B714E491B811BD100433557 /* GameScene2.swift in Sources */,
-				DB683ED51B0A0FC000975909 /* SpriteBlock.swift in Sources */,
 				DBDA2A5C1AC19328003DED4C /* GameViewController.swift in Sources */,
 				7BC397B01B8FB3AE00E5D14E /* GameScene3.swift in Sources */,
 				7BC397B41B962BDD00E5D14E /* Player.swift in Sources */,
@@ -351,6 +343,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -418,6 +411,7 @@
 				INFOPLIST_FILE = ChibiNinja/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "tone.youring.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -432,6 +426,7 @@
 				INFOPLIST_FILE = ChibiNinja/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "tone.youring.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -450,6 +445,7 @@
 				);
 				INFOPLIST_FILE = ChibiNinjaTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "tone.youring.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ChibiNinja.app/ChibiNinja";
 			};
@@ -465,6 +461,7 @@
 				);
 				INFOPLIST_FILE = ChibiNinjaTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "tone.youring.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ChibiNinja.app/ChibiNinja";
 			};
