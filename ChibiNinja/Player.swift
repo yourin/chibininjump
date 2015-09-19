@@ -58,6 +58,7 @@ class Player:Character {
 //            height: self.size.height * 0.9)
 //        self.physicsBody = SKPhysicsBody(rectangleOfSize: size)
         self.physicsBody?.restitution = 0.0 //跳ね返らない
+        self.physicsBody?.friction = 1.0
         self.physicsBody?.allowsRotation = false //衝突で角度変化しない
         self.name = "player"
         self.direction = .Front
@@ -70,7 +71,7 @@ class Player:Character {
     
     func jump(vector:CGVector){
         
-        print("vector = \(vector.dx)")
+        print("vector = \(vector)")
         
         if vector.dx < 0 {
             //左にジャンプ

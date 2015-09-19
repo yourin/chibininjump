@@ -123,7 +123,12 @@ class JumpArrowMark:SKLabelNode {
         let x = sin(self.zRotation)
         let y = cos(self.zRotation)
         let power:CGFloat = 500.0
+        
+        let v = CGVector(dx:power * -x, dy:power * y)
+        print(__FUNCTION__ ," \(v)")
+        
         return CGVector(dx:power * -x, dy:power * y)
+        
     
     }
     

@@ -15,9 +15,12 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
     var _isDebugON = true
     var _isTouchON      = false//タッチ中
     var _gameoverFlg    = false//ゲームオーバー
+    var _gameStart      = false
     
     var gameoverLine:SKSpriteNode!
-    var wallBG = SKNode()//壁用Node
+//    var wallBG = SKNode()//壁用Node
+    var wallBG:SKSpriteNode!//壁用Node
+    
     var scoreBG = SKNode()//スコア用Node
     
     var player:Player!//player
@@ -31,14 +34,14 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
     var beganPoint:CGPoint!
     
     //MARK:衝突カテゴリ
-    let playerCategory:      UInt32 = 0x1 << 1      //0001
+    let playerCategory:     UInt32 = 0x1 << 1      //0001
     let groundCategory:     UInt32 = 0x1 << 10
     let wallLeftCategory:   UInt32 = 0x1 << 11
     let wallRightCategory:  UInt32 = 0x1 << 12
 
     let gameoverLineCategory:UInt32 = 0x1 << 20
     
-    let enemyCategory:UInt32        = 0x1 << 21
+    let enemyCategory:      UInt32  = 0x1 << 21
 
     //名前
     let kNinjaName      = "ninja"
@@ -48,7 +51,7 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
     let kGameOverLineName = "gameoverline"
     let kEnemyName          = "enemy"
 
-
+//MARK: - FUNCTION
     func debug(){
         //中心線
         let centerLineX = SKSpriteNode(color: SKColor.whiteColor(), size: CGSize(width: self.size.width, height: 2))
@@ -103,7 +106,7 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         ground.physicsBody?.restitution = 0.0 //跳ね返らない
         ground.physicsBody?.friction = 1.0
 
-        
+//        self.addChild(ground)
         wallBG.addChild(ground)
         //        print(ground)
         groundPosY = ground.position.y + ground.size.height
@@ -120,7 +123,6 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         self.physicsWorld.gravity = CGVector(dx: 0.0, dy: -5.0)
         self.physicsWorld.speed = 0.5
         self.physicsWorld.contactDelegate = self
-        
         
     }
     
@@ -205,6 +207,7 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
             
             sprite.position = CGPoint(x:0, y: nextPosY_LeftWall )
             wallBG.addChild(sprite)
+//            self    .addChild(sprite)
             
             nextPosY_LeftWall = nextPosY_LeftWall + 32 * CGFloat(vertical)
             
@@ -235,6 +238,7 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
             
             sprite.position = CGPoint(x:self.size.width, y: nextPosY_RightWall )
             wallBG.addChild(sprite)
+//            self.addChild(sprite)
             
             nextPosY_RightWall = nextPosY_RightWall + 32 * CGFloat(vertical)
             
@@ -254,9 +258,12 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
     func set_Player(){
         let player = Player()
         
-        player.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMaxY(self.frame))
+        player.position = CGPoint(
+            x: CGRectGetMidX(self.frame),
+            y: CGRectGetMaxY(self.frame))
         player.setScale(2.0)
-        self.addChild(player)
+        wallBG.addChild(player)
+//        self.addChild(player)
         self.player = player
         self.player._isJumpNow = true
 
@@ -294,20 +301,24 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
     //MARK:矢印の現在の方向からベクターを返す
     func vectorTojumpArrowAngle() ->CGVector{
         var vector = CGVector()
+        
+         print("ArrowVector = \(self.jumpArrowMark.jumpVector())")
         let player = self.childNodeWithName("player")
         if let node = player?.childNodeWithName("arrowmark"){
             let arrow = node as! JumpArrowMark
             vector = arrow.jumpVector()
             
         }
-        return vector
+        
+//        return vector
+        return self.jumpArrowMark.jumpVector()
     }
     //MARK:ジャンプする
     func action_PlayerJump(){
         //
         if self.player._isJumpNow  == false{
             start_Physics()
-            
+            print("vectorTojumpArrowAngle() = \(vectorTojumpArrowAngle())")
             self.player.jump(vectorTojumpArrowAngle())
             jump_NO()
             hidden_JumpArrow()
@@ -340,7 +351,13 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         self.physicsWorld.contactDelegate = self
         
         //壁配置用ノード
-        wallBG.scene?.size = self.size
+        wallBG = SKSpriteNode()//color: SKColor.clearColor(), size: self.size)
+//        wallBG.scene?.size = self.size
+//            //物理シミュレーション設定
+//            self.wallBG.scene?.physicsWorld.gravity = CGVector(dx: 0.0, dy: -5.0)
+//        self.wallBG.scene?.physicsWorld.speed = 0.5
+//        self.wallBG.scene?.physicsWorld.contactDelegate = self
+
         
         self.addChild(wallBG)
         
@@ -362,13 +379,15 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         self.set_Player()
         //ジャンプマーク
         self.set_jumpArrow()
-        
+        //スクロールポイントセット　画面の半分
+        self.scrollPosY = CGRectGetMidY(self.frame)
 //        self.scrollPoint = self.size.height / 2
         
 //MARK:デバッグモードセット
         if _isDebugON{ self.debug() }
         
     }
+    //MARK: -
     
     func start_Physics(){
         self.player.physicsBody?.dynamic = true
@@ -402,11 +421,17 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
 
         
         func on_GroundAndUpperWall (){
+            
+            //ゲームスタート
+            if _gameStart != true{
+                _gameStart = true
+            }
+            
             //重力あり、ジャンプ可能
             self.player.direction = .Front
             self.player.chenge_State(State.Nomal)
+            
             //矢印の角度変更
-//            change_jumpArrowDirection_Nomal()
             if self.player.position.x < self.size.width / 2 {
                 change_jumpArrowDirection_LeftFromRight()
                 
@@ -436,31 +461,6 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
             chenge_jumpArrowDirection_Left()
             jump_OK()
         }//右壁　横
-        
-        //壁にあたった 
-/*
-        func check_HitWallSide() -> WallSide{
-            //仮に上面にセット
-            var wallSide = WallSide.Upper
-            //プレイヤーのY位置と衝突スプライトのY位置から壁面（上、横、下）を返す
-            //壁の高さ 上面　下面　のY位置を保持する
-            let wall_UnderPosY  = contact.bodyA.node!.position.y
-            let wall_UpperPosY  = wall_UnderPosY + contact.bodyA.node!.frame.height
-            print("up:\(wall_UpperPosY) down:\(wall_UnderPosY) player:\(player.position.y)")
-            
-            if wall_UpperPosY > player.position.y &&
-                player.position.y > wall_UnderPosY{
-                    print("横面に当たった")
-                    wallSide = .Side
-            }else
-                //下面よりプレイヤーのY位置が下の場合は下面に当たった
-                if player.position.y < wall_UnderPosY {
-                    print("下面に当たった")
-                    wallSide = .Bottom
-            }
-            return wallSide
-        }
-*/
     
 // ***     ***********
         if contact.bodyA.node?.name == kGroundName {
@@ -486,8 +486,47 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
                 }
             }
         }
+        
+        //スクロールチェック
+        check_ScrollPoint()
 
+      
     }
+    //MARK: -
+    //MARK:画面スクロール
+    var scrollPosY:CGFloat!
+    func check_ScrollPoint(){
+
+        if scrollPosY < self.player.position.y {
+            print("スクロールする")
+            
+            self.disp_playerPos()
+            //スクロールする量を計算
+            let moveY:CGFloat! = self.player.position.y - scrollPosY
+            self.scroll(moveY)
+            scrollPosY = scrollPosY + moveY!
+            print("nextScrollPosY = \(scrollPosY)")
+            
+        }else{
+            print("スクロールしない")
+        }
+    }
+    
+    func disp_playerPos(){
+        print("playerPosX = \(self.player.position.x) Y = \(self.player.position.y)")
+  
+    }
+    
+    func scroll(moveY:CGFloat){
+//        wallBG.position = CGPoint(x: 0, y: -moveY)
+        
+        let action = SKAction.moveByX(0, y: -moveY, duration: 1)
+        self.wallBG.runAction(action)
+//        self.player.runAction(action)
+        print("self BGを\(moveY)下げた")
+        print("self pos = \(self.wallBG.position.y)")
+    }
+    
 
     //MARK: - タッチ処理
     func panelTouch_Start(location location:CGPoint){
@@ -548,12 +587,22 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
             }
             
         }
+        
+        
     }
     
     override func didEvaluateActions() {
         
     }
     override func didSimulatePhysics() {
+        if _gameStart == true {
+            
+//            wallBG.position = CGPoint(x: 0, y: wallBG.position.y - 1)
+        }
+        
+        
+//        let pt = self.convertPoint(self.player.position, fromNode: wallBG)
+//    wallBG.position = CGPoint(x: 0, y: wallBG.position.y - pt.y)
 //        if self.player._isJumpNow == true{
 //            self.player.jumpAnimation()
 //         }else{
@@ -561,6 +610,8 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
 //            self.player.zRotation = 0
 //        }
     }
+    
+    
     
     
 }

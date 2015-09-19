@@ -30,12 +30,7 @@ class GameViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
-      //  self.canDisplayBannerAds = true
 
-//        if let scene = GameScene.unarchiveFromFile("GameScene") as? GameScene {
-            // Configure the view.
         
         let scene = GameScene3()
         
@@ -43,6 +38,7 @@ class GameViewController: UIViewController {
         
             skView.showsFPS = true
             skView.showsNodeCount = true
+       
 
             if #available(iOS 8.0, *) {
                 skView.showsPhysics = true
