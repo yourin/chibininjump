@@ -49,9 +49,9 @@ class TileMapMaker {
                 let tex = SKTexture(rect: tilePositionRect, inTexture: texture)
                 mapChip.append(tex)
             }
-            print("mapChip = \(mapChip.count)")
-            print(self.numberOfColumns)
-            print(self.numberOfRows)
+//            print("mapChip = \(mapChip.count)")
+//            print(self.numberOfColumns)
+//            print(self.numberOfRows)
             
         }
         

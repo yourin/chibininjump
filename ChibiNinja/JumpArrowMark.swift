@@ -61,8 +61,8 @@ class JumpArrowMark:SKLabelNode {
             min = self.maximumAngle
             max = self.minimumAngle
         }
-        print("max = \(max),min = \(min)")
-        print("durationTime = \(NSTimeInterval((max - min) / 90))")
+//        print("max = \(max),min = \(min)")
+//        print("durationTime = \(NSTimeInterval((max - min) / 90))")
         return NSTimeInterval((max - min) / 180)
     }
    

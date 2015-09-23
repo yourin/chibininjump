@@ -20,7 +20,9 @@ enum State {
         var tex = SKTexture()
         switch self{
         case .Nomal:
-            tex = SKTexture(imageNamed: "ninja_front1.png")
+//            tex = SKTexture(imageNamed: "walk_L1")
+
+            tex = SKTexture(imageNamed: "ninja_front1")
         case .WallLeft:
             tex = SKTexture(imageNamed: "climb_L1a.png")
         case .WallRight:
@@ -57,7 +59,7 @@ class Player:Character {
 //            width: self.size.width * 0.9,
 //            height: self.size.height * 0.9)
 //        self.physicsBody = SKPhysicsBody(rectangleOfSize: size)
-        self.physicsBody?.restitution = 0.0 //跳ね返らない
+        self.physicsBody?.restitution = 0.05 //跳ね返らない
         self.physicsBody?.friction = 1.0
         self.physicsBody?.allowsRotation = false //衝突で角度変化しない
         self.name = "player"

@@ -54,13 +54,13 @@ class GameViewController: UIViewController {
         
         //MARK:
         var gameSize = CGSize()
-        gameSize.width = 320
+        gameSize.width = 160//320
         if skView.frame.size.height > 480 {
             //iPhone5以降
-            gameSize.height = 568;
+            gameSize.height = 284// 568;
         } else {
             //iPhone4s
-            gameSize.height = 480;
+            gameSize.height = 240//480;
         }
         
             scene.size = gameSize

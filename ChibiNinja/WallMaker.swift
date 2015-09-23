@@ -36,26 +36,31 @@ class WallMaker: TileMapMaker {
         //横幅を設定　x0 - x1
         if contact.bodyA.node?.name == "leftwall"{
             x0 = wallNode.position.x
-            x1 = x0 + wallNode.frame.width
-        print("Left ")
+            x1 = x0 + wallNode.frame.width + player.frame.size.width
+            print("プレイヤーは壁の左")
+//        print("Left ")
         }else
         if contact.bodyA.node?.name == "rightwall"{
             x1 = wallNode.position.x
-            x0 = x1 - wallNode.frame.width
-            print("Right ")
+            x0 = x1 - wallNode.frame.width  - player.frame.size.width
+            print("プレイヤーは壁の右")
+
+//            print("Right ")
         }
-        print("wall　\(x0) - \(x1)")
+        print("wallwidth　\(x0) - \(x1)")
         print("contactPoint = \(contact.contactPoint)")
         
         if x0 < contact.contactPoint.x &&
             x1 > contact.contactPoint.x{
-                print("プレイヤーは壁の上か下にいる")
+                
                 if wallNode.position.y + wallNode.frame.height
                     < contact.contactPoint.y{
                         wallSide = WallSide.Upper
+                        print("プレイヤーは壁の上")
                 }else
                     if wallNode.position.y > contact.contactPoint.y{
                         wallSide = WallSide.Bottom
+                        print("プレイヤーは壁の下")
                 }
         }
     

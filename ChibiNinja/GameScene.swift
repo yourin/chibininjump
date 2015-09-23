@@ -911,7 +911,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     
     func move_joypad(location:CGPoint){
         let add:CGFloat = 3.0 //誤差
-        let limit:CGFloat = add - 1.0
+//        let limit:CGFloat = add - 1.0
         
         
         //Y判定
