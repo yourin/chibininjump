@@ -38,9 +38,14 @@ class GameViewController: UIViewController {
         
             skView.showsFPS = true
             skView.showsNodeCount = true
+        skView.showsDrawCount = true
+        skView.showsNodeCount = true
        
 
             if #available(iOS 8.0, *) {
+                skView.showsFields = true
+                skView.showsQuadCount = true
+
                 skView.showsPhysics = true
             } else {
                 // Fallback on earlier versions

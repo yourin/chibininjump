@@ -112,8 +112,10 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
 
     
     func make_GameOverLine(){
-        let gameoverLine = SKSpriteNode(color: SKColor.clearColor(), size: CGSize(width: self.size.width * 2, height: 10))
-        gameoverLine.position = CGPoint(x:self.size.width / 2, y: -50)
+        let gameoverLine = SKSpriteNode(color: SKColor.redColor(), size: CGSize(width: self.size.width * 2, height: 10))
+        gameoverLine.alpha = 0.5
+        gameoverLine.zPosition = 100
+        gameoverLine.position = CGPoint(x:self.size.width / 2, y: 0)
         gameoverLine.name = "gameoverLine"
         self.addChild(gameoverLine)
         gameoverLine.physicsBody = SKPhysicsBody(edgeLoopFromRect: gameoverLine.frame)
@@ -122,6 +124,9 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         gameoverLine.physicsBody?.collisionBitMask = playerCategory
         
         self.gameoverLine = gameoverLine
+        
+//        wallBG.addChild(gameoverLine)
+//        scoreBG.addChild(gameoverLine)
 
     }
     //MARK:マップチップテクスチャー作成
@@ -308,15 +313,15 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         player.position = CGPoint(
             x: CGRectGetMidX(self.frame),
             y: CGRectGetMaxY(self.frame))
-//        player.setScale(2.0)
-        wallBG.addChild(player)
-//        self.addChild(player)
-        self.player = player
-        self.player._isJumpNow = true
-        reset_PlayerCollision()
-        self.player.physicsBody?.usesPreciseCollisionDetection = true
-        
+        player.physicsBody?.usesPreciseCollisionDetection = true
+        player.oldPosition = player.position
+        player._isJumpNow = true
 
+        self.player = player
+        wallBG.addChild(player)
+
+        reset_PlayerCollision()
+        
     }//プレイヤー作成
     
     func reset_PlayerCollision(){
@@ -439,8 +444,6 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         scoreBG.scene?.size = self.size
         self.addChild(scoreBG)
         
-        // ゲームオーバー用
-        self.make_GameOverLine()
         
         //マップチップテクスチャー作成
         self.make_MapChipTexture()
@@ -462,7 +465,8 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
         
 //        self.make_UIButton()
         
-        
+        // ゲームオーバー用
+        self.make_GameOverLine()
         
         
     }
@@ -565,7 +569,7 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
             self.player.chenge_State(State.Fall)
             jump_NO()
 //            self.player.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
-//            reset_PlayerCollision()
+            self.reset_PlayerCollision()
             
         }//壁下
         func onWall_Left(){
@@ -729,6 +733,9 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
     
     
     override func update(currentTime: NSTimeInterval) {
+        
+    
+        
         //タッチ中、
         if self._isTouchON {
             //ジャンプしてない、
@@ -751,12 +758,23 @@ class GameScene3: SKScene,SKPhysicsContactDelegate {
     }
     override func didSimulatePhysics() {
         if _gameStart == true {
+          
+            self.check_isMovedPlayer()
             
-//            wallBG.position = CGPoint(x: 0, y: wallBG.position.y - 1)
         }
         
     }
     
+    //プレイヤーが動いているか？
+    func check_isMovedPlayer(){
+        if self.player.oldPosition == self.player.position {
+            self.player._isMoveNow = false
+            print("プレイヤーは停止中")
+        }else{
+            self.player._isMoveNow = true
+        }
+        self.player.oldPosition = self.player.position
+    }
     
     
     

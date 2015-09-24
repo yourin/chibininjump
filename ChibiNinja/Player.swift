@@ -49,7 +49,9 @@ class Player:Character {
     var jumpArrow = SKLabelNode(text: "↑")
     
     var _isJumpNow:Bool = true
-      var state:State!
+    var state:State!
+    var _isMoveNow:Bool = false
+    var oldPosition:CGPoint!
     
     init(){
         super.init(texture: nomalTexture, color: SKColor.clearColor(), size: nomalTexture.size())
@@ -110,12 +112,6 @@ class Player:Character {
     func jumpAnimation(){
         switch self.state! {
         case .JumpLeft:
-//            var pt = self.position
-//            var vector = self.physicsBody?.velocity
-//            var radian :CGFloat = atan2(
-//                (pt.y + vector!.dy) - pt.y ,
-//                (pt.x + vector!.dx) - pt.x)
-//            self.zRotation = radian
         self.zRotation = 0
         case .JumpRight:
             let pt = self.position
@@ -143,6 +139,7 @@ class Player:Character {
         print(__FUNCTION__)
         self.texture = self.state.texture()
     }
+    
     
     
 
