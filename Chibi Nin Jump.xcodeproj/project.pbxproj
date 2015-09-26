@@ -16,6 +16,12 @@
 		7B8D96DF1BB71B48001124AB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7B8D96DD1BB71B48001124AB /* LaunchScreen.storyboard */; };
 		7B8D96EA1BB71B49001124AB /* Chibi_Nin_JumpTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8D96E91BB71B49001124AB /* Chibi_Nin_JumpTests.swift */; };
 		7B8D96F51BB71B49001124AB /* Chibi_Nin_JumpUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8D96F41BB71B49001124AB /* Chibi_Nin_JumpUITests.swift */; };
+		7B8D97071BB71B99001124AB /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8D97021BB71B99001124AB /* Character.swift */; settings = {ASSET_TAGS = (); }; };
+		7B8D97081BB71B99001124AB /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8D97031BB71B99001124AB /* Player.swift */; settings = {ASSET_TAGS = (); }; };
+		7B8D97091BB71B99001124AB /* TileMapMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8D97041BB71B99001124AB /* TileMapMaker.swift */; settings = {ASSET_TAGS = (); }; };
+		7B8D970A1BB71B99001124AB /* JumpArrowMark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8D97051BB71B99001124AB /* JumpArrowMark.swift */; settings = {ASSET_TAGS = (); }; };
+		7B8D970B1BB71B99001124AB /* WallMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8D97061BB71B99001124AB /* WallMaker.swift */; settings = {ASSET_TAGS = (); }; };
+		7B8D970D1BB71BA6001124AB /* ninja_ri_bangbang.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 7B8D970C1BB71BA6001124AB /* ninja_ri_bangbang.mp3 */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +57,12 @@
 		7B8D96F01BB71B49001124AB /* Chibi Nin JumpUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Chibi Nin JumpUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B8D96F41BB71B49001124AB /* Chibi_Nin_JumpUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chibi_Nin_JumpUITests.swift; sourceTree = "<group>"; };
 		7B8D96F61BB71B49001124AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7B8D97021BB71B99001124AB /* Character.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
+		7B8D97031BB71B99001124AB /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		7B8D97041BB71B99001124AB /* TileMapMaker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileMapMaker.swift; sourceTree = "<group>"; };
+		7B8D97051BB71B99001124AB /* JumpArrowMark.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JumpArrowMark.swift; sourceTree = "<group>"; };
+		7B8D97061BB71B99001124AB /* WallMaker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WallMaker.swift; sourceTree = "<group>"; };
+		7B8D970C1BB71BA6001124AB /* ninja_ri_bangbang.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ninja_ri_bangbang.mp3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,6 +121,12 @@
 				7B8D96DB1BB71B48001124AB /* Assets.xcassets */,
 				7B8D96DD1BB71B48001124AB /* LaunchScreen.storyboard */,
 				7B8D96E01BB71B48001124AB /* Info.plist */,
+				7B8D97021BB71B99001124AB /* Character.swift */,
+				7B8D97031BB71B99001124AB /* Player.swift */,
+				7B8D97041BB71B99001124AB /* TileMapMaker.swift */,
+				7B8D97051BB71B99001124AB /* JumpArrowMark.swift */,
+				7B8D970C1BB71BA6001124AB /* ninja_ri_bangbang.mp3 */,
+				7B8D97061BB71B99001124AB /* WallMaker.swift */,
 			);
 			path = "Chibi Nin Jump";
 			sourceTree = "<group>";
@@ -235,6 +253,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7B8D96D31BB71B48001124AB /* GameScene.sks in Resources */,
+				7B8D970D1BB71BA6001124AB /* ninja_ri_bangbang.mp3 in Resources */,
 				7B8D96DF1BB71B48001124AB /* LaunchScreen.storyboard in Resources */,
 				7B8D96DC1BB71B48001124AB /* Assets.xcassets in Resources */,
 				7B8D96DA1BB71B48001124AB /* Main.storyboard in Resources */,
@@ -262,9 +281,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7B8D970A1BB71B99001124AB /* JumpArrowMark.swift in Sources */,
 				7B8D96D51BB71B48001124AB /* GameScene.swift in Sources */,
+				7B8D970B1BB71B99001124AB /* WallMaker.swift in Sources */,
+				7B8D97091BB71B99001124AB /* TileMapMaker.swift in Sources */,
 				7B8D96D71BB71B48001124AB /* GameViewController.swift in Sources */,
 				7B8D96D11BB71B48001124AB /* AppDelegate.swift in Sources */,
+				7B8D97081BB71B99001124AB /* Player.swift in Sources */,
+				7B8D97071BB71B99001124AB /* Character.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -405,6 +429,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = "Chibi Nin Jump/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.gmail.youringtone.Chibi-Nin-Jump";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -416,6 +441,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = "Chibi Nin Jump/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.gmail.youringtone.Chibi-Nin-Jump";
 				PRODUCT_NAME = "$(TARGET_NAME)";
